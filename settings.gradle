@@ -1,0 +1,2 @@
+rootProject.name='habitToDoist'
+include ':app'
