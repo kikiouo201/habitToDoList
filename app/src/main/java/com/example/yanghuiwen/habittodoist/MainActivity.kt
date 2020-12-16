@@ -1,25 +1,23 @@
 package com.example.yanghuiwen.habittodoist
 
-import android.app.Dialog
-import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
+import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelectedListener  {
+class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineSelectedListener  {
     var todayList:SingleItem<String>?  = null
     var habitList:SingleItem<String>?  = null
     var scheduleList:ScheduleItem<String>? =null
@@ -31,11 +29,11 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
         setContentView(R.layout.activity_main)
 
 
-        val allItemData = allItemData()
 
-        allItemData.scheduleToDo.add("habit")
-        allItemData.scheduleToDo.add("呵")
-        scheduleList = ScheduleItem(allItemData.scheduleToDo)
+
+        AllItemData.scheduleToDo.add("habit")
+        AllItemData.scheduleToDo.add("呵")
+        scheduleList = ScheduleItem(AllItemData.scheduleToDo)
         val scheduleLayoutManager = LinearLayoutManager(this);
         scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
         val schedule_RecyclerView = findViewById<View>(R.id.timeList) as RecyclerView
@@ -43,22 +41,22 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
         schedule_RecyclerView.adapter = scheduleList
 
 
-        allItemData.todayToDo.add("早安")
-        allItemData.todayToDo.add("呵呵")
+        AllItemData.todayToDo.add("早安")
+        AllItemData.todayToDo.add("呵呵")
 
 
-        allItemData.habitToDo.add("habit")
-        allItemData.habitToDo.add("呵")
+        AllItemData.habitToDo.add("habit")
+        AllItemData.habitToDo.add("呵")
 
 
-        todayList = SingleItem(allItemData.todayToDo)
+        todayList = SingleItem(AllItemData.todayToDo)
         val layoutManager = LinearLayoutManager(this);
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         val mRecyclerView = findViewById<View>(R.id.todayList) as RecyclerView
         mRecyclerView.layoutManager = layoutManager
         mRecyclerView.adapter = todayList
 
-        habitList = SingleItem(allItemData.habitToDo)
+        habitList = SingleItem(AllItemData.habitToDo)
         val habitLayoutManager = LinearLayoutManager(this);
         habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
         habit_RecyclerView = findViewById<View>(R.id.habitList) as RecyclerView
@@ -68,31 +66,16 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
         addItemFab.setOnClickListener { view ->
-        var basicDialogFragment = BasicDialogFragment(allItemData)
-            basicDialogFragment.setOnHeadlineSelectedListener(this)
-            //            var bundle = Bundle()
-//            bundle.put("callback", object :Callback{
-//                override fun response(message: String) {
-//
-//                }
-//            })
-//            bundle.putSerializable("callback", object :Callback{
-//                override fun response(message: String) {
-//
-//                }
-//            })
-//            dialog.arguments=bundle
-
+        var habitToDoDialogFragment = AddHabitToDoDialogFragment()
+            habitToDoDialogFragment.setOnHeadlineSelectedListener(this)
             supportFragmentManager.let {
-                basicDialogFragment.show(it, "")
+                habitToDoDialogFragment.show(it, "")
             }
         }
         addItemFab.hide()
         val addHabitFab: FloatingActionButton = findViewById(R.id.addHabit)
         addHabitFab.setOnClickListener { view ->
-            Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .show()
+            startActivity(Intent(MainActivity@this, AddItemActivity::class.java))
         }
         addHabitFab.hide()
         val addFab: FloatingActionButton = findViewById(R.id.add)
@@ -113,7 +96,7 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
 
     }
 
-    override fun onArticleSelected(position: allItemData) {
+    override fun onArticleSelected(position: AllItemData) {
         Log.i("kiki","habitToDo="+position.habitToDo)
         habitList = SingleItem(position.habitToDo)
 
@@ -140,7 +123,7 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
             holder.mTextView.text = mData[position].toString()
             holder.itemView.setOnClickListener {
                 val textView = findViewById<TextView>(R.id.info_text)
-                textView.text = mData.toString() + ""
+                textView.text = mData.toString()
             }
             holder.itemView.setOnLongClickListener { false }
         }
@@ -175,8 +158,8 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            var startTime = if(position<10) "0${position}:00" else "${position}:00"
-            var endTime = if(position+1<10) "0${position+1}:00" else "${position+1}:00"
+            val startTime = if(position<10) "0${position}:00" else "${position}:00"
+            val endTime = if(position+1<10) "0${position+1}:00" else "${position+1}:00"
 
 
 
@@ -196,60 +179,4 @@ class MainActivity : AppCompatActivity(), BasicDialogFragment.OnHeadlineSelected
     }
 
 
-}
-
-class BasicDialogFragment(ItemData: allItemData) : DialogFragment() {
-    var allItemData =ItemData
-
-    internal var callback: OnHeadlineSelectedListener? = null
-    fun setOnHeadlineSelectedListener(callback: OnHeadlineSelectedListener) {
-        this.callback = callback
-    }
-
-    interface OnHeadlineSelectedListener {
-        fun onArticleSelected(position: allItemData)
-    }
-
-
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        val v=LayoutInflater.from(context).inflate(R.layout.dialog_signin, container, false)
-
-        return v
-    }
-
-
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            val builder = AlertDialog.Builder(it)
-            // Get the layout inflater
-            val inflater = requireActivity().layoutInflater;
-
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.dialog_signin, null))
-                    // Add action buttons
-                    .setPositiveButton("signin",
-                            DialogInterface.OnClickListener { dialog, id ->
-
-                                    var e = getDialog()?.findViewById<EditText>(R.id.toDo)
-                                    allItemData.habitToDo.add(e?.text.toString())
-                                    Log.i("kiki", "habitToDo=" + allItemData.habitToDo)
-                                    callback?.onArticleSelected(allItemData)
-
-                                //抓不到值
-                            })
-                    .setNegativeButton("cancel",
-                            DialogInterface.OnClickListener { dialog, id ->
-
-                                dialog.cancel()
-                            })
-            builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
-    }
 }
