@@ -2,6 +2,7 @@ package com.example.yanghuiwen.habittodoist.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.yanghuiwen.habittodoist.MainActivity
 import com.example.yanghuiwen.habittodoist.R
 import kotlinx.android.synthetic.main.activity_add_item.*
 import org.json.JSONObject
@@ -135,10 +137,16 @@ class AddItemActivity : AppCompatActivity() {
             jsonObject.add(arrayOf("name",name.text.toString()))
             Log.i("kiki","jsonObject"+jsonObject)
             var bundle=Bundle()
+
             for(i in jsonObject){
-                Log.i("kiki",i[0]+i[1])
+                bundle.putString(i[0],i[1])
             }
-            //git上去 傳值過去
+
+            var intent =Intent(this,MainActivity::class.java)
+            intent.putExtra("bundle",bundle)
+            startActivity(intent)
+
+            // 傳值過去
         }
 
 

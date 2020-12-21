@@ -1,19 +1,26 @@
 package com.example.yanghuiwen.habittodoist
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
+import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
+import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 import java.util.*
 
 
@@ -22,14 +29,29 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     var habitList:SingleItem<String>?  = null
     var scheduleList:ScheduleItem<String>? =null
     private var isFabOpen = false
-
+    private lateinit var pageList: MutableList<WeekPageView>
     var habit_RecyclerView:RecyclerView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        try{
+            val name = intent.getBundleExtra("bundle").getString("name")
+            AllItemData.todayToDo.add(name.toString())
+            val date= intent.getBundleExtra("bundle").getString("date")
+            val time= intent.getBundleExtra("bundle").getString("time")
+            val important = intent.getBundleExtra("bundle").getString("important")
+            val urgent =intent.getBundleExtra("bundle").getString("urgent")
+            val week = intent.getBundleExtra("bundle").getString("week")
+            val project =intent.getBundleExtra("bundle").getString("project")
 
 
+        }catch (e :Exception){
+            e.printStackTrace()
+        }
+
+        initData()
+        initView()
 
         AllItemData.scheduleToDo.add("habit")
         AllItemData.scheduleToDo.add("呵")
@@ -95,6 +117,21 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
     }
+
+
+    private fun initView() {
+        val page = findViewById<ViewPager>(R.id.pager)
+        page.adapter = WeekPagerAdapter(pageList)
+    }
+
+    private fun initData() {
+        var date =21;
+        pageList = ArrayList()
+        pageList.add(WeekPageView(this@MainActivity,date-7,3))
+        pageList.add(WeekPageView(this@MainActivity,date,2))
+        pageList.add(WeekPageView(this@MainActivity,date+7,7))
+    }
+
 
     override fun onArticleSelected(position: AllItemData) {
         Log.i("kiki","habitToDo="+position.habitToDo)
