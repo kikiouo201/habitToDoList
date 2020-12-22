@@ -1,14 +1,14 @@
 package com.example.yanghuiwen.habittodoist
 
-import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +18,8 @@ import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.Exception
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -50,8 +49,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
             e.printStackTrace()
         }
 
-        initData()
-        initView()
+
+        initWeekViewpage()
 
         AllItemData.scheduleToDo.add("habit")
         AllItemData.scheduleToDo.add("呵")
@@ -119,18 +118,47 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     }
 
 
-    private fun initView() {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initWeekViewpage() {
+
+        var current = LocalDateTime.now()
+
+
+        pageList = ArrayList()
+
+        pageList.add(WeekPageView(this@MainActivity,current.minusDays(21)))
+        pageList.add(WeekPageView(this@MainActivity,current.minusDays(14)))
+        pageList.add(WeekPageView(this@MainActivity,current.minusDays(7)))
+        pageList.add(WeekPageView(this@MainActivity,current))
+        pageList.add(WeekPageView(this@MainActivity,current.plusDays(7)))
+        pageList.add(WeekPageView(this@MainActivity,current.plusDays(14)))
+        pageList.add(WeekPageView(this@MainActivity,current.plusDays(21)))
+
         val page = findViewById<ViewPager>(R.id.pager)
-        page.adapter = WeekPagerAdapter(pageList)
+        val weekPagerAdapter = WeekPagerAdapter(pageList)
+
+
+        val listener = object: ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(p0: Int) {}
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                val pageNow = position + 1
+                //textView.setText("$pageNow / ${list.size}")
+            }
+            override fun onPageSelected(p0: Int) {
+                Log.i("kiki","p0=${p0}")
+            }
+        }
+
+        page.adapter = weekPagerAdapter
+        page.addOnPageChangeListener(listener)
+
+        page.setCurrentItem(3 , false);
     }
 
-    private fun initData() {
-        var date =21;
-        pageList = ArrayList()
-        pageList.add(WeekPageView(this@MainActivity,date-7,3))
-        pageList.add(WeekPageView(this@MainActivity,date,2))
-        pageList.add(WeekPageView(this@MainActivity,date+7,7))
-    }
+
+
 
 
     override fun onArticleSelected(position: AllItemData) {

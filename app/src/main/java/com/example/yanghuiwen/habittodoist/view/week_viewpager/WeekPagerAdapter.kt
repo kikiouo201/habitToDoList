@@ -4,11 +4,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 
-class WeekPagerAdapter(private val pageList : MutableList<WeekPageView>) : PagerAdapter() {
 
+class WeekPagerAdapter(private val pageList : MutableList<WeekPageView>) : PagerAdapter() {
+    private var pageCount = 0
     override fun getCount(): Int {
         return pageList.size
     }
+
+//    constructor(context: Context, images: IntArray) : super(){
+//        this.context = context
+//        this.images = images
+//
+//    }
+
+//    fun setNowPage(pageCount :Int){
+//        this.pageCount =pageCount
+//    }
 
     override fun isViewFromObject(view: View, o: Any): Boolean {
         return o === view
@@ -21,6 +32,19 @@ class WeekPagerAdapter(private val pageList : MutableList<WeekPageView>) : Pager
 
     override fun destroyItem(container: ViewGroup, position: Int, o: Any) {
         container.removeView(o as View)
+    }
+    override fun getItemPosition(`object`: Any): Int {
+        // 待研究
+        if (pageCount > 0) {
+            pageCount--
+            return POSITION_NONE
+        }
+        return super.getItemPosition(`object`)
+    }
+
+    override fun notifyDataSetChanged() {
+        pageCount = count
+        super.notifyDataSetChanged()
     }
 
 }
