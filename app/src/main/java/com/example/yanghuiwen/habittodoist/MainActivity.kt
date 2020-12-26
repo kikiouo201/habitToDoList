@@ -19,8 +19,10 @@ import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
+
+// 加 事項到 行事曆和todolist上
+// 加 年 月曆
 
 
 class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineSelectedListener  {
@@ -30,20 +32,27 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     private var isFabOpen = false
     private lateinit var pageList: MutableList<WeekPageView>
     var habit_RecyclerView:RecyclerView? = null
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         try{
-            val name = intent.getBundleExtra("bundle").getString("name")
-            AllItemData.todayToDo.add(name.toString())
-            val date= intent.getBundleExtra("bundle").getString("date")
-            val time= intent.getBundleExtra("bundle").getString("time")
-            val important = intent.getBundleExtra("bundle").getString("important")
-            val urgent =intent.getBundleExtra("bundle").getString("urgent")
-            val week = intent.getBundleExtra("bundle").getString("week")
-            val project =intent.getBundleExtra("bundle").getString("project")
+            var addItemDate = ItemDate()
+            addItemDate.name = intent.getBundleExtra("bundle").getString("name").toString()
 
+            addItemDate.startDate= intent.getBundleExtra("bundle").getString("startDate").toString()
+            addItemDate.endDate= intent.getBundleExtra("bundle").getString("endDate").toString()
+            addItemDate.startTime= intent.getBundleExtra("bundle").getString("startTime").toString()
+            addItemDate.endTime= intent.getBundleExtra("bundle").getString("endTime").toString()
+            addItemDate.important = intent.getBundleExtra("bundle").getInt("important")
+            addItemDate.urgent =intent.getBundleExtra("bundle").getInt("urgent")
+            addItemDate.repeat = intent.getBundleExtra("bundle").getBoolean("repeat")
+            if(addItemDate.repeat){
+                addItemDate.week = intent.getBundleExtra("bundle").getInt("week")
+            }
+            addItemDate.project =intent.getBundleExtra("bundle").getString("project").toString()
+            AllItemData.todayToDo.add(addItemDate)
 
         }catch (e :Exception){
             e.printStackTrace()
@@ -52,37 +61,36 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         initWeekViewpage()
 
-        AllItemData.scheduleToDo.add("habit")
-        AllItemData.scheduleToDo.add("呵")
-        scheduleList = ScheduleItem(AllItemData.scheduleToDo)
-        val scheduleLayoutManager = LinearLayoutManager(this);
-        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        val schedule_RecyclerView = findViewById<View>(R.id.timeList) as RecyclerView
-        schedule_RecyclerView.layoutManager = scheduleLayoutManager
-        schedule_RecyclerView.adapter = scheduleList
+        var scheduleItemDate = ItemDate()
+        AllItemData.scheduleToDo.add(scheduleItemDate)
+        var scheduleItemDate2 = ItemDate()
+        AllItemData.scheduleToDo.add(scheduleItemDate2)
 
 
-        AllItemData.todayToDo.add("早安")
-        AllItemData.todayToDo.add("呵呵")
 
 
-        AllItemData.habitToDo.add("habit")
-        AllItemData.habitToDo.add("呵")
+        var itemDate=ItemDate()
+        itemDate.name = "猶疑你離"
+        AllItemData.todayToDo.add(itemDate)
+        var itemDate2=ItemDate()
+        itemDate2.name = "呵呵"
+        AllItemData.todayToDo.add(itemDate2)
 
 
-        todayList = SingleItem(AllItemData.todayToDo)
-        val layoutManager = LinearLayoutManager(this);
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        val mRecyclerView = findViewById<View>(R.id.todayList) as RecyclerView
-        mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.adapter = todayList
+        var habitDate=ItemDate()
+        habitDate.name = "猶疑"
+        AllItemData.habitToDo.add(habitDate)
+        var habitDate2=ItemDate()
+        habitDate2.name = "亥亥"
+        AllItemData.habitToDo.add(habitDate2)
+        var habitDate3=ItemDate()
+        habitDate3.name = "呵"
+        AllItemData.habitToDo.add(habitDate3)
 
-        habitList = SingleItem(AllItemData.habitToDo)
-        val habitLayoutManager = LinearLayoutManager(this);
-        habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        habit_RecyclerView = findViewById<View>(R.id.habitList) as RecyclerView
-        habit_RecyclerView?.layoutManager = habitLayoutManager
-        habit_RecyclerView?.adapter = habitList
+
+
+
+        initAllToDoList()
 
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
@@ -118,6 +126,31 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     }
 
 
+     private fun initAllToDoList() {
+
+        scheduleList = ScheduleItem(AllItemData.scheduleToDo)
+        val scheduleLayoutManager = LinearLayoutManager(this);
+        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        val schedule_RecyclerView = findViewById<View>(R.id.timeList) as RecyclerView
+        schedule_RecyclerView.layoutManager = scheduleLayoutManager
+        schedule_RecyclerView.adapter = scheduleList
+
+        todayList = SingleItem(AllItemData.todayToDo)
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        val mRecyclerView = findViewById<View>(R.id.todayList) as RecyclerView
+        mRecyclerView.layoutManager = layoutManager
+        mRecyclerView.adapter = todayList
+
+        habitList = SingleItem(AllItemData.habitToDo)
+        val habitLayoutManager = LinearLayoutManager(this)
+        habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        habit_RecyclerView = findViewById<View>(R.id.habitList) as RecyclerView
+        habit_RecyclerView?.layoutManager = habitLayoutManager
+        habit_RecyclerView?.adapter = habitList
+
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initWeekViewpage() {
@@ -127,13 +160,13 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         pageList = ArrayList()
 
-        pageList.add(WeekPageView(this@MainActivity,current.minusDays(21)))
-        pageList.add(WeekPageView(this@MainActivity,current.minusDays(14)))
-        pageList.add(WeekPageView(this@MainActivity,current.minusDays(7)))
-        pageList.add(WeekPageView(this@MainActivity,current))
-        pageList.add(WeekPageView(this@MainActivity,current.plusDays(7)))
-        pageList.add(WeekPageView(this@MainActivity,current.plusDays(14)))
-        pageList.add(WeekPageView(this@MainActivity,current.plusDays(21)))
+        pageList.add(WeekPageView(this@MainActivity, current.minusDays(21)))
+        pageList.add(WeekPageView(this@MainActivity, current.minusDays(14)))
+        pageList.add(WeekPageView(this@MainActivity, current.minusDays(7)))
+        pageList.add(WeekPageView(this@MainActivity, current))
+        pageList.add(WeekPageView(this@MainActivity, current.plusDays(7)))
+        pageList.add(WeekPageView(this@MainActivity, current.plusDays(14)))
+        pageList.add(WeekPageView(this@MainActivity, current.plusDays(21)))
 
         val page = findViewById<ViewPager>(R.id.pager)
         val weekPagerAdapter = WeekPagerAdapter(pageList)
@@ -168,8 +201,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         habit_RecyclerView?.adapter = habitList
     }
 
-    inner class SingleItem<T>(data: List<T>) : RecyclerView.Adapter<SingleItem<T>.ViewHolder>() {
-        var mData: List<T> = ArrayList()
+    inner class SingleItem<T>(data: ArrayList<ItemDate>) : RecyclerView.Adapter<SingleItem<T>.ViewHolder>() {
+        var mData: ArrayList<ItemDate> = ArrayList()
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var mTextView: TextView
@@ -185,10 +218,11 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.mTextView.text = mData[position].toString()
+            Log.i("kiki"," position:${position}")
+            holder.mTextView.text = mData[position].name
             holder.itemView.setOnClickListener {
                 val textView = findViewById<TextView>(R.id.info_text)
-                textView.text = mData.toString()
+                textView.text =  mData[position].name
             }
             holder.itemView.setOnLongClickListener { false }
         }
@@ -205,8 +239,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
 
-    inner class ScheduleItem<T>(data: List<T>) : RecyclerView.Adapter<ScheduleItem<T>.ViewHolder>() {
-        var todoData: List<T> = ArrayList()
+    inner class ScheduleItem<T>(data: ArrayList<ItemDate>) : RecyclerView.Adapter<ScheduleItem<T>.ViewHolder>() {
+        var todoData: ArrayList<ItemDate> = ArrayList()
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var startTimeTextView: TextView
@@ -215,6 +249,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
                 startTimeTextView = itemView.findViewById<View>(R.id.startTime) as TextView
                 endTimeTextView = itemView.findViewById<View>(R.id.endTime) as TextView
             }
+            // ScheduleItem end
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

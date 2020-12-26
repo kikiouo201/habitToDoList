@@ -54,7 +54,7 @@ class AddHabitToDoDialogFragment() : DialogFragment() {
                             DialogInterface.OnClickListener { dialog, id ->
 
                                 val e = getDialog()?.findViewById<EditText>(R.id.toDo)
-                                AllItemData.habitToDo.add(e?.text.toString())
+                                //AllItemData.habitToDo.add(e?.text.toString())
                                 Log.i("kiki", "habitToDo=" + AllItemData.habitToDo)
                                 callback?.onArticleSelected(AllItemData)
                             })

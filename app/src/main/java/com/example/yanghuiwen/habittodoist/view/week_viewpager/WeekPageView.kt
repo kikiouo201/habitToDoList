@@ -3,18 +3,18 @@ package com.example.yanghuiwen.habittodoist.view.week_viewpager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.yanghuiwen.habittodoist.R
-import com.example.yanghuiwen.habittodoist.R.color.colorAccent
 import java.time.LocalDateTime
-import java.util.*
+
+
+// 當使用者按下 其他日期，WeekPageView要全部跳到那一個星期
 
 @RequiresApi(Build.VERSION_CODES.O)
-class WeekPageView (context: Context, startDate :LocalDateTime) : RelativeLayout(context){
+class WeekPageView(context: Context, startDate: LocalDateTime) : RelativeLayout(context){
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.week_viewpage, null)
@@ -40,6 +40,9 @@ class WeekPageView (context: Context, startDate :LocalDateTime) : RelativeLayout
      fun refreshView() {
 
     }
+
+
+
 
 
 }
