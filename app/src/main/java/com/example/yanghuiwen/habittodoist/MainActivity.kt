@@ -70,27 +70,35 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
         var itemDate=ItemDate()
-        itemDate.name = "猶疑你離"
+        itemDate.name = "猶疑你離12/26"
+        itemDate.startDate = "12/26"
         AllItemData.todayToDo.add(itemDate)
         var itemDate2=ItemDate()
-        itemDate2.name = "呵呵"
+        itemDate2.name = "呵呵12/27"
+        itemDate2.startDate = "12/27"
         AllItemData.todayToDo.add(itemDate2)
-
+        var itemDate3=ItemDate()
+        itemDate3.name = "呵呵12/19"
+        itemDate3.startDate = "12/19"
+        AllItemData.todayToDo.add(itemDate3)
 
         var habitDate=ItemDate()
         habitDate.name = "猶疑"
+        habitDate.startDate ="12/26"
         AllItemData.habitToDo.add(habitDate)
         var habitDate2=ItemDate()
         habitDate2.name = "亥亥"
+        habitDate2.startDate ="12/27"
         AllItemData.habitToDo.add(habitDate2)
         var habitDate3=ItemDate()
         habitDate3.name = "呵"
+        habitDate3.startDate ="12/18"
         AllItemData.habitToDo.add(habitDate3)
 
 
 
 
-        initAllToDoList()
+        initAllToDoList("12/26")
 
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
@@ -126,29 +134,28 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     }
 
 
-     private fun initAllToDoList() {
-
-        scheduleList = ScheduleItem(AllItemData.scheduleToDo)
+      fun initAllToDoList(currentDate :String) {
+          AllItemData.currentDate = currentDate
+        scheduleList = ScheduleItem(AllItemData.getDateScheduleToDo())
         val scheduleLayoutManager = LinearLayoutManager(this);
         scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
         val schedule_RecyclerView = findViewById<View>(R.id.timeList) as RecyclerView
         schedule_RecyclerView.layoutManager = scheduleLayoutManager
         schedule_RecyclerView.adapter = scheduleList
 
-        todayList = SingleItem(AllItemData.todayToDo)
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        val mRecyclerView = findViewById<View>(R.id.todayList) as RecyclerView
-        mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.adapter = todayList
+        todayList = SingleItem(AllItemData.getDateToDayToDo())
+          val layoutManager = LinearLayoutManager(this)
+          layoutManager.orientation = LinearLayoutManager.VERTICAL
+          val mRecyclerView = findViewById<View>(R.id.todayList) as RecyclerView
+          mRecyclerView.layoutManager = layoutManager
+          mRecyclerView.adapter = todayList
 
-        habitList = SingleItem(AllItemData.habitToDo)
+        habitList = SingleItem(AllItemData.getDateHabitToDo())
         val habitLayoutManager = LinearLayoutManager(this)
         habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
         habit_RecyclerView = findViewById<View>(R.id.habitList) as RecyclerView
         habit_RecyclerView?.layoutManager = habitLayoutManager
         habit_RecyclerView?.adapter = habitList
-
     }
 
 
@@ -157,16 +164,16 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         var current = LocalDateTime.now()
 
-
+        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()
         pageList = ArrayList()
 
-        pageList.add(WeekPageView(this@MainActivity, current.minusDays(21)))
-        pageList.add(WeekPageView(this@MainActivity, current.minusDays(14)))
-        pageList.add(WeekPageView(this@MainActivity, current.minusDays(7)))
-        pageList.add(WeekPageView(this@MainActivity, current))
-        pageList.add(WeekPageView(this@MainActivity, current.plusDays(7)))
-        pageList.add(WeekPageView(this@MainActivity, current.plusDays(14)))
-        pageList.add(WeekPageView(this@MainActivity, current.plusDays(21)))
+        pageList.add(WeekPageView(this@MainActivity, current.minusDays(21),this::initAllToDoList))
+        pageList.add(WeekPageView(this@MainActivity, current.minusDays(14),this::initAllToDoList))
+        pageList.add(WeekPageView(this@MainActivity, current.minusDays(7),this::initAllToDoList))
+        pageList.add(WeekPageView(this@MainActivity, current,this::initAllToDoList))
+        pageList.add(WeekPageView(this@MainActivity, current.plusDays(7),this::initAllToDoList))
+        pageList.add(WeekPageView(this@MainActivity, current.plusDays(14),this::initAllToDoList))
+        pageList.add(WeekPageView(this@MainActivity, current.plusDays(21),this::initAllToDoList))
 
         val page = findViewById<ViewPager>(R.id.pager)
         val weekPagerAdapter = WeekPagerAdapter(pageList)
@@ -181,6 +188,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
             }
             override fun onPageSelected(p0: Int) {
                 Log.i("kiki","p0=${p0}")
+                pageList[p0].chooseThisPage()
             }
         }
 
