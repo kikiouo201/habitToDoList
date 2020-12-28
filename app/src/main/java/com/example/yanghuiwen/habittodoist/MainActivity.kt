@@ -18,6 +18,7 @@ import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.schedule.*
 import java.time.LocalDateTime
 import java.util.*
 
@@ -25,7 +26,7 @@ import java.util.*
 // 加 年 月曆
 
 
-class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineSelectedListener  {
+class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineSelectedListener {
     var todayList:SingleItem<String>?  = null
     var habitList:SingleItem<String>?  = null
     var scheduleList:ScheduleItem<String>? =null
@@ -60,10 +61,15 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
         initWeekViewpage()
-
-        var scheduleItemDate = ItemDate()
+        val scheduleItemDate=ItemDate()
+        scheduleItemDate.name = "猶疑你離12/26"
+        scheduleItemDate.startDate = "12/26"
+        scheduleItemDate.startTime = "13:00"
         AllItemData.scheduleToDo.add(scheduleItemDate)
         var scheduleItemDate2 = ItemDate()
+        scheduleItemDate2.name = "猶疑你離12/27"
+        scheduleItemDate2.startDate = "12/27"
+        scheduleItemDate2.startTime = "1:00"
         AllItemData.scheduleToDo.add(scheduleItemDate2)
 
 
@@ -96,9 +102,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         AllItemData.habitToDo.add(habitDate3)
 
 
-
-
-        initAllToDoList("12/26")
+        var current = LocalDateTime.now()
+        initAllToDoList("${current.month.value}/${current.dayOfMonth}")
 
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
@@ -162,7 +167,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initWeekViewpage() {
 
-        var current = LocalDateTime.now()
+        val current = LocalDateTime.now()
 
         AllItemData.currentWeekIndex = current.dayOfWeek.getValue()
         pageList = ArrayList()
@@ -226,7 +231,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            Log.i("kiki"," position:${position}")
+//            Log.i("kiki"," position:${position}")
             holder.mTextView.text = mData[position].name
             holder.itemView.setOnClickListener {
                 val textView = findViewById<TextView>(R.id.info_text)
@@ -253,9 +258,11 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var startTimeTextView: TextView
             var endTimeTextView: TextView
+            var infoText:TextView
             init {
                 startTimeTextView = itemView.findViewById<View>(R.id.startTime) as TextView
                 endTimeTextView = itemView.findViewById<View>(R.id.endTime) as TextView
+                infoText = itemView.findViewById<View>(R.id.info_text) as TextView
             }
             // ScheduleItem end
         }
@@ -269,6 +276,17 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
             val startTime = if(position<10) "0${position}:00" else "${position}:00"
             val endTime = if(position+1<10) "0${position+1}:00" else "${position+1}:00"
 
+            holder.infoText.setText("")
+            for (i in 0..todoData.size-1){
+                val (hour,min)  = todoData[i].startTime.split(":")
+                if(hour.toInt()==position){
+                    if(position<10){
+                            holder.infoText.setText(todoData[i].name)
+                    }else{
+                            holder.infoText.setText(todoData[i].name)
+                    }
+                }
+            }
 
 
             holder.startTimeTextView.text = startTime
