@@ -2,12 +2,15 @@ package com.example.yanghuiwen.habittodoist
 
 
 
-import java.util.ArrayList
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.LocalDateTime
+import java.util.*
 
 class ItemDate {
 
 
-
+    //時間 無
     //完成 事項和計畫的格式
     var name = ""
     var important = 0
@@ -19,8 +22,9 @@ class ItemDate {
     var endDate = ""
     var startTime = ""
     var endTime = ""
-
-
+    var IsEndItem = false
+    @RequiresApi(Build.VERSION_CODES.O)
+    var Date = LocalDateTime.now()
 
 
 }

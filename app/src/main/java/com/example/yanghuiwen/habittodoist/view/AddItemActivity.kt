@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.yanghuiwen.habittodoist.AllItemData
+import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.MainActivity
 import com.example.yanghuiwen.habittodoist.R
 import java.text.SimpleDateFormat
@@ -26,16 +28,19 @@ class AddItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
 
-        var bundle=Bundle()
+
+
+        var toDoName = ""
+        var addItemDate = ItemDate()
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val project = arrayListOf("", "日文", "程式")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
         spinner.adapter = adapter
-        bundle.putString("project","null")
+        addItemDate.project = project[0]
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                bundle.putString("project",project[pos])
+                addItemDate.project = project[pos]
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
@@ -49,7 +54,7 @@ class AddItemActivity : AppCompatActivity() {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateFormatted = currentDate.format(dateFormatter)
         startDate.setText(dateFormatted)
-        bundle.putString("startDate",dateFormatted)
+        addItemDate.startDate = dateFormatted
         startDate.setOnClickListener{
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -60,7 +65,7 @@ class AddItemActivity : AppCompatActivity() {
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
                 startDate.setText(chooseTime)
-                bundle.putString("startDate",chooseTime)
+                addItemDate.startDate = chooseTime
 
             }, year, month, day)
 
@@ -73,7 +78,7 @@ class AddItemActivity : AppCompatActivity() {
         val endCurrentDate =currentDate.plusHours(1)
         val endDateFormatted = endCurrentDate.format(dateFormatter)
         endDate.setText(endDateFormatted)
-        bundle.putString("endDate",endDateFormatted)
+        addItemDate.endDate = endDateFormatted
         endDate.setOnClickListener{
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -84,7 +89,7 @@ class AddItemActivity : AppCompatActivity() {
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
                 startDate.setText(chooseTime)
-                bundle.putString("endDate",chooseTime)
+                addItemDate.endDate = chooseTime
 
             }, year, month, day)
 
@@ -98,7 +103,7 @@ class AddItemActivity : AppCompatActivity() {
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
         val startTimeFormatted = currentDate.format(timeFormatter)
         startTime.setText(startTimeFormatted)
-        bundle.putString("startTime",startTimeFormatted)
+        addItemDate.startTime = startTimeFormatted
         startTime.setOnClickListener{
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
@@ -106,7 +111,7 @@ class AddItemActivity : AppCompatActivity() {
             cal.set(Calendar.MINUTE, minute)
             val chooseTime = SimpleDateFormat("HH:mm").format(cal.time)
                 startTime.setText(chooseTime)
-                bundle.putString("startTime",chooseTime)
+                addItemDate.startTime = chooseTime
         }
         TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
         }
@@ -115,7 +120,7 @@ class AddItemActivity : AppCompatActivity() {
         val endTime = findViewById<Button>(R.id.endTime)
         var endTimeFormatted = endCurrentDate.format(timeFormatter)
         endTime.setText(endTimeFormatted)
-        bundle.putString("endTime",endTimeFormatted)
+        addItemDate.endTime = endTimeFormatted
         endTime.setOnClickListener{
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
@@ -124,7 +129,7 @@ class AddItemActivity : AppCompatActivity() {
 
                 val chooseTime = SimpleDateFormat("HH:mm").format(cal.time)
                 endTime.setText(chooseTime)
-                bundle.putString("endTime",chooseTime)
+                addItemDate.endTime = chooseTime
             }
             TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
         }
@@ -133,36 +138,36 @@ class AddItemActivity : AppCompatActivity() {
         val importantGroup = findViewById<RadioGroup>(R.id.importantGroup)
         val important3 = findViewById<RadioButton>(R.id.important3)
         important3.isChecked = true
-        bundle.putInt("important",3)
+        addItemDate.important = 3
         importantGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            bundle.putInt("important",i+1)
+            addItemDate.important = i+1
         })
 
 
         //急
         val urgent3 = findViewById<RadioButton>(R.id.urgent3)
         urgent3.isChecked = true
-        bundle.putInt("urgent",3)
+        addItemDate.urgent = 3
         val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
         urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            bundle.putInt("urgent",i+1)
+            addItemDate.urgent = i+1
         })
 
         //重複
         val repeat =findViewById<CheckBox>(R.id.repeat)
         val weekGroup =findViewById<View>(R.id.weekGroup)
         weekGroup.setVisibility(View.GONE)
-        bundle.putBoolean("repeat",false)
+        addItemDate.repeat = false
         repeat.setOnCheckedChangeListener{ buttonView, isChecked ->
 
             if (!isChecked) {
                 weekGroup.setVisibility(View.GONE)
-                bundle.putBoolean("repeat",false)
+                addItemDate.repeat = false
             }else{
                 weekGroup.setVisibility(View.VISIBLE)
-                bundle.putBoolean("repeat",true)
+                addItemDate.repeat = true
             }
         }
 
@@ -171,26 +176,82 @@ class AddItemActivity : AppCompatActivity() {
 
             val week = findViewById<Button>(weeks[i])
             week.setOnClickListener{
-                bundle.putInt("week",i+1)
+                addItemDate.week = i+1
             }
 
         }
 
         //儲存
         var save = findViewById<Button>(R.id.save)
+        val name =findViewById<EditText>(R.id.name)
         save.setOnClickListener{
-            val name =findViewById<EditText>(R.id.name)
-            bundle.putString("name",name.text.toString())
 
+           addItemDate.name = name.text.toString()
+            Log.i("kiki", addItemDate.startDate)
+            Log.i("kiki", "toDoName"+toDoName)
+            if(toDoName.equals("null")){
+                Log.i("kiki", "toDoNamePass")
+                AllItemData.todayToDo.add(addItemDate)
+            }
+            for( todayToDo in AllItemData.todayToDo){
+                Log.i("kiki",todayToDo.name)
+                Log.i("kiki",todayToDo.startDate)
+            }
 
             var intent =Intent(this,MainActivity::class.java)
-            intent.putExtra("bundle",bundle)
+
             startActivity(intent)
 
-            // 傳值過去
+
         }
 
 
+        try{
+            toDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
+            var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
+            when (toDoName){
+                "habitToDo" ->{
+                    AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
+
+                        if(addName.equals(habitToDo.name)){
+                            name.setText(addName)
+                            startDate.setText(habitToDo.startDate)
+                            endDate.setText(habitToDo.endDate)
+                            startTime.setText(habitToDo.startTime)
+                            endTime.setText(habitToDo.endTime)
+                            addItemDate = habitToDo
+
+                        }
+                    }
+                }
+                "todayToDo" ->{
+                  AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
+                        if(addName.equals(todayToDo.name)){
+                            name.setText(addName)
+                            startDate.setText(todayToDo.startDate)
+                            endDate.setText(todayToDo.endDate)
+                            startTime.setText(todayToDo.startTime)
+                            endTime.setText(todayToDo.endTime)
+                            addItemDate = todayToDo
+                        }
+                    }
+                }
+            }
+
+
+
+            //important.set
+            //urgent =intent.getBundleExtra("bundle").getInt("urgent")
+            //repeat = intent.getBundleExtra("bundle").getBoolean("repeat")
+//            if(repeat){
+//                week = intent.getBundleExtra("bundle").getInt("week")
+//            }
+//            project =intent.getBundleExtra("bundle")?.getString("project").toString()
+
+
+        }catch (e :Exception){
+            e.printStackTrace()
+        }
 
     }
 

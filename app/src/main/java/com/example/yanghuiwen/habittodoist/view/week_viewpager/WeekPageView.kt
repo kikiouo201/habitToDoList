@@ -33,7 +33,7 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
             textView.text = ( weekDay.dayOfMonth).toString()
 
             textView.setOnClickListener {
-                val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
+                val current = "${weekDay.year}-${weekDay.month.value}-${weekDay.dayOfMonth}"
                 Log.i("kiki","current"+current)
                 onDateChange(current)
                 val currentTextView = view.findViewById(weeks[currentDateIndex]) as TextView

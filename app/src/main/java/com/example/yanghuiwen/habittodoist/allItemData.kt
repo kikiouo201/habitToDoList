@@ -14,12 +14,9 @@ object AllItemData {
     val todayToDo = ArrayList<ItemDate>()
     val habitToDo = ArrayList<ItemDate>()
     val scheduleToDo = ArrayList<ItemDate>()
-    var currentDate ="12/26"
+    var currentDate ="2020-12-26"
     var currentWeekIndex = 1
-//    fun setHabitToDo(str: String){
-//        habitToDo.add(str)
-//
-//    }
+
 
     fun getDateToDayToDo():ArrayList<ItemDate>{
         var DateTodayToDo = ArrayList<ItemDate>()
