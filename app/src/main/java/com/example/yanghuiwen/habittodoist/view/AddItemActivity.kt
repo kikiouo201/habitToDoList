@@ -32,7 +32,7 @@ class AddItemActivity : AppCompatActivity() {
 
         var toDoName = ""
         var addItemDate = ItemDate()
-
+        var modifyItemIndex = -1
         val spinner = findViewById<Spinner>(R.id.spinner)
         val project = arrayListOf("", "日文", "程式")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
@@ -182,7 +182,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         //儲存
-        var save = findViewById<Button>(R.id.save)
+        val save = findViewById<Button>(R.id.save)
         val name =findViewById<EditText>(R.id.name)
         save.setOnClickListener{
 
@@ -205,6 +205,22 @@ class AddItemActivity : AppCompatActivity() {
 
         }
 
+        //刪除
+        val delete = findViewById<Button>(R.id.delete)
+        delete.setOnClickListener {
+            if(modifyItemIndex != -1){
+                when (toDoName) {
+                    "habitToDo" -> {
+                        AllItemData.habitToDo.removeAt(modifyItemIndex)
+                    }
+                    "todayToDo" -> {
+                        AllItemData.todayToDo.removeAt(modifyItemIndex)
+                    }
+                }
+            }
+            var intent =Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
 
         try{
             toDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
@@ -219,6 +235,7 @@ class AddItemActivity : AppCompatActivity() {
                             endDate.setText(habitToDo.endDate)
                             startTime.setText(habitToDo.startTime)
                             endTime.setText(habitToDo.endTime)
+                            modifyItemIndex = index
                             addItemDate = habitToDo
 
                         }
@@ -232,6 +249,7 @@ class AddItemActivity : AppCompatActivity() {
                             endDate.setText(todayToDo.endDate)
                             startTime.setText(todayToDo.startTime)
                             endTime.setText(todayToDo.endTime)
+                            modifyItemIndex = index
                             addItemDate = todayToDo
                         }
                     }
