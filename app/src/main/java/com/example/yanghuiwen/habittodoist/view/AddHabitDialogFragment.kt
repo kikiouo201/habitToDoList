@@ -23,6 +23,9 @@ class AddHabitToDoDialogFragment() : DialogFragment() {
     }
 
     interface OnHeadlineSelectedListener {
+
+
+
         fun onArticleSelected(position: AllItemData)
     }
 

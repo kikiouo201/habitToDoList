@@ -19,6 +19,11 @@ import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 import java.util.*
 
@@ -35,11 +40,17 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     private var isFabOpen = false
     private lateinit var pageList: MutableList<WeekPageView>
     var habit_RecyclerView:RecyclerView? = null
+    // Write a message to the database
+
+//    private var dbRef: DatabaseReference = fireDB.getReference("Users")
+//    private var list: MutableList<User> = mutableListOf()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        AllItemData.getFirebaseDate()
         AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
                 Log.i("kiki","Main="+todayToDo.name)
                 Log.i("kiki",todayToDo.startDate)
@@ -60,21 +71,21 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
 
-        var itemDate=ItemDate()
-        itemDate.name = "猶疑你離12/26"
-        itemDate.startDate = "2020-12-26"
-        itemDate.endDate = "2020-12-27"
-        AllItemData.todayToDo.add(itemDate)
-        var itemDate2=ItemDate()
-        itemDate2.name = "呵呵12/27"
-        itemDate2.startDate = "2020-12-27"
-        itemDate2.endDate = "2020-12-27"
-        AllItemData.todayToDo.add(itemDate2)
-        var itemDate3=ItemDate()
-        itemDate3.name = "呵呵12/19"
-        itemDate3.startDate = "2020-12-19"
-        itemDate3.endDate = "2020-12-19"
-        AllItemData.todayToDo.add(itemDate3)
+//        var itemDate=ItemDate()
+//        itemDate.name = "猶疑你離12/26"
+//        itemDate.startDate = "2020-12-26"
+//        itemDate.endDate = "2020-12-27"
+//        AllItemData.setDateToDayToDo(itemDate)
+//        var itemDate2=ItemDate()
+//        itemDate2.name = "呵呵12/27"
+//        itemDate2.startDate = "2020-12-27"
+//        itemDate2.endDate = "2020-12-27"
+//        AllItemData.todayToDo.add(itemDate2)
+//        var itemDate3=ItemDate()
+//        itemDate3.name = "呵呵12/19"
+//        itemDate3.startDate = "2020-12-19"
+//        itemDate3.endDate = "2020-12-19"
+//        AllItemData.todayToDo.add(itemDate3)
 
         var habitDate=ItemDate()
         habitDate.name = "猶疑"

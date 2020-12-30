@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "453799547290",
+    "project_id": "habittodoist",
+    "storage_bucket": "habittodoist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453799547290:android:a9e183fa8ebae20c9b2a23",
+        "android_client_info": {
+          "package_name": "com.example.yanghuiwen.habittodoist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453799547290-03kpu4ng0sv8oglpq8oh3i6l6jbc6ppf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yanghuiwen.habittodoist",
+            "certificate_hash": "93d8f04d3c9bf61c7db1f327970d86291ee851a3"
+          }
+        },
+        {
+          "client_id": "453799547290-ja2icsdhq43a4768nt2e20cgdvt8iqb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOxG5PpqLB_AfCc8NiHEN-TH8vQag-aWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453799547290-ja2icsdhq43a4768nt2e20cgdvt8iqb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

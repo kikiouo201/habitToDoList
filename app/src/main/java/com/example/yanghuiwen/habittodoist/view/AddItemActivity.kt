@@ -15,10 +15,10 @@ import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.MainActivity
 import com.example.yanghuiwen.habittodoist.R
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AddItemActivity : AppCompatActivity() {
 
@@ -50,6 +50,7 @@ class AddItemActivity : AppCompatActivity() {
 
         //start日期
         val startDate = findViewById<Button>(R.id.startDate)
+        val endDate = findViewById<Button>(R.id.endDate)
         val currentDate = LocalDateTime.now()
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateFormatted = currentDate.format(dateFormatter)
@@ -63,7 +64,14 @@ class AddItemActivity : AppCompatActivity() {
 
 
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val nowEndDates= endDate.text.split("-")
+                val nowEndDate = LocalDate.of(nowEndDates[0].toInt(),nowEndDates[1].toInt(),nowEndDates[2].toInt())
+                val chooseDate = LocalDate.of(year,monthOfYear+1,dayOfMonth)
                 val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                if(chooseDate.isAfter(nowEndDate)) {
+                    endDate.setText(chooseTime)
+                }
+
                 startDate.setText(chooseTime)
                 addItemDate.startDate = chooseTime
 
@@ -74,7 +82,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         //end日期
-        val endDate = findViewById<Button>(R.id.endDate)
+
         val endCurrentDate =currentDate.plusHours(1)
         val endDateFormatted = endCurrentDate.format(dateFormatter)
         endDate.setText(endDateFormatted)
@@ -191,7 +199,7 @@ class AddItemActivity : AppCompatActivity() {
             Log.i("kiki", "toDoName"+toDoName)
             if(toDoName.equals("null")){
                 Log.i("kiki", "toDoNamePass")
-                AllItemData.todayToDo.add(addItemDate)
+                AllItemData.setDateToDayToDo(addItemDate)
             }
             for( todayToDo in AllItemData.todayToDo){
                 Log.i("kiki",todayToDo.name)
