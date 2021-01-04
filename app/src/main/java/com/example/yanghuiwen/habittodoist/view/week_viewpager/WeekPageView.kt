@@ -9,9 +9,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.yanghuiwen.habittodoist.AllItemData
-import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 // 當使用者按下 其他日期，WeekPageView要全部跳到那一個星期
@@ -33,7 +33,8 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
             textView.text = ( weekDay.dayOfMonth).toString()
 
             textView.setOnClickListener {
-                val current = "${weekDay.year}-${weekDay.month.value}-${weekDay.dayOfMonth}"
+                val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val current = weekDay.format(formatter)
                 Log.i("kiki","current"+current)
                 onDateChange(current)
                 val currentTextView = view.findViewById(weeks[currentDateIndex]) as TextView

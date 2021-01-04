@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         AllItemData.getFirebaseDate()
         AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
-                Log.i("kiki","Main="+todayToDo.name)
-                Log.i("kiki",todayToDo.startDate)
+                Log.i("MainActivity","Main="+todayToDo.name)
+                Log.i("MainActivity",todayToDo.startDate)
             }
 
         initWeekViewpage()

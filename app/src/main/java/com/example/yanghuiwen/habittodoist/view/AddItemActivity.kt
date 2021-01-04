@@ -195,15 +195,25 @@ class AddItemActivity : AppCompatActivity() {
         save.setOnClickListener{
 
            addItemDate.name = name.text.toString()
-            Log.i("kiki", addItemDate.startDate)
-            Log.i("kiki", "toDoName"+toDoName)
-            if(toDoName.equals("null")){
-                Log.i("kiki", "toDoNamePass")
-                AllItemData.setDateToDayToDo(addItemDate)
+            Log.i("AddItemActivity", addItemDate.startDate)
+            Log.i("AddItemActivity", "toDoName"+toDoName)
+            when(toDoName){
+                "null" -> {
+                    Log.i("AddItemActivity", "toDoName is null")
+                    AllItemData.setDateToDayToDo(addItemDate)
+                }
+                "habitToDo" -> {
+                    //AllItemData.habitToDo.removeAt(modifyItemIndex)
+                }
+                "todayToDo" -> {
+                    AllItemData.modifyDateToDayToDo(modifyItemIndex,addItemDate)
+                    //AllItemData.setDateToDayToDo(addItemDate)
+                }
             }
-            for( todayToDo in AllItemData.todayToDo){
-                Log.i("kiki",todayToDo.name)
-                Log.i("kiki",todayToDo.startDate)
+
+            for ((key,todayToDo) in AllItemData.todayToDoMap){
+                Log.i("AddItemActivity",todayToDo?.name)
+                Log.i("AddItemActivity",todayToDo?.startDate)
             }
 
             var intent =Intent(this,MainActivity::class.java)
@@ -222,6 +232,7 @@ class AddItemActivity : AppCompatActivity() {
                         AllItemData.habitToDo.removeAt(modifyItemIndex)
                     }
                     "todayToDo" -> {
+                        AllItemData.deleteDateToDayToDo(modifyItemIndex)
                         AllItemData.todayToDo.removeAt(modifyItemIndex)
                     }
                 }
@@ -250,15 +261,18 @@ class AddItemActivity : AppCompatActivity() {
                     }
                 }
                 "todayToDo" ->{
-                  AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
-                        if(addName.equals(todayToDo.name)){
+
+                  for ((key,todayToDo) in AllItemData.todayToDoMap){
+                        if(addName.equals(todayToDo?.name)){
                             name.setText(addName)
-                            startDate.setText(todayToDo.startDate)
-                            endDate.setText(todayToDo.endDate)
-                            startTime.setText(todayToDo.startTime)
-                            endTime.setText(todayToDo.endTime)
-                            modifyItemIndex = index
-                            addItemDate = todayToDo
+                            startDate.setText(todayToDo?.startDate)
+                            endDate.setText(todayToDo?.endDate)
+                            startTime.setText(todayToDo?.startTime)
+                            endTime.setText(todayToDo?.endTime)
+                            modifyItemIndex = key
+                            if (todayToDo != null) {
+                                addItemDate = todayToDo
+                            }
                         }
                     }
                 }
