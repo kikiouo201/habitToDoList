@@ -19,12 +19,8 @@ import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -71,22 +67,6 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
 
-//        var itemDate=ItemDate()
-//        itemDate.name = "猶疑你離12/26"
-//        itemDate.startDate = "2020-12-26"
-//        itemDate.endDate = "2020-12-27"
-//        AllItemData.setDateToDayToDo(itemDate)
-//        var itemDate2=ItemDate()
-//        itemDate2.name = "呵呵12/27"
-//        itemDate2.startDate = "2020-12-27"
-//        itemDate2.endDate = "2020-12-27"
-//        AllItemData.todayToDo.add(itemDate2)
-//        var itemDate3=ItemDate()
-//        itemDate3.name = "呵呵12/19"
-//        itemDate3.startDate = "2020-12-19"
-//        itemDate3.endDate = "2020-12-19"
-//        AllItemData.todayToDo.add(itemDate3)
-
         var habitDate=ItemDate()
         habitDate.name = "猶疑"
         habitDate.startDate ="2020-12-26"
@@ -104,9 +84,18 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         AllItemData.habitToDo.add(habitDate3)
 
 
-        var current = LocalDateTime.now()
-        initAllToDoList("${current.year}-${current.month.value}-${current.dayOfMonth}")
+        var nowDate = LocalDateTime.now()
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDate = nowDate.format(formatter)
+        initAllToDoList(currentDate)
 
+        //set now date
+        val year = findViewById<TextView>(R.id.year)
+        year.setText(nowDate.year.toString())
+        val month = findViewById<TextView>(R.id.month)
+        month.setText((nowDate.month.value).toString())
+        val day = findViewById<TextView>(R.id.day)
+        day.setText(nowDate.dayOfMonth.toString())
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
         addItemFab.setOnClickListener { view ->
