@@ -4,26 +4,19 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
-import com.example.yanghuiwen.habittodoist.view.main_page.MainPagerAdapter
+import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.NotDateListPagerView
+import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
-import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -36,6 +29,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 //    var todayList:SingleItem<String>?  = null
 //    var habitList:SingleItem<String>?  = null
 //    var scheduleList:ScheduleItem<String>? =null
+
     private var isFabOpen = false
     private lateinit var mainPageList: MutableList<RelativeLayout>
     private lateinit var pageList: MutableList<WeekPageView>
@@ -150,12 +144,12 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         mainPageList = ArrayList()
 
         mainPageList.add(MainPageView(this@MainActivity))
+        mainPageList.add(NotDateListPagerView(this@MainActivity))
 
 
-
-
+        var tabs= findViewById<TabLayout>(R.id.tabLayout)
         val page = findViewById<ViewPager>(R.id.main_pager)
-        val mainPagerAdapter = MainPagerAdapter(mainPageList)
+        val mainPagerAdapter = PagerAdapter(mainPageList)
 
 
         val listener = object: ViewPager.OnPageChangeListener{
@@ -172,6 +166,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         }
 
         page.adapter = mainPagerAdapter
+        page.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+       tabs.setOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(page))
         page.addOnPageChangeListener(listener)
 
        // page.setCurrentItem(0, false);

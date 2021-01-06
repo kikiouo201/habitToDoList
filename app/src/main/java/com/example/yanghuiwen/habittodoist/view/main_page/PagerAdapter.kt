@@ -5,10 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.viewpager.widget.PagerAdapter
-import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
-import java.util.*
 
-class MainPagerAdapter(private val pageList : MutableList<RelativeLayout>) : PagerAdapter() {
+class PagerAdapter(private val pageList : MutableList<RelativeLayout>) : PagerAdapter() {
     private var pageCount = 0
     override fun getCount(): Int {
         return pageList.size
@@ -19,9 +17,9 @@ class MainPagerAdapter(private val pageList : MutableList<RelativeLayout>) : Pag
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        Log.i("MainPagerAdapter","i`m come in ${position}")
+        Log.i("PagerAdapter","i`m come in ${position}")
         container.addView(pageList[position])
-        Log.i("MainPagerAdapter","position${position}")
+        Log.i("PagerAdapter","position${position}")
         return pageList[position]
     }
 

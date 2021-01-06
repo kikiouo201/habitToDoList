@@ -36,8 +36,8 @@ object AllItemData {
                     var itemDate= ItemSnapshot.getValue<ItemDate>()
                     nowTodayToDoIndex = ItemSnapshot.key.toString()
                     todayToDoMap.put(nowTodayToDoIndex.toInt(),itemDate)
-                    Log.i("AllItemData","nowTodayToDoIndex"+nowTodayToDoIndex)
-                    Log.i("AllItemData","itemData.name"+itemDate?.name)
+                 //   Log.i("AllItemData","nowTodayToDoIndex"+nowTodayToDoIndex)
+                 //   Log.i("AllItemData","itemData.name"+itemDate?.name)
                     if (itemDate != null) {
                         todayToDo.add(itemDate)
                     }
@@ -102,6 +102,18 @@ object AllItemData {
 //        todayToDoReference.addChildEventListener(childEventListener)
     }
 
+    fun getNotDateToDo():ArrayList<ItemDate> {
+        var DateTodayToDo = sortedMapOf<Int, ItemDate?>()
+        var notDateToDo = ArrayList<ItemDate>()
+        for(i in 0..habitToDo.size-1){
+
+                notDateToDo.add(habitToDo[i])
+
+        }
+      //  Log.i("AllItemData","notDateToDo${notDateToDo}")
+        return  notDateToDo
+    }
+
     fun modifyDateToDayToDo(modifyIndex:Int,modifyItem:ItemDate){
         val nowTodayToDo = database.getReference("user/todayToDo/")
         nowTodayToDo.child(modifyIndex.toString()).setValue(modifyItem)
@@ -117,21 +129,16 @@ object AllItemData {
 
     fun getDateToDayToDo():ArrayList<ItemDate>{
         var DateTodayToDo = sortedMapOf<Int, ItemDate?>()
-        var habitToDo = ArrayList<ItemDate>()
+        var ToDayToDo = ArrayList<ItemDate>()
         for((key,itemDate) in todayToDoMap){
             if(currentDate.equals(itemDate?.startDate)){
                 if (itemDate != null) {
-                    habitToDo.add(itemDate)
+                    ToDayToDo.add(itemDate)
+
                 }
             }
         }
-
-//        for((key,itemDate) in DateTodayToDo){
-//            if (itemDate != null) {
-//                habitToDo.add(itemDate)
-//            }
-//        }
-        return habitToDo
+        return ToDayToDo
     }
 
     fun setDateToDayToDo(AddItem:ItemDate){
@@ -142,7 +149,7 @@ object AllItemData {
             val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
             //上傳firebase
             nowTodayToDo.child(nextTodayToDoIndex).setValue(AddItem)
-            Log.i("AllItemData"," nowTodayToDo")
+           // Log.i("AllItemData"," nowTodayToDo")
             nowTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
             //存本地
             todayToDoMap.put(nextTodayToDoIndex.toInt(),AddItem)
