@@ -8,7 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import java.util.*
 
-class MainPagerAdapter(private val pageList : MutableList<MainPageView>) : PagerAdapter() {
+class MainPagerAdapter(private val pageList : MutableList<RelativeLayout>) : PagerAdapter() {
     private var pageCount = 0
     override fun getCount(): Int {
         return pageList.size

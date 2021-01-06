@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#2036B0</color>
+    <color name="colorPrimaryDark">#0600B3</color>
+    <color name="colorAccent">#039DDA</color>
+    <color name="lightBlue">#D2E9FF</color>
+    <color name="blue">#84C1FF</color>
+    <color name="darkBlue">#004B97</color>
+    <color name="tabbackgroud">#F3F3FA</color>
 </resources>

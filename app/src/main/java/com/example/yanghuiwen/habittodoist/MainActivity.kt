@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 //    var habitList:SingleItem<String>?  = null
 //    var scheduleList:ScheduleItem<String>? =null
     private var isFabOpen = false
-    private lateinit var mainPageList: MutableList<MainPageView>
+    private lateinit var mainPageList: MutableList<RelativeLayout>
     private lateinit var pageList: MutableList<WeekPageView>
 //    var habit_RecyclerView:RecyclerView? = null
     // Write a message to the database
@@ -151,9 +151,6 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         mainPageList.add(MainPageView(this@MainActivity))
 
-        pageList = ArrayList()
-        pageList.add(WeekPageView(this@MainActivity, current.minusDays(21),this::initAllToDoList))
-        val pagerAdapter = WeekPagerAdapter(pageList)
 
 
 

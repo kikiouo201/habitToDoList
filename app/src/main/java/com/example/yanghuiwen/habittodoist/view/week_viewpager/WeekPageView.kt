@@ -39,18 +39,18 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
                 onDateChange(current)
                 val currentTextView = view.findViewById(weeks[currentDateIndex]) as TextView
                 currentTextView.setBackgroundColor(Color.TRANSPARENT)
-                textView.setBackgroundColor(Color.parseColor("#03DAC5"))
+                textView.setBackgroundColor(Color.parseColor("#84C1FF"))
                 AllItemData.currentWeekIndex = i
                 currentDateIndex = i
             }
             if(startWeek == i){
                 val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
                 onDateChange(current)
-                textView.setBackgroundColor(Color.parseColor("#03DAC5"))
+                textView.setBackgroundColor(Color.parseColor("#84C1FF"))
             }else if(startWeek == 7 && i== 0){
                 val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
                 onDateChange(current)
-                textView.setBackgroundColor(Color.parseColor("#03DAC5"))
+                textView.setBackgroundColor(Color.parseColor("#84C1FF"))
             }
         }
         fun choose(){
@@ -60,7 +60,7 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
 
             }
             val currentTextView = view.findViewById(weeks[AllItemData.currentWeekIndex]) as TextView
-            currentTextView.setBackgroundColor(Color.parseColor("#03DAC5"))
+            currentTextView.setBackgroundColor(Color.parseColor("#84C1FF"))
             currentDateIndex =  AllItemData.currentWeekIndex
             onDateChange("current")
         }
@@ -75,7 +75,7 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
 
         }
         val currentTextView = view.findViewById(weeks[AllItemData.currentWeekIndex]) as TextView
-        currentTextView.setBackgroundColor(Color.parseColor("#03DAC5"))
+        currentTextView.setBackgroundColor(Color.parseColor("#84C1FF"))
         currentDateIndex =  AllItemData.currentWeekIndex
         Log.i("kiki","currentTextView.text.toString()"+currentTextView.text.toString())
         val weekDay = weekSeven.plusDays(AllItemData.currentWeekIndex.toLong())
