@@ -266,6 +266,9 @@ class AddItemActivity : AppCompatActivity() {
         delete.setOnClickListener {
             if(modifyItemIndex != -1){
                 when (modifyToDoName) {
+                    "notTimeToDo" -> {
+
+                    }
                     "habitToDo" -> {
                         AllItemData.habitToDo.removeAt(modifyItemIndex)
                     }

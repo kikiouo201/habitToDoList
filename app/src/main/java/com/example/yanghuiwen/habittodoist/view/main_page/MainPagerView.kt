@@ -77,14 +77,14 @@ class MainPageView(context: Context) : RelativeLayout(context){
         schedule_RecyclerView.layoutManager = scheduleLayoutManager
         schedule_RecyclerView.adapter = scheduleList
 
-        todayList = SingleItem(AllItemData.getDateToDayToDo(),"todayToDo")
+        todayList = SingleItem(context,AllItemData.getDateToDayToDo(),"todayToDo")
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         val mRecyclerView = view.findViewById<View>(R.id.todayList) as RecyclerView
         mRecyclerView.layoutManager = layoutManager
         mRecyclerView.adapter = todayList
 
-        habitList = SingleItem(AllItemData.getDateHabitToDo(),"habitToDo")
+        habitList = SingleItem(context,AllItemData.getDateHabitToDo(),"habitToDo")
         val habitLayoutManager = LinearLayoutManager(context)
         habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
         habit_RecyclerView = view.findViewById<View>(R.id.habitList) as RecyclerView

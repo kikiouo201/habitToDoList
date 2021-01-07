@@ -16,7 +16,7 @@ import com.example.yanghuiwen.habittodoist.view.item_sample.SingleItem
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class NotDateToDoListView(context: Context) : RelativeLayout(context){
+class NotTimeToDoListView(context: Context) : RelativeLayout(context){
     val view = LayoutInflater.from(context).inflate(R.layout.to_do_list, null)
     val layoutManager = LinearLayoutManager(context)
     val mRecyclerView = view.findViewById<View>(R.id.toDoList) as RecyclerView
@@ -62,7 +62,7 @@ class NotDateToDoListView(context: Context) : RelativeLayout(context){
         habitDate3.endDate ="2020-12-18"
         AllItemData.habitToDo.add(habitDate3)
         var todayList: SingleItem<String>?  = null
-        todayList = SingleItem(AllItemData.getNotTimeToDo(),"notDateToDo")
+        todayList = SingleItem(context,AllItemData.getNotTimeToDo(),"notTimeToDo")
         mRecyclerView.adapter = todayList
     }
     fun refreshView() {

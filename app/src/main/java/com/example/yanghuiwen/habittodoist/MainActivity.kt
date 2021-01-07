@@ -1,5 +1,6 @@
 package com.example.yanghuiwen.habittodoist
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Log
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
