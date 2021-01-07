@@ -8,15 +8,14 @@ import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.R
-import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
 import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 import com.google.android.material.tabs.TabLayout
 import java.util.ArrayList
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class NotDateListPagerView(context: Context) : RelativeLayout(context){
-    val view = LayoutInflater.from(context).inflate(R.layout.not_date_list_page, null)
+class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
+    val view = LayoutInflater.from(context).inflate(R.layout.other_todolist_page, null)
     private lateinit var mainPageList: MutableList<RelativeLayout>
     init {
 
@@ -32,7 +31,31 @@ class NotDateListPagerView(context: Context) : RelativeLayout(context){
         val page = view.findViewById<ViewPager>(R.id.pager)
         val mainPagerAdapter = PagerAdapter(mainPageList)
 
+        // tab 的換頁
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                Log.i("kiki","p0=${tab?.text}")
+                if(tab != null){
+                    when(tab.text){
+                        "無時間" -> {
+                            val notDate = mainPageList[0] as NotDateToDoListView
+                            notDate.chooseThisPage()
+                        }
+                        "週" -> {
 
+                        }
+                    }
+                }
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+        // viewpager 的換頁
         val listener = object: ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(p0: Int) {}
 
@@ -41,7 +64,6 @@ class NotDateListPagerView(context: Context) : RelativeLayout(context){
                 //textView.setText("$pageNow / ${list.size}")
             }
             override fun onPageSelected(p0: Int) {
-                Log.i("kiki","p0=${p0}")
 
             }
         }
@@ -50,14 +72,18 @@ class NotDateListPagerView(context: Context) : RelativeLayout(context){
         page.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.setOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(page))
         page.addOnPageChangeListener(listener)
-        fun choose(){
 
-        }
+
 
         addView(view)
     }
 
     fun chooseThisPage(){
+        for (i in 0..3){
+            val notDate = mainPageList[i] as NotDateToDoListView
+            notDate.chooseThisPage()
+        }
+
 
     }
     fun refreshView() {

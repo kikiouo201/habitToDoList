@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
-import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.NotDateListPagerView
+import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.OtherToDoListPagerView
 import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -144,12 +144,13 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         mainPageList = ArrayList()
 
         mainPageList.add(MainPageView(this@MainActivity))
-        mainPageList.add(NotDateListPagerView(this@MainActivity))
+        mainPageList.add(OtherToDoListPagerView(this@MainActivity))
 
 
         var tabs= findViewById<TabLayout>(R.id.tabLayout)
         val page = findViewById<ViewPager>(R.id.main_pager)
         val mainPagerAdapter = PagerAdapter(mainPageList)
+
 
 
         val listener = object: ViewPager.OnPageChangeListener{
@@ -161,7 +162,12 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
             }
             override fun onPageSelected(p0: Int) {
                 Log.i("kiki","p0=${p0}")
-
+                when(p0){
+                    1 ->{
+                        val notDateListPagerView= mainPageList[p0] as OtherToDoListPagerView
+                        notDateListPagerView.chooseThisPage()
+                    }
+                }
             }
         }
 

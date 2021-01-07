@@ -26,6 +26,7 @@ object AllItemData {
     var nowHabitToDoIndex = ""
     val scheduleToDo = ArrayList<ItemDate>()
     var nowScheduleToDoIndex = ""
+    val notDateToDoMap = sortedMapOf<Int, ItemDate?>()
     var currentDate ="2020-12-26"
     var currentWeekIndex = 1
     fun getFirebaseDate(){
@@ -104,14 +105,15 @@ object AllItemData {
 
     fun getNotDateToDo():ArrayList<ItemDate> {
         var DateTodayToDo = sortedMapOf<Int, ItemDate?>()
-        var notDateToDo = ArrayList<ItemDate>()
-        for(i in 0..habitToDo.size-1){
-
-                notDateToDo.add(habitToDo[i])
-
+        var nowNotDateToDo = ArrayList<ItemDate>()
+        for((key,itemDate) in todayToDoMap){
+            Log.i("AllItemData","itemDate?.name${itemDate?.name}")
+            if (itemDate != null) {
+                nowNotDateToDo.add(itemDate)
+            }
         }
-      //  Log.i("AllItemData","notDateToDo${notDateToDo}")
-        return  notDateToDo
+       Log.i("AllItemData","nowNotDateToDo${nowNotDateToDo}")
+        return  nowNotDateToDo
     }
 
     fun modifyDateToDayToDo(modifyIndex:Int,modifyItem:ItemDate){

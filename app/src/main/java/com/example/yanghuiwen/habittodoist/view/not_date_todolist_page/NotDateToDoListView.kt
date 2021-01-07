@@ -18,7 +18,8 @@ import com.example.yanghuiwen.habittodoist.view.item_sample.SingleItem
 @RequiresApi(Build.VERSION_CODES.O)
 class NotDateToDoListView(context: Context) : RelativeLayout(context){
     val view = LayoutInflater.from(context).inflate(R.layout.to_do_list, null)
-
+    val layoutManager = LinearLayoutManager(context)
+    val mRecyclerView = view.findViewById<View>(R.id.toDoList) as RecyclerView
     init {
         var habitDate= ItemDate()
         habitDate.name = "猶疑"
@@ -36,26 +37,33 @@ class NotDateToDoListView(context: Context) : RelativeLayout(context){
         habitDate3.endDate ="2020-12-18"
         AllItemData.habitToDo.add(habitDate3)
        // AllItemData.getFirebaseDate()
-        var todayList: SingleItem<String>?  = null
-        todayList = SingleItem(AllItemData.getNotDateToDo(),"notDateToDo")
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        val mRecyclerView = view.findViewById<View>(R.id.toDoList) as RecyclerView
-        mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.adapter = todayList
+
         Log.i("NotDateToDoListView","im create yoooo")
+        //設定 RecyclerView
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        mRecyclerView.layoutManager = layoutManager
 
-        fun choose(){
-
-        }
-
-
+//        var todayList: SingleItem<String>?  = null
+//        todayList = SingleItem(AllItemData.getNotDateToDo(),"notDateToDo")
+//        val layoutManager = LinearLayoutManager(context)
+//        layoutManager.orientation = LinearLayoutManager.VERTICAL
+//        val mRecyclerView = view.findViewById<View>(R.id.toDoList) as RecyclerView
+//        mRecyclerView.layoutManager = layoutManager
+//        mRecyclerView.adapter = todayList
+        chooseThisPage()
         addView(view)
     }
 
 
     fun chooseThisPage(){
-
+        var habitDate3= ItemDate()
+        habitDate3.name = "呵"
+        habitDate3.startDate ="2020-12-18"
+        habitDate3.endDate ="2020-12-18"
+        AllItemData.habitToDo.add(habitDate3)
+        var todayList: SingleItem<String>?  = null
+        todayList = SingleItem(AllItemData.getNotDateToDo(),"notDateToDo")
+        mRecyclerView.adapter = todayList
     }
     fun refreshView() {
 
