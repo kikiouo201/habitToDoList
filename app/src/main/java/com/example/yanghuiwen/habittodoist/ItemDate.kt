@@ -16,17 +16,18 @@ data class ItemDate(
 
     //時間 無
     //完成 事項和計畫的格式
-    var name:String = "",
-     var important:Int = 0,
-     var urgent:Int = 0,
-     var week:Int = 0,
-     var project:String = "",
-     var repeat:Boolean = false,
-     var startDate:String = "",
-     var endDate:String = "",
-     var startTime:String = "",
-     var endTime:String = "",
-     var IsEndItem:Boolean = false
+        var name:String = "",
+        var important:Int = 0,
+        var urgent:Int = 0,
+        var week:Int = 0,
+        var project:String = "",
+        var repeat:Boolean = false,
+        var timeType:Int = 1,
+        var startDate:String = "",
+        var endDate:String = "",
+        var startTime:String = "",
+        var endTime:String = "",
+        var IsEndItem:Boolean = false
     //@RequiresApi(Build.VERSION_CODES.O)
    // var Date = LocalDateTime.now()
 

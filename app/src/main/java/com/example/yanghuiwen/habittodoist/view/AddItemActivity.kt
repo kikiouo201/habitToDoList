@@ -143,24 +143,29 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         //重要
+        val importants =intArrayOf(R.id.important5,R.id.important4,R.id.important3,R.id.important2,R.id.important1)
         val importantGroup = findViewById<RadioGroup>(R.id.importantGroup)
         val important3 = findViewById<RadioButton>(R.id.important3)
         important3.isChecked = true
-        addItemDate.important = 3
+        addItemDate.important = 2
         importantGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            addItemDate.important = i+1
+            val groupIndex = importantGroup.indexOfChild(radio)
+            addItemDate.important  = groupIndex
+
         })
 
 
         //急
+        val urgents =intArrayOf(R.id.urgent5,R.id.urgent4,R.id.urgent3,R.id.urgent2,R.id.urgent1)
         val urgent3 = findViewById<RadioButton>(R.id.urgent3)
         urgent3.isChecked = true
-        addItemDate.urgent = 3
+        addItemDate.urgent = 2
         val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
         urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            addItemDate.urgent = i+1
+            val groupIndex = urgentGroup.indexOfChild(radio)
+            addItemDate.urgent = groupIndex
         })
 
         //重複
@@ -191,22 +196,26 @@ class AddItemActivity : AppCompatActivity() {
 
 
         //Time
-        // val times =intArrayOf(R.id.notTime,R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
+        val times =intArrayOf(R.id.notTime,R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
         val timeGroup = findViewById<RadioGroup>(R.id.timeGroup)
         val dayTime = findViewById<RadioButton>(R.id.dayTime)
         addToDoName = "日"
         dayTime.isChecked = true
-        addItemDate.important = 3
+        addItemDate.timeType = 1
         timeGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             addToDoName = radio.text.toString()
+            val groupIndex =  timeGroup.indexOfChild(radio)
+            addItemDate.timeType = groupIndex
+
             if(addToDoName !="日"){
+
                 addItemDate.startDate = ""
                 addItemDate.endDate = ""
                 addItemDate.startTime = ""
                 addItemDate.endTime = ""
             }
-            Log.i("AddItemActivity","addToDoName${addToDoName}")
+            Log.i("AddItemActivity","addToDoName  i${ i.toInt()}")
         })
 
         //儲存
@@ -240,6 +249,9 @@ class AddItemActivity : AppCompatActivity() {
                    }
 
                 }
+                "notTimeToDo" -> {
+                    AllItemData.modifyNotTimeToDo(modifyItemIndex,addItemDate)
+                }
                 "habitToDo" -> {
                     //AllItemData.habitToDo.removeAt(modifyItemIndex)
                 }
@@ -267,7 +279,7 @@ class AddItemActivity : AppCompatActivity() {
             if(modifyItemIndex != -1){
                 when (modifyToDoName) {
                     "notTimeToDo" -> {
-
+                        AllItemData.deleteNotTimeToDo(modifyItemIndex)
                     }
                     "habitToDo" -> {
                         AllItemData.habitToDo.removeAt(modifyItemIndex)
@@ -286,6 +298,27 @@ class AddItemActivity : AppCompatActivity() {
             modifyToDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
             var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
             when (modifyToDoName){
+                "notTimeToDo" -> {
+                    for ((key,todayToDo) in AllItemData.notTimeToDoMap){
+                        if(addName.equals(todayToDo?.name)){
+                            Log.i("AddItemActivity","modifyItemkey${key}")
+                            name.setText(addName)
+                            val time = findViewById<RadioButton>(times[todayToDo?.timeType!!])
+                            time.isChecked =true
+                            val important = findViewById<RadioButton>(importants[todayToDo?.important!!])
+                            important.isChecked =true
+                            val urgent = findViewById<RadioButton>(urgents[todayToDo?.urgent!!])
+                            urgent.isChecked =true
+                            startDate.setText(todayToDo?.startDate)
+                            endDate.setText(todayToDo?.endDate)
+                            startTime.setText(todayToDo?.startTime)
+                            endTime.setText(todayToDo?.endTime)
+                            modifyItemIndex = key
+                            Log.i("AddItemActivity","modifyItemIndex${modifyItemIndex}")
+
+                        }
+                    }
+                }
                 "habitToDo" ->{
                     AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
 
