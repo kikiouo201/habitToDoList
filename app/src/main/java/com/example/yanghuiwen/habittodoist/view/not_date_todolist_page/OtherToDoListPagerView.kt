@@ -38,8 +38,8 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                 if(tab != null){
                     when(tab.text){
                         "無時間" -> {
-                            val notDate = mainPageList[0] as NotDateToDoListView
-                            notDate.chooseThisPage()
+//                            val notDate = mainPageList[0] as NotDateToDoListView
+//                            notDate.chooseThisPage()
                         }
                         "週" -> {
 

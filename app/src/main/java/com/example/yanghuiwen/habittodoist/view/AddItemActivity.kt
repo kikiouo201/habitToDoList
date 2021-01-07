@@ -29,8 +29,8 @@ class AddItemActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_item)
 
 
-
-        var toDoName = ""
+        var addToDoName = ""
+        var modifyToDoName = ""
         var addItemDate = ItemDate()
         var modifyItemIndex = -1
         val spinner = findViewById<Spinner>(R.id.spinner)
@@ -189,18 +189,56 @@ class AddItemActivity : AppCompatActivity() {
 
         }
 
+
+        //Time
+        // val times =intArrayOf(R.id.notTime,R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
+        val timeGroup = findViewById<RadioGroup>(R.id.timeGroup)
+        val dayTime = findViewById<RadioButton>(R.id.dayTime)
+        addToDoName = "日"
+        dayTime.isChecked = true
+        addItemDate.important = 3
+        timeGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            addToDoName = radio.text.toString()
+            if(addToDoName !="日"){
+                addItemDate.startDate = ""
+                addItemDate.endDate = ""
+                addItemDate.startTime = ""
+                addItemDate.endTime = ""
+            }
+            Log.i("AddItemActivity","addToDoName${addToDoName}")
+        })
+
         //儲存
         val save = findViewById<Button>(R.id.save)
         val name =findViewById<EditText>(R.id.name)
+
+       // val notTime =findViewById<CheckBox>(R.id.notTime)
         save.setOnClickListener{
 
            addItemDate.name = name.text.toString()
             Log.i("AddItemActivity", addItemDate.startDate)
-            Log.i("AddItemActivity", "toDoName"+toDoName)
-            when(toDoName){
+            Log.i("AddItemActivity", "toDoName"+modifyToDoName)
+            when(modifyToDoName){
                 "null" -> {
-                    Log.i("AddItemActivity", "toDoName is null")
-                    AllItemData.setDateToDayToDo(addItemDate)
+                   when(addToDoName){
+                        "無" -> {
+                            AllItemData.setNotTimeToDo(addItemDate)
+                        }
+                        "日" -> {
+                            AllItemData.setDateToDayToDo(addItemDate)
+                        }
+                        "週" -> {
+
+                        }
+                       "月" -> {
+
+                       }
+                       "年" -> {
+
+                       }
+                   }
+
                 }
                 "habitToDo" -> {
                     //AllItemData.habitToDo.removeAt(modifyItemIndex)
@@ -227,7 +265,7 @@ class AddItemActivity : AppCompatActivity() {
         val delete = findViewById<Button>(R.id.delete)
         delete.setOnClickListener {
             if(modifyItemIndex != -1){
-                when (toDoName) {
+                when (modifyToDoName) {
                     "habitToDo" -> {
                         AllItemData.habitToDo.removeAt(modifyItemIndex)
                     }
@@ -242,9 +280,9 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         try{
-            toDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
+            modifyToDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
             var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
-            when (toDoName){
+            when (modifyToDoName){
                 "habitToDo" ->{
                     AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
 

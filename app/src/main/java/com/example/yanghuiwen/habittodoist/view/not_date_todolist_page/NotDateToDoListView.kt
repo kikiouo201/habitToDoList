@@ -62,7 +62,7 @@ class NotDateToDoListView(context: Context) : RelativeLayout(context){
         habitDate3.endDate ="2020-12-18"
         AllItemData.habitToDo.add(habitDate3)
         var todayList: SingleItem<String>?  = null
-        todayList = SingleItem(AllItemData.getNotDateToDo(),"notDateToDo")
+        todayList = SingleItem(AllItemData.getNotTimeToDo(),"notDateToDo")
         mRecyclerView.adapter = todayList
     }
     fun refreshView() {
