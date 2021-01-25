@@ -2,12 +2,12 @@ package com.example.yanghuiwen.habittodoist.view.main_page
 
 import android.content.Context
 import android.os.Build
-import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -22,7 +22,7 @@ import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.ArrayList
+import java.util.*
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -55,6 +55,7 @@ class MainPageView(context: Context) : RelativeLayout(context){
         month.setText((nowDate.month.value).toString())
         val day = view.findViewById<TextView>(R.id.day)
         day.setText(nowDate.dayOfMonth.toString())
+
 
         initWeekViewpage()
 
@@ -99,7 +100,7 @@ class MainPageView(context: Context) : RelativeLayout(context){
 
         val current = LocalDateTime.now()
 
-        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()
+        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()%7
         pageList = ArrayList()
 
         pageList.add(WeekPageView(context, current.minusDays(21),this::initAllToDoList))

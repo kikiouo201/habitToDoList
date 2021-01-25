@@ -299,20 +299,20 @@ class AddItemActivity : AppCompatActivity() {
             var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
             when (modifyToDoName){
                 "notTimeToDo" -> {
-                    for ((key,todayToDo) in AllItemData.notTimeToDoMap){
-                        if(addName.equals(todayToDo?.name)){
+                    for ((key,notTimeToDo) in AllItemData.notTimeToDoMap){
+                        if(addName.equals(notTimeToDo?.name)){
                             Log.i("AddItemActivity","modifyItemkey${key}")
                             name.setText(addName)
-                            val time = findViewById<RadioButton>(times[todayToDo?.timeType!!])
+                            val time = findViewById<RadioButton>(times[notTimeToDo?.timeType!!])
                             time.isChecked =true
-                            val important = findViewById<RadioButton>(importants[todayToDo?.important!!])
+                            val important = findViewById<RadioButton>(importants[notTimeToDo?.important!!])
                             important.isChecked =true
-                            val urgent = findViewById<RadioButton>(urgents[todayToDo?.urgent!!])
+                            val urgent = findViewById<RadioButton>(urgents[notTimeToDo?.urgent!!])
                             urgent.isChecked =true
-                            startDate.setText(todayToDo?.startDate)
-                            endDate.setText(todayToDo?.endDate)
-                            startTime.setText(todayToDo?.startTime)
-                            endTime.setText(todayToDo?.endTime)
+                            startDate.setText(notTimeToDo?.startDate)
+                            endDate.setText(notTimeToDo?.endDate)
+                            startTime.setText(notTimeToDo?.startTime)
+                            endTime.setText(notTimeToDo?.endTime)
                             modifyItemIndex = key
                             Log.i("AddItemActivity","modifyItemIndex${modifyItemIndex}")
 

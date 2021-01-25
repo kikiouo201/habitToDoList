@@ -70,9 +70,9 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
         var habitDate=ItemDate()
-        habitDate.name = "猶疑"
-        habitDate.startDate ="2020-12-26"
-        habitDate.endDate ="2020-12-26"
+        habitDate.name = "sports 10 min"
+        habitDate.startDate ="2021-01-24"
+        habitDate.endDate ="2021-01-24"
         AllItemData.habitToDo.add(habitDate)
         var habitDate2=ItemDate()
         habitDate2.name = "亥亥"
@@ -142,8 +142,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         val current = LocalDateTime.now()
 
-        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()
-        mainPageList = ArrayList()
+        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()%7
+                mainPageList = ArrayList()
 
         mainPageList.add(MainPageView(this@MainActivity))
         mainPageList.add(OtherToDoListPagerView(this@MainActivity))

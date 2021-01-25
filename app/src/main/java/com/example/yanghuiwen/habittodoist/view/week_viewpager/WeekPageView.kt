@@ -46,10 +46,12 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
             if(startWeek == i){
                 val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
                 onDateChange(current)
+
                 textView.setBackgroundColor(Color.parseColor("#84C1FF"))
             }else if(startWeek == 7 && i== 0){
                 val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
                 onDateChange(current)
+
                 textView.setBackgroundColor(Color.parseColor("#84C1FF"))
             }
         }
@@ -74,6 +76,7 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
             textView.setBackgroundColor(Color.TRANSPARENT)
 
         }
+        Log.i("WeekPageView","currentWeekIndex"+AllItemData.currentWeekIndex)
         val currentTextView = view.findViewById(weeks[AllItemData.currentWeekIndex]) as TextView
         currentTextView.setBackgroundColor(Color.parseColor("#84C1FF"))
         currentDateIndex =  AllItemData.currentWeekIndex

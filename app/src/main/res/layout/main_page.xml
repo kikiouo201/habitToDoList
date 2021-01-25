@@ -10,7 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/tabbackgroud"
+        >
         <LinearLayout
             android:id="@+id/date"
             android:layout_width="match_parent"
@@ -25,6 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@color/darkBlue"
+                android:textStyle="bold"
                 android:text="2020" />
 
             <TextView
@@ -33,6 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@color/darkBlue"
+                android:textStyle="bold"
                 android:text="12" />
 
             <TextView
@@ -41,6 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@color/darkBlue"
+                android:textStyle="bold"
                 android:text="29" />
         </LinearLayout>
         <LinearLayout
@@ -62,7 +70,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <TextView
 
@@ -153,7 +162,13 @@
                     android:id="@+id/today_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="today!" />
+                    android:gravity="center"
+
+                    android:textStyle="bold"
+
+                    android:textColor="@color/darkBlue"
+                    android:text="today" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todayList"
                     android:layout_width="match_parent"
@@ -166,7 +181,10 @@
                     android:id="@+id/habit_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="habit!"
+                    android:textStyle="bold"
+                    android:textColor="@color/darkBlue"
+                    android:gravity="center"
+                    android:text="habit"
 
                     app:layout_constraintTop_toBottomOf="@+id/todayList"/>
 
@@ -189,7 +207,11 @@
                     android:id="@+id/time_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="time!" />
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/darkBlue"
+                    android:text="time" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/timeList"
                     android:layout_width="match_parent"
