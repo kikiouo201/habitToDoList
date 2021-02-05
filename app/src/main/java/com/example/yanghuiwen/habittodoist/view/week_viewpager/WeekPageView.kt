@@ -2,6 +2,7 @@ package com.example.yanghuiwen.habittodoist.view.week_viewpager
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,30 +40,42 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
                 onDateChange(current)
                 val currentTextView = view.findViewById(weeks[currentDateIndex]) as TextView
                 currentTextView.setBackgroundColor(Color.TRANSPARENT)
-                textView.setBackgroundColor(Color.parseColor("#84C1FF"))
+                textView.setTypeface(Typeface.DEFAULT_BOLD)
+                textView.setBackgroundResource(R.drawable.week_radius)
+                textView.setTextColor(Color.parseColor("#004B97"))
+
                 AllItemData.currentWeekIndex = i
                 currentDateIndex = i
             }
             if(startWeek == i){
                 val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
                 onDateChange(current)
+                textView.setTypeface(Typeface.DEFAULT_BOLD)
+                textView.setBackgroundResource(R.drawable.week_radius)
+                textView.setTextColor(Color.parseColor("#004B97"))
 
-                textView.setBackgroundColor(Color.parseColor("#84C1FF"))
             }else if(startWeek == 7 && i== 0){
                 val current = "${weekDay.month.value}/${weekDay.dayOfMonth}"
                 onDateChange(current)
-
-                textView.setBackgroundColor(Color.parseColor("#84C1FF"))
+                textView.setTypeface(Typeface.DEFAULT_BOLD)
+                textView.setBackgroundResource(R.drawable.week_radius)
+                textView.setTextColor(Color.parseColor("#004B97"))
+                //textView.setBackgroundColor(Color.parseColor("#84C1FF"))
             }
         }
         fun choose(){
             for(i in 0..6){
                 val textView = view.findViewById(weeks[i]) as TextView
+                Log.i("WeekPageView","currentTextColor"+textView.currentTextColor)
+                textView.setTextColor(Color.parseColor("#84C1FF"))
+                textView.setTypeface(Typeface.SANS_SERIF);
                 textView.setBackgroundColor(Color.TRANSPARENT)
 
             }
             val currentTextView = view.findViewById(weeks[AllItemData.currentWeekIndex]) as TextView
-            currentTextView.setBackgroundColor(Color.parseColor("#84C1FF"))
+            currentTextView.setTypeface(Typeface.DEFAULT_BOLD);
+            currentTextView.setBackgroundResource(R.drawable.week_radius)
+           // currentTextView.setBackgroundColor(Color.parseColor("#004B97"))
             currentDateIndex =  AllItemData.currentWeekIndex
             onDateChange("current")
         }
@@ -73,12 +86,20 @@ class WeekPageView(context: Context, startDate: LocalDateTime,onDateChange: (cur
     fun chooseThisPage(){
         for(i in 0..6){
             val textView = view.findViewById(weeks[i]) as TextView
+            val current_color: Int = textView.getCurrentTextColor()
+            val strColor = String.format("#%06X", 0xFFFFFF and current_color)
+            Log.e("debug", "print $strColor")
+            Log.i("WeekPageView","currentTextColor"+strColor)
+           // textView.setTextColor(Color.parseColor("#000000"))
+            textView.setTypeface(Typeface.SANS_SERIF);
             textView.setBackgroundColor(Color.TRANSPARENT)
 
         }
         Log.i("WeekPageView","currentWeekIndex"+AllItemData.currentWeekIndex)
         val currentTextView = view.findViewById(weeks[AllItemData.currentWeekIndex]) as TextView
-        currentTextView.setBackgroundColor(Color.parseColor("#84C1FF"))
+        currentTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        currentTextView.setBackgroundResource(R.drawable.week_radius)
+       // currentTextView.setBackgroundColor(Color.parseColor("#004B97"))
         currentDateIndex =  AllItemData.currentWeekIndex
         Log.i("kiki","currentTextView.text.toString()"+currentTextView.text.toString())
         val weekDay = weekSeven.plusDays(AllItemData.currentWeekIndex.toLong())
