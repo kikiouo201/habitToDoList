@@ -44,12 +44,12 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="清單" />
+                            android:text="單項" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="單項" />
+                            android:text="清單" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"

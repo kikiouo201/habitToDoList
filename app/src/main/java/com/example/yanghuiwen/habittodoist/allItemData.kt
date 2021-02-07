@@ -10,12 +10,22 @@ import java.util.ArrayList
 
 object AllItemData {
 
+
+
+
     val database = Firebase.database
-    private lateinit var todayToDoReference: DatabaseReference
+    private lateinit var allItemReference: DatabaseReference
+    private lateinit var todayToDoItemReference: DatabaseReference
     private lateinit var notTimeToDoReference: DatabaseReference
-    var todayToDoMap = sortedMapOf<Int, ItemDate?>()
-    val todayToDo = ArrayList<ItemDate>()
+
+    var allToDoMap = sortedMapOf<Int, ItemDate?>()
+
+    val todayToDoItem = mutableSetOf<String>()
     var nowTodayToDoIndex = ""
+    var lastallItemIndex =""
+    var todayToDo = ArrayList<ItemDate>()
+
+
     val habitToDo = ArrayList<ItemDate>()
     var nowHabitToDoIndex = ""
     val scheduleToDo = ArrayList<ItemDate>()
@@ -23,9 +33,51 @@ object AllItemData {
     var notTimToDo = ArrayList<ItemDate>()
     val notTimeToDoMap = sortedMapOf<Int, ItemDate?>()
     var nowNotTimeToDoIndex = ""
-    var currentDate ="2020-12-26"
+    var currentDate ="2020-02-07"
     var currentWeekIndex = 1
     fun getFirebaseDate(){
+
+        // allItem 所有單項
+        allItemReference = database.getReference("user/allItem/")
+        val allItemPostListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ItemSnapshot in dataSnapshot.children) {
+                    var itemDate= ItemSnapshot.getValue<ItemDate>()
+                    lastallItemIndex = ItemSnapshot.key.toString()
+                    allToDoMap.put(lastallItemIndex.toInt(),itemDate)
+                }
+//                Log.i("AllItemData","allToDoMap="+allToDoMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        allItemReference.addValueEventListener(allItemPostListener)
+
+        // todayToDoItem 所有單項
+        todayToDoItemReference = database.getReference("user/todayToDoItem/")
+        val todayToDoItemPostListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (ItemSnapshot in dataSnapshot.children) {
+                    var itemDate= ItemSnapshot.getValue<String>()
+                    if (itemDate != null) {
+                        todayToDoItem.add(itemDate)
+                    }
+                }
+//                Log.i("AllItemData","allToDoMap="+allToDoMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        todayToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
         // notTimeToDo
         notTimeToDoReference = database.getReference("user/notTimeToDo/")
@@ -35,8 +87,8 @@ object AllItemData {
                     var itemDate= ItemSnapshot.getValue<ItemDate>()
                     nowNotTimeToDoIndex = ItemSnapshot.key.toString()
                     notTimeToDoMap.put(nowNotTimeToDoIndex.toInt(),itemDate)
-                       Log.i("AllItemData"," notTimeToDo"+  nowNotTimeToDoIndex)
-                       Log.i("AllItemData","itemData.name"+itemDate?.name)
+                    Log.i("AllItemData"," notTimeToDo"+  nowNotTimeToDoIndex)
+                    Log.i("AllItemData","itemData.name"+itemDate?.name)
 //                    if (itemDate != null) {
 //                        notTimeToDo.add(itemDate)
 //                    }
@@ -51,78 +103,36 @@ object AllItemData {
         }
         notTimeToDoReference.addValueEventListener(notTimePostListener)
 
-        // todayToDo
-        todayToDoReference = database.getReference("user/todayToDo/")
-        val todayPostListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (ItemSnapshot in dataSnapshot.children) {
-                    var itemDate= ItemSnapshot.getValue<ItemDate>()
-                    nowTodayToDoIndex = ItemSnapshot.key.toString()
-                    todayToDoMap.put(nowTodayToDoIndex.toInt(),itemDate)
-                 //   Log.i("AllItemData","nowTodayToDoIndex"+nowTodayToDoIndex)
-                 //   Log.i("AllItemData","itemData.name"+itemDate?.name)
-                    if (itemDate != null) {
-                        todayToDo.add(itemDate)
-                    }
-                }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-               // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
+
+    }
+
+    // 上傳 AllItem 到firebase
+    fun  setAllItem(AddItem:ItemDate):Int{
+        val allItem = database.getReference("user/allItem/")
+
+        if(!lastallItemIndex.equals("")){
+            lastallItemIndex = (lastallItemIndex.toInt()+1).toString()
+        }else{
+            lastallItemIndex = "1"
         }
-        todayToDoReference.addValueEventListener(todayPostListener)
-//        val childEventListener = object : ChildEventListener {
-//            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-//               // Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
-//
-//                // A new comment has been added, add it to the displayed list
-//                val comment = dataSnapshot.getValue<Comment>()
-//
-//                // ...
-//            }
-//
-//            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-//               // Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
-//
-//                // A comment has changed, use the key to determine if we are displaying this
-//                // comment and if so displayed the changed comment.
-//                val newComment = dataSnapshot.getValue<Comment>()
-//                val commentKey = dataSnapshot.key
-//
-//                // ...
-//            }
-//
-//            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-//               // Log.d(TAG, "onChildRemoved:" + dataSnapshot.key!!)
-//
-//                // A comment has changed, use the key to determine if we are displaying this
-//                // comment and if so remove it.
-//                val commentKey = dataSnapshot.key
-//
-//                // ...
-//            }
-//
-//            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
-//             //   Log.d(TAG, "onChildMoved:" + dataSnapshot.key!!)
-//
-//                // A comment has changed position, use the key to determine if we are
-//                // displaying this comment and if so move it.
-//                val movedComment = dataSnapshot.getValue<Comment>()
-//                val commentKey = dataSnapshot.key
-//
-//                // ...
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//             //   Log.w(TAG, "postComments:onCancelled", databaseError.toException())
-//              //  Toast.makeText(context, "Failed to load comments.",
-//                 //       Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        todayToDoReference.addChildEventListener(childEventListener)
+        //上傳firebase
+        allItem.child(lastallItemIndex).setValue(AddItem)
+        //存本地
+        allToDoMap.put(lastallItemIndex.toInt(),AddItem)
+        return lastallItemIndex.toInt()
+    }
+    fun  deleteAllItem(deleteIndex:Int){
+        val allItem = database.getReference("user/allItem/")
+        //移除firebase上的項目
+        allItem.child(deleteIndex.toString()).removeValue()
+        allToDoMap.remove(deleteIndex)
+    }
+    fun  modifyAllItem(modifyIndex:Int,modifyItem:ItemDate){
+        val allItem = database.getReference("user/allItem/")
+        //修改firebase上的項目
+        allItem.child(modifyIndex.toString()).setValue(modifyItem)
+        allToDoMap.remove(modifyIndex)
     }
 
     fun modifyNotTimeToDo(modifyIndex:Int,modifyItem:ItemDate){
@@ -130,23 +140,21 @@ object AllItemData {
         notTimeToDo.child(modifyIndex.toString()).setValue(modifyItem)
 
     }
-
     fun deleteNotTimeToDo(deleteIndex:Int){
         val notTimeToDo = database.getReference("user/notTimeToDo/")
         notTimeToDo.child(deleteIndex.toString()).removeValue()
         notTimeToDoMap.remove(deleteIndex)
 
     }
-
     fun setNotTimeToDo(AddItem:ItemDate) {
         //todayToDo.add(AddItem)
-        Log.i("AllItemData","setDateToDayToDo.nowTodayToDoIndex"+nowTodayToDoIndex)
+       // Log.i("AllItemData","setDateToDayToDo.nowTodayToDoIndex"+nowTodayToDoIndex)
         val notTimeToDo = database.getReference("user/notTimeToDo/")
         if(!nowNotTimeToDoIndex.equals("")){
             val nextTimeToDoIndex = (nowNotTimeToDoIndex.toInt()+1).toString()
             //上傳firebase
             notTimeToDo.child(nextTimeToDoIndex).setValue(AddItem)
-            Log.i("AllItemData","notTimeToDo")
+           // Log.i("AllItemData","notTimeToDo")
             nowNotTimeToDoIndex = (nowNotTimeToDoIndex.toInt()+1).toString()
             //存本地
             notTimeToDoMap.put(nextTimeToDoIndex.toInt(),AddItem)
@@ -155,65 +163,60 @@ object AllItemData {
             //上傳firebase
             notTimeToDo.child(nextTimeToDoIndex).setValue(AddItem)
             // Log.i("AllItemData"," nowTodayToDo")
-            nowNotTimeToDoIndex ="1"
+            nowNotTimeToDoIndex =  "1"
             //存本地
             notTimeToDoMap.put(nextTimeToDoIndex.toInt(),AddItem)
         }
     }
-
-
     fun getNotTimeToDo():ArrayList<ItemDate> {
-        var DateTodayToDo = sortedMapOf<Int, ItemDate?>()
+
         var nowNotDateToDo = ArrayList<ItemDate>()
         for((key,itemDate) in notTimeToDoMap){
-           Log.i("AllItemData","itemDate?.name${itemDate?.name}")
+          // Log.i("AllItemData","itemDate?.name${itemDate?.name}")
             if (itemDate != null) {
                 nowNotDateToDo.add(itemDate)
             }
         }
-       Log.i("AllItemData","nowNotDateToDo${nowNotDateToDo}")
+      // Log.i("AllItemData","nowNotTimeToDo${nowNotDateToDo}")
         return  nowNotDateToDo
     }
 
-    fun modifyDateToDayToDo(modifyIndex:Int,modifyItem:ItemDate){
-        val nowTodayToDo = database.getReference("user/todayToDo/")
-        nowTodayToDo.child(modifyIndex.toString()).setValue(modifyItem)
-
+    fun modifyDateToDayToDo(modifyIndex:Int, modifyItem:ItemDate){
+        modifyAllItem(modifyIndex,modifyItem)
+        Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
     }
-
     fun deleteDateToDayToDo(deleteIndex:Int){
-        val nowTodayToDo = database.getReference("user/todayToDo/")
-        nowTodayToDo.child(deleteIndex.toString()).removeValue()
-        todayToDoMap.remove(deleteIndex)
-
+        deleteAllItem(deleteIndex)
+        val todayToDo = database.getReference("user/todayToDoItem/")
+        todayToDo.child(deleteIndex.toString()).removeValue()
+        todayToDoItem.remove(deleteIndex.toString())
     }
-
     fun getDateToDayToDo():ArrayList<ItemDate>{
-        var DateTodayToDo = sortedMapOf<Int, ItemDate?>()
-        var ToDayToDo = ArrayList<ItemDate>()
-        for((key,itemDate) in todayToDoMap){
-            if(currentDate.equals(itemDate?.startDate)){
-                if (itemDate != null) {
-                    ToDayToDo.add(itemDate)
 
+        todayToDo = ArrayList<ItemDate>()
+
+        for (itemIndex in todayToDoItem){
+            var nowItemDate = allToDoMap.get(itemIndex.toInt())
+//            Log.i("AllItemData","nowItemDate="+nowItemDate)
+            if(currentDate.equals(nowItemDate?.startDate)){
+                if (nowItemDate != null) {
+                    todayToDo.add(nowItemDate)
                 }
             }
         }
-        return ToDayToDo
-    }
 
+        return todayToDo
+    }
     fun setDateToDayToDo(AddItem:ItemDate){
-        todayToDo.add(AddItem)
-        Log.i("AllItemData","setDateToDayToDo.nowTodayToDoIndex"+nowTodayToDoIndex)
-        val nowTodayToDo = database.getReference("user/todayToDo/")
+        var addItemIndex= setAllItem(AddItem)
+        todayToDoItem.add(addItemIndex.toString())
+
+        val todayToDo = database.getReference("user/todayToDoItem/")
         if(!nowTodayToDoIndex.equals("")){
             val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
             //上傳firebase
-            nowTodayToDo.child(nextTodayToDoIndex).setValue(AddItem)
+            todayToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
            // Log.i("AllItemData"," nowTodayToDo")
-            nowTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
-            //存本地
-            todayToDoMap.put(nextTodayToDoIndex.toInt(),AddItem)
         }
 
     }

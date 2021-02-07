@@ -21,9 +21,9 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
         mainPageList = ArrayList()
 
-        mainPageList.add(NotTimeToDoListView(context))// 無時間
-        mainPageList.add(NotTimeToDoListView(context))// 週
-        mainPageList.add(NotTimeToDoListView(context))// 年
+        mainPageList.add(NotTimeToDoListView(context))// 單項
+        mainPageList.add(NotTimeToDoListView(context))// 清單
+        mainPageList.add(NotTimeToDoListView(context))// 習慣
 
 
 
@@ -37,11 +37,14 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                 Log.i("kiki","p0=${tab?.text}")
                 if(tab != null){
                     when(tab.text){
-                        "無時間" -> {
+                        "單項" -> {
 //                            val notDate = mainPageList[0] as NotDateToDoListView
 //                            notDate.chooseThisPage()
                         }
-                        "週" -> {
+                        "清單" -> {
+
+                        }
+                        "習慣" -> {
 
                         }
                     }

@@ -46,6 +46,7 @@ class MainPageView(context: Context) : RelativeLayout(context){
         var nowDate = LocalDateTime.now()
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val currentDate = nowDate.format(formatter)
+        //Log.i("MainPagerView","currentDate="+currentDate)
         initAllToDoList(currentDate)
 
         //set now date

@@ -261,10 +261,7 @@ class AddItemActivity : AppCompatActivity() {
                 }
             }
 
-            for ((key,todayToDo) in AllItemData.todayToDoMap){
-                Log.i("AddItemActivity",todayToDo?.name)
-                Log.i("AddItemActivity",todayToDo?.startDate)
-            }
+
 
             var intent =Intent(this,MainActivity::class.java)
 
@@ -336,7 +333,7 @@ class AddItemActivity : AppCompatActivity() {
                 }
                 "todayToDo" ->{
 
-                  for ((key,todayToDo) in AllItemData.todayToDoMap){
+                  for ((key,todayToDo) in AllItemData.allToDoMap){
                         if(addName.equals(todayToDo?.name)){
                             name.setText(addName)
                             startDate.setText(todayToDo?.startDate)
