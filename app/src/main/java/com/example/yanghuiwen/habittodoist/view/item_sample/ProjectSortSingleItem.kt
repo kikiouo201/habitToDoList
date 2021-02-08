@@ -56,10 +56,13 @@ class ProjectSortSingleItem<T>(context: Context, data: Map<String, ArrayList<Ite
         todayList = mData.get(projectName)?.let { SingleItem(context, it,toDoName ) }
         holder.mRecyclerView.adapter = todayList
         holder.isDisplay.setOnClickListener{
+
             if(holder.mRecyclerView.visibility == View.GONE){
+                holder.isDisplay.setImageResource(R.drawable.down_arrow)
                 holder.mRecyclerView.visibility =View.VISIBLE
 
             }else{
+                holder.isDisplay.setImageResource(R.drawable.up_arrow)
                 holder.mRecyclerView.visibility = View.GONE
             }
 

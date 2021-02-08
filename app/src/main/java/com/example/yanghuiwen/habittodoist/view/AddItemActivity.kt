@@ -249,7 +249,7 @@ class AddItemActivity : AppCompatActivity() {
                    }
 
                 }
-                "notTimeToDo" -> {
+                "singleItemToDo" -> {
                     AllItemData.modifySingleItem(modifyItemIndex,addItemDate)
                 }
                 "habitToDo" -> {
@@ -309,25 +309,7 @@ class AddItemActivity : AppCompatActivity() {
                             }
                         }
                     }
-//                    for ((key,notTimeToDo) in AllItemData.notTimeToDoMap){
-//                        if(addName.equals(notTimeToDo?.name)){
-//                            Log.i("AddItemActivity","modifyItemkey${key}")
-//                            name.setText(addName)
-//                            val time = findViewById<RadioButton>(times[notTimeToDo?.timeType!!])
-//                            time.isChecked =true
-//                            val important = findViewById<RadioButton>(importants[notTimeToDo?.important!!])
-//                            important.isChecked =true
-//                            val urgent = findViewById<RadioButton>(urgents[notTimeToDo?.urgent!!])
-//                            urgent.isChecked =true
-//                            startDate.setText(notTimeToDo?.startDate)
-//                            endDate.setText(notTimeToDo?.endDate)
-//                            startTime.setText(notTimeToDo?.startTime)
-//                            endTime.setText(notTimeToDo?.endTime)
-//                            modifyItemIndex = key
-//                            Log.i("AddItemActivity","modifyItemIndex${modifyItemIndex}")
 //
-//                        }
-//                    }
                 }
                 "habitToDo" ->{
                     AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
