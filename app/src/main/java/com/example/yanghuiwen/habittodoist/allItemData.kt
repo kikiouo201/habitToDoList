@@ -5,8 +5,8 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.ArrayList
 
 object AllItemData {
 
@@ -28,8 +28,9 @@ object AllItemData {
 
 
     //單項
-    var endSingleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
-    var notEndSingleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+    var endSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
+    var notEndSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
+
 
     val habitToDo = ArrayList<ItemDate>()
     var nowHabitToDoIndex = ""
@@ -50,7 +51,8 @@ object AllItemData {
 
                 for (ItemSnapshot in dataSnapshot.children) {
                     var itemDate= ItemSnapshot.getValue<ItemDate>()
-                    lastallItemIndex = ItemSnapshot.key.toString()
+                    val itemIndex = ItemSnapshot.key.toString()
+                    lastallItemIndex = itemIndex
                     allToDoMap.put(lastallItemIndex.toInt(),itemDate)
 
 
@@ -59,30 +61,38 @@ object AllItemData {
                             //單項項目完成
                            if(endSingleItemMap.get("all") != null){
                                val endSingleItem =endSingleItemMap.get("all")
-                               endSingleItem?.add(itemDate)
+                               endSingleItem?.add(itemIndex.toInt())
                            }else{
-                               val endSingleItem =ArrayList<ItemDate>()
-                               endSingleItem?.add(itemDate)
+                               val endSingleItem =ArrayList<Int>()
+                               endSingleItem?.add(itemIndex.toInt())
                                endSingleItemMap.put("all",endSingleItem)
                            }
                         }else{
                             //單項項目未完成
 
+
                             if(notEndSingleItemMap.get(itemDate.project) != null){
                                 val notEndSingleItem =notEndSingleItemMap.get(itemDate.project)
-                                notEndSingleItem?.add(itemDate)
+                                notEndSingleItem?.add(itemIndex.toInt())
                                 Log.i("AllItemData","notEndSingleItem${notEndSingleItem}")
                             }else{
-                                val notEndSingleItem =ArrayList<ItemDate>()
-                                notEndSingleItem?.add(itemDate)
-                                notEndSingleItemMap.put(itemDate.project,notEndSingleItem)
 
+                                val notEndSingleItem =ArrayList<Int>()
+                                notEndSingleItem?.add(itemIndex.toInt())
+                                notEndSingleItemMap.put(itemDate.project,notEndSingleItem)
                             }
                         }
                        // Log.i("AllItemData","endSingleItemMap${endSingleItemMap}")
                         Log.i("AllItemData","notEndSingleItemMap.size${notEndSingleItemMap.size}")
 
                     }
+                }
+
+               for ((key,itemIndexs)in notEndSingleItemMap){
+                   notEndSingleItemMap[key] =deleteDuplicateArrayList(itemIndexs)
+                }
+                for ((key,itemIndexs)in endSingleItemMap){
+                    endSingleItemMap[key] =deleteDuplicateArrayList(itemIndexs)
                 }
 //                Log.i("AllItemData","allToDoMap="+allToDoMap)
             }
@@ -143,6 +153,19 @@ object AllItemData {
 
 
 
+    }
+    //刪除重複項目
+    fun deleteDuplicateArrayList(duplicateItems:ArrayList<Int>):ArrayList<Int>{
+        val toDoItemIndex = mutableSetOf<Int>()
+        for (itemIndex in duplicateItems){
+            toDoItemIndex.add(itemIndex)
+        }
+        val f = ArrayList<Int>()
+
+        for (itemIndex in  toDoItemIndex){
+            f.add(itemIndex)
+        }
+        return f
     }
 
     // 上傳 AllItem 到firebase
@@ -208,15 +231,20 @@ object AllItemData {
     }
     fun getSingleItem():Map<String, ArrayList<ItemDate>> {
 
-        var nowNotDateToDo = ArrayList<ItemDate>()
-        for((key,itemDates) in notEndSingleItemMap){
-          // Log.i("AllItemData","itemDate?.name${itemDate?.name}")
-            if (itemDates != null) {
-                nowNotDateToDo = itemDates
+        var singleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+
+        for ((key,itemIndexs)in notEndSingleItemMap){
+           val itemDates = ArrayList<ItemDate>()
+            for (itemIndex in itemIndexs) {
+                var nowItemDate = allToDoMap.get(itemIndex.toInt())
+                if (nowItemDate != null) {
+                    itemDates.add(nowItemDate)
+                }
             }
+            singleItemMap.put(key,itemDates)
         }
-       //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
-        return  notEndSingleItemMap
+       Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
+        return singleItemMap
     }
 
     fun modifyDateToDayToDo(modifyIndex:Int, modifyItem:ItemDate){
@@ -281,4 +309,8 @@ object AllItemData {
     }
 
 
+
+
 }
+
+

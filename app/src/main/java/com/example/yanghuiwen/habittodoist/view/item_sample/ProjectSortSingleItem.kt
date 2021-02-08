@@ -53,7 +53,7 @@ class ProjectSortSingleItem<T>(context: Context, data: Map<String, ArrayList<Ite
         holder.projectName.text = projectName
 
         var todayList: SingleItem<String>?  = null
-        todayList = mData.get(projectName)?.let { SingleItem(context, it,"notTimeToDo") }
+        todayList = mData.get(projectName)?.let { SingleItem(context, it,toDoName ) }
         holder.mRecyclerView.adapter = todayList
 //        holder.projectName.setOnClickListener {
 //            startAddItemActivity(context,mData[position] , toDoName)
