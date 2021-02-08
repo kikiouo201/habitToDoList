@@ -71,15 +71,15 @@ object AllItemData {
                             //單項項目未完成
 
 
-                            if(notEndSingleItemMap.get(itemDate.project) != null){
-                                val notEndSingleItem =notEndSingleItemMap.get(itemDate.project)
+                            if(notEndSingleItemMap.get("all") != null){
+                                val notEndSingleItem =notEndSingleItemMap.get("all")
                                 notEndSingleItem?.add(itemIndex.toInt())
                              //   Log.i("AllItemData","notEndSingleItem${notEndSingleItem}")
                             }else{
 
                                 val notEndSingleItem =ArrayList<Int>()
                                 notEndSingleItem?.add(itemIndex.toInt())
-                                notEndSingleItemMap.put(itemDate.project,notEndSingleItem)
+                                notEndSingleItemMap.put("all",notEndSingleItem)
                             }
                         }
                        // Log.i("AllItemData","endSingleItemMap${endSingleItemMap}")
@@ -174,8 +174,10 @@ object AllItemData {
     }
 
     fun modifySingleItem(modifyIndex:Int, modifyItem:ItemDate){
-        val notTimeToDo = database.getReference("user/notTimeToDo/")
-        notTimeToDo.child(modifyIndex.toString()).setValue(modifyItem)
+      //  Log.i("AllItemData","modifySingleItem")
+        modifyAllItem(modifyIndex,modifyItem)
+//        val notTimeToDo = database.getReference("user/notTimeToDo/")
+//        notTimeToDo.child(modifyIndex.toString()).setValue(modifyItem)
 
     }
     fun deleteSingleItem(deleteIndex:Int){
@@ -185,32 +187,14 @@ object AllItemData {
 //        if (projectItems != null) {
 //            projectItems.remove(deleteIndex)
 //        }
+      //  Log.i("AllItemData","deleteSingleItem")
         deleteAllItem(deleteIndex)
-
     }
     fun setSingleItem(AddItem:ItemDate) {
-        //todayToDo.add(AddItem)
-       // Log.i("AllItemData","setDateToDayToDo.nowTodayToDoIndex"+nowTodayToDoIndex)
-        val notTimeToDo = database.getReference("user/notTimeToDo/")
-        if(!nowNotTimeToDoIndex.equals("")){
-            val nextTimeToDoIndex = (nowNotTimeToDoIndex.toInt()+1).toString()
-            //上傳firebase
-            notTimeToDo.child(nextTimeToDoIndex).setValue(AddItem)
-           // Log.i("AllItemData","notTimeToDo")
-            nowNotTimeToDoIndex = (nowNotTimeToDoIndex.toInt()+1).toString()
-            //存本地
-            notTimeToDoMap.put(nextTimeToDoIndex.toInt(),AddItem)
-        }else{
-            val nextTimeToDoIndex = "1"
-            //上傳firebase
-            notTimeToDo.child(nextTimeToDoIndex).setValue(AddItem)
-            // Log.i("AllItemData"," nowTodayToDo")
-            nowNotTimeToDoIndex =  "1"
-            //存本地
-            notTimeToDoMap.put(nextTimeToDoIndex.toInt(),AddItem)
-        }
+      //  Log.i("AllItemData","setSingleItem=${todayToDoItem}")
+        var addItemIndex= setAllItem(AddItem)
     }
-    fun getSingleItem():Map<String, ArrayList<ItemDate>> {
+    fun getProjectSingleItem():Map<String, ArrayList<ItemDate>> {
 
         var singleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
 
@@ -219,24 +203,34 @@ object AllItemData {
             for (itemIndex in itemIndexs) {
                 var nowItemDate = allToDoMap.get(itemIndex.toInt())
                 if (nowItemDate != null) {
+                    if(singleItemMap.get(nowItemDate.project) != null){
+                        val endSingleItem =singleItemMap.get(nowItemDate.project)
+                        endSingleItem?.add(nowItemDate)
+                    }else{
+                        val endSingleItem =ArrayList<ItemDate>()
+                        endSingleItem?.add(nowItemDate)
+                        singleItemMap.put(nowItemDate.project,endSingleItem)
+                    }
                     itemDates.add(nowItemDate)
                 }
             }
-            singleItemMap.put(key,itemDates)
+
         }
+
        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
     }
 
     fun modifyDateToDayToDo(modifyIndex:Int, modifyItem:ItemDate){
         modifyAllItem(modifyIndex,modifyItem)
-        Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
+       // Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
     }
     fun deleteDateToDayToDo(deleteIndex:Int){
         deleteAllItem(deleteIndex)
         val todayToDo = database.getReference("user/todayToDoItem/")
         todayToDo.child(deleteIndex.toString()).removeValue()
         todayToDoItem.remove(deleteIndex.toString())
+     //   Log.i("AllItemData","delete todayToDoItem=${todayToDoItem}")
     }
     fun getDateToDayToDo():ArrayList<ItemDate>{
 
@@ -244,14 +238,14 @@ object AllItemData {
 
         for (itemIndex in todayToDoItem){
             var nowItemDate = allToDoMap.get(itemIndex.toInt())
-            Log.i("AllItemData","nowItemDate="+nowItemDate)
+          // Log.i("AllItemData","nowItemDate="+nowItemDate)
             if(currentDate.equals(nowItemDate?.startDate)){
                 if (nowItemDate != null) {
                     todayToDo.add(nowItemDate)
                 }
             }
         }
-        Log.i("AllItemData","todayToDo="+todayToDo)
+      //  Log.i("AllItemData","todayToDo="+todayToDo)
         return todayToDo
     }
     fun setDateToDayToDo(AddItem:ItemDate){
@@ -263,7 +257,7 @@ object AllItemData {
 //            val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
             //上傳firebase
             todayToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
-            Log.i("AllItemData","setDateToDayToDo")
+        //    Log.i("AllItemData","setDateToDayToDo")
 //        }
 
     }

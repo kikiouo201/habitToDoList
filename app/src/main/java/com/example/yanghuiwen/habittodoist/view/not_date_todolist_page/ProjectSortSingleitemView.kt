@@ -10,10 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.AllItemData
-import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.item_sample.ProjectSortSingleItem
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -37,7 +35,7 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
 
     fun chooseThisPage(){
         var todayList: ProjectSortSingleItem<String>?  = null
-        todayList = ProjectSortSingleItem(context,AllItemData.getSingleItem(),"singleItemToDo")
+        todayList = ProjectSortSingleItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
         mRecyclerView.adapter = todayList
     }
     fun refreshView() {
