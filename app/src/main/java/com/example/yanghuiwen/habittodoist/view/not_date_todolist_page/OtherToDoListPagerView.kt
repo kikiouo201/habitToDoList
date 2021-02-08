@@ -21,9 +21,9 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
         mainPageList = ArrayList()
 
-        mainPageList.add(NotTimeToDoListView(context))// 單項
-        mainPageList.add(NotTimeToDoListView(context))// 清單
-        mainPageList.add(NotTimeToDoListView(context))// 習慣
+        mainPageList.add(ProjectSortSingleitemView(context))// 單項
+        mainPageList.add(ProjectSortSingleitemView(context))// 清單
+        mainPageList.add(ProjectSortSingleitemView(context))// 習慣
 
 
 
@@ -83,7 +83,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
     fun chooseThisPage(){
         for (i in 0..2){
-            val notDate = mainPageList[i] as NotTimeToDoListView
+            val notDate = mainPageList[i] as ProjectSortSingleitemView
             notDate.chooseThisPage()
         }
 

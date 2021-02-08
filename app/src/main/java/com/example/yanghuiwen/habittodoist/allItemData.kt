@@ -16,15 +16,20 @@ object AllItemData {
     val database = Firebase.database
     private lateinit var allItemReference: DatabaseReference
     private lateinit var todayToDoItemReference: DatabaseReference
-    private lateinit var notTimeToDoReference: DatabaseReference
+    private lateinit var singleItemReference: DatabaseReference
 
     var allToDoMap = sortedMapOf<Int, ItemDate?>()
 
+    // 今天事項
     val todayToDoItem = mutableSetOf<String>()
     var nowTodayToDoIndex = ""
     var lastallItemIndex =""
     var todayToDo = ArrayList<ItemDate>()
 
+
+    //單項
+    var endSingleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+    var notEndSingleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
 
     val habitToDo = ArrayList<ItemDate>()
     var nowHabitToDoIndex = ""
@@ -41,10 +46,43 @@ object AllItemData {
         allItemReference = database.getReference("user/allItem/")
         val allItemPostListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+
                 for (ItemSnapshot in dataSnapshot.children) {
                     var itemDate= ItemSnapshot.getValue<ItemDate>()
                     lastallItemIndex = ItemSnapshot.key.toString()
                     allToDoMap.put(lastallItemIndex.toInt(),itemDate)
+
+
+                    if (itemDate != null) {
+                        if(itemDate.IsEndItem){
+                            //單項項目完成
+                           if(endSingleItemMap.get("all") != null){
+                               val endSingleItem =endSingleItemMap.get("all")
+                               endSingleItem?.add(itemDate)
+                           }else{
+                               val endSingleItem =ArrayList<ItemDate>()
+                               endSingleItem?.add(itemDate)
+                               endSingleItemMap.put("all",endSingleItem)
+                           }
+                        }else{
+                            //單項項目未完成
+
+                            if(notEndSingleItemMap.get(itemDate.project) != null){
+                                val notEndSingleItem =notEndSingleItemMap.get(itemDate.project)
+                                notEndSingleItem?.add(itemDate)
+                                Log.i("AllItemData","notEndSingleItem${notEndSingleItem}")
+                            }else{
+                                val notEndSingleItem =ArrayList<ItemDate>()
+                                notEndSingleItem?.add(itemDate)
+                                notEndSingleItemMap.put(itemDate.project,notEndSingleItem)
+
+                            }
+                        }
+                       // Log.i("AllItemData","endSingleItemMap${endSingleItemMap}")
+                        Log.i("AllItemData","notEndSingleItemMap.size${notEndSingleItemMap.size}")
+
+                    }
                 }
 //                Log.i("AllItemData","allToDoMap="+allToDoMap)
             }
@@ -79,29 +117,29 @@ object AllItemData {
         }
         todayToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
-        // notTimeToDo
-        notTimeToDoReference = database.getReference("user/notTimeToDo/")
-        val notTimePostListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (ItemSnapshot in dataSnapshot.children) {
-                    var itemDate= ItemSnapshot.getValue<ItemDate>()
-                    nowNotTimeToDoIndex = ItemSnapshot.key.toString()
-                    notTimeToDoMap.put(nowNotTimeToDoIndex.toInt(),itemDate)
-                    Log.i("AllItemData"," notTimeToDo"+  nowNotTimeToDoIndex)
-                    Log.i("AllItemData","itemData.name"+itemDate?.name)
-//                    if (itemDate != null) {
-//                        notTimeToDo.add(itemDate)
-//                    }
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        }
-        notTimeToDoReference.addValueEventListener(notTimePostListener)
+        //  singleItem 單項
+//        singleItemReference = database.getReference("user/singleItem/")
+//        val notTimePostListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (ItemSnapshot in dataSnapshot.children) {
+//                    var itemDate= ItemSnapshot.getValue<ItemDate>()
+//                    nowNotTimeToDoIndex = ItemSnapshot.key.toString()
+//                    notTimeToDoMap.put(nowNotTimeToDoIndex.toInt(),itemDate)
+//                    Log.i("AllItemData"," notTimeToDo"+  nowNotTimeToDoIndex)
+//                    Log.i("AllItemData","itemData.name"+itemDate?.name)
+////                    if (itemDate != null) {
+////                        notTimeToDo.add(itemDate)
+////                    }
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        }
+//        singleItemReference.addValueEventListener(notTimePostListener)
 
 
 
@@ -135,18 +173,18 @@ object AllItemData {
         allToDoMap.remove(modifyIndex)
     }
 
-    fun modifyNotTimeToDo(modifyIndex:Int,modifyItem:ItemDate){
+    fun modifySingleItem(modifyIndex:Int, modifyItem:ItemDate){
         val notTimeToDo = database.getReference("user/notTimeToDo/")
         notTimeToDo.child(modifyIndex.toString()).setValue(modifyItem)
 
     }
-    fun deleteNotTimeToDo(deleteIndex:Int){
+    fun deleteSingleItem(deleteIndex:Int){
         val notTimeToDo = database.getReference("user/notTimeToDo/")
         notTimeToDo.child(deleteIndex.toString()).removeValue()
         notTimeToDoMap.remove(deleteIndex)
 
     }
-    fun setNotTimeToDo(AddItem:ItemDate) {
+    fun setSingleItem(AddItem:ItemDate) {
         //todayToDo.add(AddItem)
        // Log.i("AllItemData","setDateToDayToDo.nowTodayToDoIndex"+nowTodayToDoIndex)
         val notTimeToDo = database.getReference("user/notTimeToDo/")
@@ -168,17 +206,17 @@ object AllItemData {
             notTimeToDoMap.put(nextTimeToDoIndex.toInt(),AddItem)
         }
     }
-    fun getNotTimeToDo():ArrayList<ItemDate> {
+    fun getSingleItem():Map<String, ArrayList<ItemDate>> {
 
         var nowNotDateToDo = ArrayList<ItemDate>()
-        for((key,itemDate) in notTimeToDoMap){
+        for((key,itemDates) in notEndSingleItemMap){
           // Log.i("AllItemData","itemDate?.name${itemDate?.name}")
-            if (itemDate != null) {
-                nowNotDateToDo.add(itemDate)
+            if (itemDates != null) {
+                nowNotDateToDo = itemDates
             }
         }
-      // Log.i("AllItemData","nowNotTimeToDo${nowNotDateToDo}")
-        return  nowNotDateToDo
+       //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
+        return  notEndSingleItemMap
     }
 
     fun modifyDateToDayToDo(modifyIndex:Int, modifyItem:ItemDate){

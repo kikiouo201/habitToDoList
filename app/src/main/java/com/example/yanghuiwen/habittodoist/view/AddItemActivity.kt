@@ -34,7 +34,7 @@ class AddItemActivity : AppCompatActivity() {
         var addItemDate = ItemDate()
         var modifyItemIndex = -1
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val project = arrayListOf("", "日文", "程式")
+        val project = arrayListOf("無", "日文", "程式")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
         spinner.adapter = adapter
         addItemDate.project = project[0]
@@ -232,7 +232,7 @@ class AddItemActivity : AppCompatActivity() {
                 "null" -> {
                    when(addToDoName){
                         "無" -> {
-                            AllItemData.setNotTimeToDo(addItemDate)
+                            AllItemData.setSingleItem(addItemDate)
                         }
                         "日" -> {
                             AllItemData.setDateToDayToDo(addItemDate)
@@ -250,7 +250,7 @@ class AddItemActivity : AppCompatActivity() {
 
                 }
                 "notTimeToDo" -> {
-                    AllItemData.modifyNotTimeToDo(modifyItemIndex,addItemDate)
+                    AllItemData.modifySingleItem(modifyItemIndex,addItemDate)
                 }
                 "habitToDo" -> {
                     //AllItemData.habitToDo.removeAt(modifyItemIndex)
@@ -276,7 +276,7 @@ class AddItemActivity : AppCompatActivity() {
             if(modifyItemIndex != -1){
                 when (modifyToDoName) {
                     "notTimeToDo" -> {
-                        AllItemData.deleteNotTimeToDo(modifyItemIndex)
+                        AllItemData.deleteSingleItem(modifyItemIndex)
                     }
                     "habitToDo" -> {
                         AllItemData.habitToDo.removeAt(modifyItemIndex)

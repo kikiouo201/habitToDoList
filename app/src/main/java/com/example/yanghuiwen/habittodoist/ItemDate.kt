@@ -20,7 +20,7 @@ data class ItemDate(
         var important:Int = 0,
         var urgent:Int = 0,
         var week:Int = 0,
-        var project:String = "",
+        var project:String = "無",
         var repeat:Boolean = false,
         var timeType:Int = 1,
         var startDate:String = "",
