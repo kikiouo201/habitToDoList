@@ -47,14 +47,23 @@ class ProjectSortSingleItem<T>(context: Context, data: Map<String, ArrayList<Ite
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.i("ProjectSortSingleItem","projectNames.size"+projectNames.size)
-        Log.i("ProjectSortSingleItem","projectNames[position]"+projectNames[position])
+       // Log.i("ProjectSortSingleItem","projectNames.size"+projectNames.size)
+       // Log.i("ProjectSortSingleItem","projectNames[position]"+projectNames[position])
         val  projectName=  projectNames[position]
         holder.projectName.text = projectName
 
         var todayList: SingleItem<String>?  = null
         todayList = mData.get(projectName)?.let { SingleItem(context, it,toDoName ) }
         holder.mRecyclerView.adapter = todayList
+        holder.isDisplay.setOnClickListener{
+            if(holder.mRecyclerView.visibility == View.GONE){
+                holder.mRecyclerView.visibility =View.VISIBLE
+
+            }else{
+                holder.mRecyclerView.visibility = View.GONE
+            }
+
+        }
 //        holder.projectName.setOnClickListener {
 //            startAddItemActivity(context,mData[position] , toDoName)
 //        }

@@ -37,7 +37,7 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
 
     fun chooseThisPage(){
         var todayList: ProjectSortSingleItem<String>?  = null
-        todayList = ProjectSortSingleItem(context,AllItemData.getSingleItem(),"notTimeToDo")
+        todayList = ProjectSortSingleItem(context,AllItemData.getSingleItem(),"singleItemToDo")
         mRecyclerView.adapter = todayList
     }
     fun refreshView() {

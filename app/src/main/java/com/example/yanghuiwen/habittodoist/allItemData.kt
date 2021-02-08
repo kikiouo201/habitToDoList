@@ -127,29 +127,6 @@ object AllItemData {
         }
         todayToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
-        //  singleItem 單項
-//        singleItemReference = database.getReference("user/singleItem/")
-//        val notTimePostListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (ItemSnapshot in dataSnapshot.children) {
-//                    var itemDate= ItemSnapshot.getValue<ItemDate>()
-//                    nowNotTimeToDoIndex = ItemSnapshot.key.toString()
-//                    notTimeToDoMap.put(nowNotTimeToDoIndex.toInt(),itemDate)
-//                    Log.i("AllItemData"," notTimeToDo"+  nowNotTimeToDoIndex)
-//                    Log.i("AllItemData","itemData.name"+itemDate?.name)
-////                    if (itemDate != null) {
-////                        notTimeToDo.add(itemDate)
-////                    }
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        }
-//        singleItemReference.addValueEventListener(notTimePostListener)
 
 
 
@@ -202,9 +179,13 @@ object AllItemData {
 
     }
     fun deleteSingleItem(deleteIndex:Int){
-        val notTimeToDo = database.getReference("user/notTimeToDo/")
-        notTimeToDo.child(deleteIndex.toString()).removeValue()
-        notTimeToDoMap.remove(deleteIndex)
+//        val itemDate=allToDoMap[deleteIndex]
+//        val projectName = itemDate?.project
+//        val projectItems = notEndSingleItemMap.get(projectName)
+//        if (projectItems != null) {
+//            projectItems.remove(deleteIndex)
+//        }
+        deleteAllItem(deleteIndex)
 
     }
     fun setSingleItem(AddItem:ItemDate) {
