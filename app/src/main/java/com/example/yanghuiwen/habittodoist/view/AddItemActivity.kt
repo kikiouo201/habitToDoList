@@ -210,10 +210,10 @@ class AddItemActivity : AppCompatActivity() {
 
             if(addToDoName !="日"){
 
-                addItemDate.startDate = ""
-                addItemDate.endDate = ""
-                addItemDate.startTime = ""
-                addItemDate.endTime = ""
+                addItemDate.startDate = "無"
+                addItemDate.endDate = "無"
+                addItemDate.startTime = "無"
+                addItemDate.endTime = "無"
             }
             Log.i("AddItemActivity","addToDoName  i${ i.toInt()}")
         })

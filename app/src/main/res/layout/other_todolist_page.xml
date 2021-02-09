@@ -28,12 +28,13 @@
                         app:srcCompat="@android:drawable/arrow_down_float" />
 
 
-                    <ImageButton
-                        android:id="@+id/imageButton"
+                    <Button
+                        android:id="@+id/sort"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+                        android:text="專案"
+                        />
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"

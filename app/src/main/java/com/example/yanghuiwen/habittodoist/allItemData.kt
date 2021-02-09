@@ -220,6 +220,58 @@ object AllItemData {
        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
     }
+    fun getImportantSingleItem():Map<String, ArrayList<ItemDate>> {
+
+        var singleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+
+        for ((key,itemIndexs)in notEndSingleItemMap){
+            val itemDates = ArrayList<ItemDate>()
+            for (itemIndex in itemIndexs) {
+                var nowItemDate = allToDoMap.get(itemIndex.toInt())
+                if (nowItemDate != null) {
+                    if(singleItemMap.get(nowItemDate.important.toString()) != null){
+                        val endSingleItem =singleItemMap.get(nowItemDate.important.toString())
+                        endSingleItem?.add(nowItemDate)
+                    }else{
+                        val endSingleItem =ArrayList<ItemDate>()
+                        endSingleItem?.add(nowItemDate)
+                        singleItemMap.put(nowItemDate.important.toString(),endSingleItem)
+                    }
+                    itemDates.add(nowItemDate)
+                }
+            }
+
+        }
+
+        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
+        return singleItemMap
+    }
+    fun getTimeSingleItem():Map<String, ArrayList<ItemDate>> {
+
+        var singleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+
+        for ((key,itemIndexs)in notEndSingleItemMap){
+            val itemDates = ArrayList<ItemDate>()
+            for (itemIndex in itemIndexs) {
+                var nowItemDate = allToDoMap.get(itemIndex.toInt())
+                if (nowItemDate != null) {
+                    if(singleItemMap.get(nowItemDate.startDate) != null){
+                        val endSingleItem =singleItemMap.get(nowItemDate.startDate)
+                        endSingleItem?.add(nowItemDate)
+                    }else{
+                        val endSingleItem =ArrayList<ItemDate>()
+                        endSingleItem?.add(nowItemDate)
+                        singleItemMap.put(nowItemDate.startDate,endSingleItem)
+                    }
+                    itemDates.add(nowItemDate)
+                }
+            }
+
+        }
+
+        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
+        return singleItemMap
+    }
 
     fun modifyDateToDayToDo(modifyIndex:Int, modifyItem:ItemDate){
         modifyAllItem(modifyIndex,modifyItem)

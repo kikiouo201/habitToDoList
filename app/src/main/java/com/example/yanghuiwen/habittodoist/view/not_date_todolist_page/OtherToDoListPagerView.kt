@@ -4,6 +4,9 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
@@ -25,21 +28,45 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
         mainPageList.add(ProjectSortSingleitemView(context))// 清單
         mainPageList.add(ProjectSortSingleitemView(context))// 習慣
 
+        var chooseSortItem = 0
+        val sortItem =arrayOf("專案","時間","重要性")
+        val sort= view.findViewById<Button>(R.id.sort)
 
-
-        var tabs= view.findViewById<TabLayout>(R.id.tabLayout)
+        val tabs= view.findViewById<TabLayout>(R.id.tabLayout)
         val page = view.findViewById<ViewPager>(R.id.pager)
         val mainPagerAdapter = PagerAdapter(mainPageList)
+
+        val notDate = mainPageList[0] as ProjectSortSingleitemView
+        sort.setOnClickListener {
+            chooseSortItem++
+            if(chooseSortItem == 3){
+                chooseSortItem = 0
+            }
+
+            Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+            sort.text = sortItem[chooseSortItem]
+            notDate.chooseSortPage(sortItem[chooseSortItem])
+        }
+
 
         // tab 的換頁
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Log.i("kiki","p0=${tab?.text}")
+                Log.i("OtherToDoListPagerView","p0=${tab?.text}")
                 if(tab != null){
                     when(tab.text){
                         "單項" -> {
-//                            val notDate = mainPageList[0] as NotDateToDoListView
-//                            notDate.chooseThisPage()
+                            val singleitemView = mainPageList[0] as ProjectSortSingleitemView
+                            sort.setOnClickListener {
+                                chooseSortItem++
+                                if(chooseSortItem == 3){
+                                    chooseSortItem = 0
+                                }
+
+                               // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+                                sort.text = sortItem[chooseSortItem]
+                                singleitemView.chooseSortPage(sortItem[chooseSortItem])
+                            }
                         }
                         "清單" -> {
 

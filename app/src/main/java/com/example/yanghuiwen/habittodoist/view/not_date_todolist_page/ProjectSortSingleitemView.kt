@@ -10,8 +10,10 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.AllItemData
+import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.item_sample.ProjectSortSingleItem
+import java.util.ArrayList
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -23,7 +25,7 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
 
     init {
 
-        Log.i("NotDateToDoListView","im create yoooo")
+        //Log.i("projectSortSingleitem","im create yoooo")
         //設定 RecyclerView
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         mRecyclerView.layoutManager = layoutManager
@@ -32,8 +34,28 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
         addView(view)
     }
 
+    fun chooseSortPage(chooseSort:String){
+        var singleItemData= AllItemData.getProjectSingleItem()
+
+        Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
+        when(chooseSort){
+            "專案" ->{
+                singleItemData= AllItemData.getProjectSingleItem()
+            }
+            "時間" ->{
+                singleItemData= AllItemData.getTimeSingleItem()
+            }
+            "重要性" ->{
+                singleItemData= AllItemData.getImportantSingleItem()
+            }
+        }
+        var todayList: ProjectSortSingleItem<String>?  = null
+        todayList = ProjectSortSingleItem(context,singleItemData,"singleItemToDo")
+        mRecyclerView.adapter = todayList
+    }
 
     fun chooseThisPage(){
+
         var todayList: ProjectSortSingleItem<String>?  = null
         todayList = ProjectSortSingleItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
         mRecyclerView.adapter = todayList
