@@ -17,7 +17,7 @@ import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
-class ProjectSortSingleItem<T>(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) : RecyclerView.Adapter<ProjectSortSingleItem<T>.ViewHolder>() {
+class SortSingleItem<T>(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) : RecyclerView.Adapter<SortSingleItem<T>.ViewHolder>() {
     var mData:Map<String, ArrayList<ItemDate>> = sortedMapOf<String, ArrayList<ItemDate>>()
     var projectNames:MutableList<String> =mData.keys.toMutableList()
     var toDoName = toDoName
@@ -43,13 +43,13 @@ class ProjectSortSingleItem<T>(context: Context, data: Map<String, ArrayList<Ite
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // Log.i("ProjectSortSingleItem","projectNames.size"+projectNames.size)
-        // Log.i("ProjectSortSingleItem","projectNames[position]"+projectNames[position])
+       // Log.i("ProjectSortSingleItem","projectNames.size"+projectNames.size)
+       // Log.i("ProjectSortSingleItem","projectNames[position]"+projectNames[position])
         val  projectName=  projectNames[position]
         holder.projectName.text = projectName
 
-        var todayList: ProjectSingleItem<String>?  = null
-        todayList = mData.get(projectName)?.let { ProjectSingleItem(context, it,toDoName ) }
+        var todayList: SingleItem<String>?  = null
+        todayList = mData.get(projectName)?.let { SingleItem(context, it,toDoName ) }
         holder.mRecyclerView.adapter = todayList
         holder.isDisplay.setOnClickListener{
 

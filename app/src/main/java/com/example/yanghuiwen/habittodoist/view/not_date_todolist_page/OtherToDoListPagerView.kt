@@ -5,8 +5,6 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
@@ -24,19 +22,19 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
         mainPageList = ArrayList()
 
-        mainPageList.add(ProjectSortSingleitemView(context))// 單項
+        mainPageList.add(SortSingleitemView(context))// 單項
         mainPageList.add(ProjectSortSingleitemView(context))// 清單
-        mainPageList.add(ProjectSortSingleitemView(context))// 習慣
+        mainPageList.add(SortSingleitemView(context))// 習慣
 
         var chooseSortItem = 0
-        val sortItem =arrayOf("專案","時間","重要性")
+        val sortSingleItem =arrayOf("專案","時間","重要性")
         val sort= view.findViewById<Button>(R.id.sort)
 
         val tabs= view.findViewById<TabLayout>(R.id.tabLayout)
         val page = view.findViewById<ViewPager>(R.id.pager)
         val mainPagerAdapter = PagerAdapter(mainPageList)
 
-        val notDate = mainPageList[0] as ProjectSortSingleitemView
+        val notDate = mainPageList[0] as SortSingleitemView
         sort.setOnClickListener {
             chooseSortItem++
             if(chooseSortItem == 3){
@@ -44,8 +42,8 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
             }
 
             Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-            sort.text = sortItem[chooseSortItem]
-            notDate.chooseSortPage(sortItem[chooseSortItem])
+            sort.text = sortSingleItem[chooseSortItem]
+            notDate.chooseSortPage(sortSingleItem[chooseSortItem])
         }
 
 
@@ -56,7 +54,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                 if(tab != null){
                     when(tab.text){
                         "單項" -> {
-                            val singleitemView = mainPageList[0] as ProjectSortSingleitemView
+                            val singleitemView = mainPageList[0] as SortSingleitemView
                             sort.setOnClickListener {
                                 chooseSortItem++
                                 if(chooseSortItem == 3){
@@ -64,11 +62,22 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                                 }
 
                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-                                sort.text = sortItem[chooseSortItem]
-                                singleitemView.chooseSortPage(sortItem[chooseSortItem])
+                                sort.text = sortSingleItem[chooseSortItem]
+                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
                             }
                         }
                         "清單" -> {
+                            val singleitemView = mainPageList[1] as ProjectSortSingleitemView
+                            sort.setOnClickListener {
+                                chooseSortItem++
+                                if(chooseSortItem == 3){
+                                    chooseSortItem = 0
+                                }
+
+                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+                                sort.text = sortSingleItem[chooseSortItem]
+                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
+                            }
 
                         }
                         "習慣" -> {
@@ -109,11 +118,16 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
     }
 
     fun chooseThisPage(){
-        for (i in 0..2){
-            val notDate = mainPageList[i] as ProjectSortSingleitemView
-            notDate.chooseThisPage()
-        }
-
+//        for (i in 0..2){
+//            val notDate = mainPageList[i] as ProjectSortSingleitemView
+//            notDate.chooseThisPage()
+//        }
+        val notDate1 = mainPageList[0] as SortSingleitemView
+        notDate1.chooseThisPage()
+        val notDate2 = mainPageList[1] as ProjectSortSingleitemView
+        notDate2.chooseThisPage()
+        val notDate3 = mainPageList[2] as SortSingleitemView
+        notDate3.chooseThisPage()
 
     }
     fun refreshView() {

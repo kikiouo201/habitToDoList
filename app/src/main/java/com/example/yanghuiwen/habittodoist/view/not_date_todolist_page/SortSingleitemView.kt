@@ -11,12 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.R
-import com.example.yanghuiwen.habittodoist.view.item_sample.ProjectSortSingleItem
 import com.example.yanghuiwen.habittodoist.view.item_sample.SortSingleItem
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
+class SortSingleitemView(context: Context) : RelativeLayout(context){
     val view = LayoutInflater.from(context).inflate(R.layout.to_do_list, null)
     val layoutManager = LinearLayoutManager(context)
     val mRecyclerView = view.findViewById<View>(R.id.toDoList) as RecyclerView
@@ -48,15 +47,15 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
                 singleItemData= AllItemData.getImportantSingleItem()
             }
         }
-        var todayList: ProjectSortSingleItem<String>?  = null
-        todayList = ProjectSortSingleItem(context,singleItemData,"singleItemToDo")
+        var todayList: SortSingleItem<String>?  = null
+        todayList = SortSingleItem(context,singleItemData,"singleItemToDo")
         mRecyclerView.adapter = todayList
     }
 
     fun chooseThisPage(){
 
-        var todayList: ProjectSortSingleItem<String>?  = null
-        todayList = ProjectSortSingleItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
+        var todayList: SortSingleItem<String>?  = null
+        todayList = SortSingleItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
         mRecyclerView.adapter = todayList
     }
     fun refreshView() {
