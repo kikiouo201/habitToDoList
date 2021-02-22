@@ -16,6 +16,7 @@ object AllItemData {
     val database = Firebase.database
     private lateinit var allItemReference: DatabaseReference
     private lateinit var todayToDoItemReference: DatabaseReference
+    private lateinit var habitToDoItemReference: DatabaseReference
     private lateinit var singleItemReference: DatabaseReference
 
     var allToDoMap = sortedMapOf<Int, ItemDate?>()
@@ -31,8 +32,13 @@ object AllItemData {
     var endSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
     var notEndSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
 
+    //習慣
+    val habitToDoItem = mutableSetOf<String>()
+    var habitToDo = ArrayList<ItemDate>()
 
-    val habitToDo = ArrayList<ItemDate>()
+
+
+
     var nowHabitToDoIndex = ""
     val scheduleToDo = ArrayList<ItemDate>()
     var nowScheduleToDoIndex = ""
@@ -128,6 +134,27 @@ object AllItemData {
         todayToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
 
+        // habitToDoItem 所有單項
+        habitToDoItemReference = database.getReference("user/habitToDoItem/")
+        val habitToDoItemPostListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (ItemSnapshot in dataSnapshot.children) {
+                    var itemDate= ItemSnapshot.getValue<String>()
+                    if (itemDate != null) {
+                        habitToDoItem.add(itemDate)
+                    }
+                }
+//                Log.i("AllItemData","allToDoMap="+allToDoMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        habitToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
 
     }
@@ -315,13 +342,45 @@ object AllItemData {
     }
 
     fun getDateHabitToDo():ArrayList<ItemDate>{
-        var DateHabitToDo = ArrayList<ItemDate>()
-        for(i in 0..habitToDo.size-1){
-            if(currentDate.equals(habitToDo[i].startDate)){
-                DateHabitToDo.add(habitToDo[i])
+
+        habitToDo = ArrayList<ItemDate>()
+
+        for (itemIndex in habitToDoItem){
+            var nowItemDate = allToDoMap.get(itemIndex.toInt())
+            // Log.i("AllItemData","nowItemDate="+nowItemDate)
+            if(currentDate.equals(nowItemDate?.startDate)){
+                if (nowItemDate != null) {
+                    habitToDo.add(nowItemDate)
+                }
             }
         }
-        return DateHabitToDo
+        //  Log.i("AllItemData","todayToDo="+todayToDo)
+        return habitToDo
+
+    }
+    fun setDateHabitToDo(AddItem:ItemDate){
+        var addItemIndex= setAllItem(AddItem)
+        habitToDoItem.add(addItemIndex.toString())
+
+        val habitToDo = database.getReference("user/habitToDoItem/")
+//        if(!nowTodayToDoIndex.equals("")){
+//            val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
+        //上傳firebase
+        habitToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
+        //    Log.i("AllItemData","setDateToDayToDo")
+//        }
+
+    }
+    fun modifyDateHabitToDo(modifyIndex:Int, modifyItem:ItemDate){
+        modifyAllItem(modifyIndex,modifyItem)
+        // Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
+    }
+    fun deleteDateHabitToDo(deleteIndex:Int){
+        deleteAllItem(deleteIndex)
+        val habitToDo = database.getReference("user/habitToDoItem/")
+        habitToDo.child(deleteIndex.toString()).removeValue()
+        habitToDoItem.remove(deleteIndex.toString())
+        //   Log.i("AllItemData","delete todayToDoItem=${todayToDoItem}")
     }
 
 
