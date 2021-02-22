@@ -245,15 +245,6 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addHabit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:clickable="true"
-            app:fabSize="mini"
-            app:srcCompat="@android:drawable/ic_menu_add" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -261,7 +252,16 @@
             android:layout_marginBottom="5dp"
             android:clickable="true"
             app:fabSize="mini"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            app:srcCompat="@drawable/list_text" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addHabit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/cycle" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add"
             android:layout_width="wrap_content"

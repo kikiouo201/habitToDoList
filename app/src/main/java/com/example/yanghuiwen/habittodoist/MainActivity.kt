@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
@@ -100,16 +101,15 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
         addItemFab.setOnClickListener { view ->
-        var habitToDoDialogFragment = AddHabitToDoDialogFragment()
-            habitToDoDialogFragment.setOnHeadlineSelectedListener(this)
             supportFragmentManager.let {
-                habitToDoDialogFragment.show(it, "")
+
+                startActivity(Intent(this, AddItemActivity::class.java))
             }
         }
         addItemFab.hide()
         val addHabitFab: FloatingActionButton = findViewById(R.id.addHabit)
         addHabitFab.setOnClickListener { view ->
-            startActivity(Intent(MainActivity@this, AddItemActivity::class.java))
+            startActivity(Intent(this, AddHabitActivity::class.java))
         }
         addHabitFab.hide()
         val addFab: FloatingActionButton = findViewById(R.id.add)
