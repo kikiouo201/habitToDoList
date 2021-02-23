@@ -192,66 +192,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TableLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/monthRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/addDateOfMonth"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/add" />
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <Button
-                        android:id="@+id/button2"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:text="1 月 13 日" />
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/minus" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" >
-
-                    <Button
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:text="13 號" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/minus" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" >
-
-                    <ImageView
-                        android:layout_width="250dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/add" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </TableLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/yearGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/yearRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/addDateOfYear"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/add" />
+
+        </LinearLayout>
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"

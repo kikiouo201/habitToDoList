@@ -6,14 +6,19 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AddHabitActivity : AppCompatActivity() {
 
@@ -88,6 +93,8 @@ class AddHabitActivity : AppCompatActivity() {
         weekGroup.setVisibility(View.GONE)
         val monthGroup =findViewById<LinearLayout>(R.id.monthGroup)
         monthGroup.setVisibility(View.GONE)
+        val yearGroup =findViewById<LinearLayout>(R.id.yearGroup)
+        yearGroup.setVisibility(View.GONE)
         val dayNumSpinner =findViewById<Spinner>(R.id.dayNumSpinner)
         val adapter = ArrayAdapter.createFromResource(this, R.array.dayNum, android.R.layout.simple_spinner_dropdown_item)
         dayNumSpinner.adapter = adapter
@@ -111,12 +118,14 @@ class AddHabitActivity : AppCompatActivity() {
                     dayGroup.setVisibility(View.VISIBLE)
                     weekGroup.setVisibility(View.GONE)
                     monthGroup.setVisibility(View.GONE)
+                    yearGroup.setVisibility(View.GONE)
                 }
                 "週" -> {
 
                     dayGroup.setVisibility(View.GONE)
                     weekGroup.setVisibility(View.VISIBLE)
                     monthGroup.setVisibility(View.GONE)
+                    yearGroup.setVisibility(View.GONE)
 
                     addItemDate.repeat = false
 
@@ -134,9 +143,49 @@ class AddHabitActivity : AppCompatActivity() {
                     dayGroup.setVisibility(View.GONE)
                     weekGroup.setVisibility(View.GONE)
                     monthGroup.setVisibility(View.VISIBLE)
+                    yearGroup.setVisibility(View.GONE)
+                    var dateArrayList =ArrayList<String>()
+                    dateArrayList.add("1 號")
+                    dateArrayList.add("13 號")
+                    var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
+                    val monthLayoutManager = LinearLayoutManager(this)
+                    monthLayoutManager.orientation = LinearLayoutManager.VERTICAL
+                    var dateOfMonthRecyclerView:RecyclerView?  = findViewById<View>(R.id.monthRecyclerView) as RecyclerView
+                    dateOfMonthRecyclerView?.layoutManager = monthLayoutManager
+                    dateOfMonthRecyclerView?.adapter = dateList
+
+                    val addDateOfMonth = findViewById<ImageView>(R.id.addDateOfMonth)
+                    addDateOfMonth.setOnClickListener {
+                        dateArrayList.add("24 號")
+                        if (dateList != null) {
+                            dateList.notifyDataSetChanged()
+                        }
+                    }
+
 
                 }
                 "年" -> {
+                    dayGroup.setVisibility(View.GONE)
+                    weekGroup.setVisibility(View.GONE)
+                    monthGroup.setVisibility(View.GONE)
+                    yearGroup.setVisibility(View.VISIBLE)
+                    var dateArrayList =ArrayList<String>()
+                    dateArrayList.add("01/24")
+                    dateArrayList.add("02/12")
+                    var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
+                    val yearLayoutManager = LinearLayoutManager(this)
+                    yearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+                    var dateOfYearRecyclerView:RecyclerView?  = findViewById<View>(R.id.yearRecyclerView) as RecyclerView
+                    dateOfYearRecyclerView?.layoutManager = yearLayoutManager
+                    dateOfYearRecyclerView?.adapter = dateList
+
+                    val addDateOfYear = findViewById<ImageView>(R.id.addDateOfYear)
+                    addDateOfYear.setOnClickListener {
+                        dateArrayList.add("02/24")
+                        if (dateList != null) {
+                            dateList.notifyDataSetChanged()
+                        }
+                    }
 
                 }
             }
@@ -265,6 +314,47 @@ class AddHabitActivity : AppCompatActivity() {
         }
 
     }
+
+
+
+
+    inner class AddDayItem<T>(data: ArrayList<String>) : RecyclerView.Adapter<AddDayItem<T>.ViewHolder>() {
+        var dateData: ArrayList<String> = ArrayList()
+
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var date: Button
+            var minus: ImageView
+            init {
+                date = itemView.findViewById<View>(R.id.date) as Button
+                minus= itemView.findViewById<View>(R.id.minus) as ImageView
+
+            }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.add_day, parent, false)
+            return ViewHolder(v)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+         holder.minus.setOnClickListener {
+             dateData.removeAt(position)
+             notifyDataSetChanged()
+         }
+            holder.date.text = dateData[position]
+
+        }
+
+        override fun getItemCount(): Int {
+            return dateData.size
+        }
+
+        init {
+            dateData = data
+        }
+    }
+
 
 
 }
