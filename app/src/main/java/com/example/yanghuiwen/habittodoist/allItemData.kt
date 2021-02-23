@@ -134,15 +134,13 @@ object AllItemData {
 
 
         // habitToDoItem 所有單項
-        habitToDoItemReference = database.getReference("user/habitToDoItem/")
+        habitToDoItemReference = database.getReference("user/allHabit/")
         val habitToDoItemPostListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for (ItemSnapshot in dataSnapshot.children) {
-                    var itemDate= ItemSnapshot.getValue<String>()
-                    if (itemDate != null) {
-                        habitToDoItem.add(itemDate)
-                    }
+                    val itemIndex = ItemSnapshot.key.toString()
+                    lastallHabitIndex = itemIndex
                 }
 //                Log.i("AllItemData","allToDoMap="+allToDoMap)
             }
@@ -153,7 +151,7 @@ object AllItemData {
                 // ...
             }
         }
-        habitToDoItemReference.addValueEventListener(todayToDoItemPostListener)
+        habitToDoItemReference.addValueEventListener(habitToDoItemPostListener)
 
 
     }
@@ -338,7 +336,7 @@ object AllItemData {
             var nowItemDate = allToDoMap.get(itemIndex.toInt())
           // Log.i("AllItemData","nowItemDate="+nowItemDate)
             if(currentDate.equals(nowItemDate?.startDate)){
-                if (nowItemDate != null) {
+                if (nowItemDate != null && !nowItemDate.isHabit) {
                     todayToDo.add(nowItemDate)
                 }
             }
@@ -346,7 +344,7 @@ object AllItemData {
       //  Log.i("AllItemData","todayToDo="+todayToDo)
         return todayToDo
     }
-    fun setDateToDayToDo(AddItem:ItemDate){
+    fun setDateToDayToDo(AddItem:ItemDate):Int{
         var addItemIndex= setAllItem(AddItem)
         todayToDoItem.add(addItemIndex.toString())
 
@@ -357,23 +355,25 @@ object AllItemData {
             todayToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
         //    Log.i("AllItemData","setDateToDayToDo")
 //        }
-
+        return addItemIndex
     }
 
     fun getDateHabitToDo():ArrayList<ItemDate>{
 
         habitToDo = ArrayList<ItemDate>()
 
-        for (itemIndex in habitToDoItem){
+
+        for (itemIndex in todayToDoItem){
             var nowItemDate = allToDoMap.get(itemIndex.toInt())
             // Log.i("AllItemData","nowItemDate="+nowItemDate)
             if(currentDate.equals(nowItemDate?.startDate)){
-                if (nowItemDate != null) {
-                    habitToDo.add(nowItemDate)
+                if (nowItemDate != null && nowItemDate.isHabit) {
+                    habitToDo .add(nowItemDate)
                 }
             }
         }
         //  Log.i("AllItemData","todayToDo="+todayToDo)
+
         return habitToDo
 
     }

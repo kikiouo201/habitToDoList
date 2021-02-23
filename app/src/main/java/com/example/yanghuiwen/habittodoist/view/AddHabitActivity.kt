@@ -17,6 +17,7 @@ import com.example.yanghuiwen.habittodoist.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,7 +31,7 @@ class AddHabitActivity : AppCompatActivity() {
 
         var addToDoName = ""
         var modifyToDoName = "null"
-        var addItemDate = ItemDate()
+        var addHabitDate = HabitDate()
 
         //start日期
         val startDate = findViewById<Button>(R.id.startDate)
@@ -39,7 +40,7 @@ class AddHabitActivity : AppCompatActivity() {
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateFormatted = currentDate.format(dateFormatter)
         startDate.setText(dateFormatted)
-        addItemDate.startDate = dateFormatted
+        addHabitDate.startDate = dateFormatted
         startDate.setOnClickListener{
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -51,13 +52,18 @@ class AddHabitActivity : AppCompatActivity() {
                 val nowEndDates= endDate.text.split("-")
                 val nowEndDate = LocalDate.of(nowEndDates[0].toInt(),nowEndDates[1].toInt(),nowEndDates[2].toInt())
                 val chooseDate = LocalDate.of(year,monthOfYear+1,dayOfMonth)
-                val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                var chooseTime =""
+                if(monthOfYear+1<10){
+                    chooseTime ="${year}-0${monthOfYear+1}-${dayOfMonth}"
+                }else{
+                    chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                }
                 if(chooseDate.isAfter(nowEndDate)) {
                     endDate.setText(chooseTime)
                 }
 
                 startDate.setText(chooseTime)
-                addItemDate.startDate = chooseTime
+                addHabitDate.startDate = chooseTime
 
             }, year, month, day)
 
@@ -69,7 +75,7 @@ class AddHabitActivity : AppCompatActivity() {
         val endCurrentDate =currentDate.plusHours(1)
         val endDateFormatted = endCurrentDate.format(dateFormatter)
         endDate.setText(endDateFormatted)
-        addItemDate.endDate = endDateFormatted
+        addHabitDate.endDate = endDateFormatted
         endDate.setOnClickListener{
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
@@ -78,9 +84,15 @@ class AddHabitActivity : AppCompatActivity() {
 
 
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
-                startDate.setText(chooseTime)
-                addItemDate.endDate = chooseTime
+                var chooseTime =""
+                if(monthOfYear+1<10){
+                    chooseTime ="${year}-0${monthOfYear+1}-${dayOfMonth}"
+                }else{
+                    chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                }
+
+                endDate.setText(chooseTime)
+                addHabitDate.endDate = chooseTime
 
             }, year, month, day)
 
@@ -95,22 +107,28 @@ class AddHabitActivity : AppCompatActivity() {
         monthGroup.setVisibility(View.GONE)
         val yearGroup =findViewById<LinearLayout>(R.id.yearGroup)
         yearGroup.setVisibility(View.GONE)
+        var chooseDayInterval = 1
         val dayNumSpinner =findViewById<Spinner>(R.id.dayNumSpinner)
         val adapter = ArrayAdapter.createFromResource(this, R.array.dayNum, android.R.layout.simple_spinner_dropdown_item)
+        dayNumSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                chooseDayInterval = pos+1
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+        }
         dayNumSpinner.adapter = adapter
 
         //Time
         val times =intArrayOf(R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
         val timeGroup = findViewById<RadioGroup>(R.id.timeGroup)
         val dayTime = findViewById<RadioButton>(R.id.dayTime)
+        var chooseWeek = arrayListOf<Int>()
         addToDoName = "日"
         dayTime.isChecked = true
-        addItemDate.timeType = 0
         timeGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             addToDoName = radio.text.toString()
-            val groupIndex =  timeGroup.indexOfChild(radio)
-            addItemDate.timeType = groupIndex
 
             when(addToDoName){
                 "日" -> {
@@ -127,14 +145,14 @@ class AddHabitActivity : AppCompatActivity() {
                     monthGroup.setVisibility(View.GONE)
                     yearGroup.setVisibility(View.GONE)
 
-                    addItemDate.repeat = false
+
 
                     val weeks =intArrayOf(R.id.week1,R.id.week2,R.id.week3,R.id.week4,R.id.week5,R.id.week6,R.id.week7)
                     for(i in 0..6){
 
                         val week = findViewById<Button>(weeks[i])
                         week.setOnClickListener{
-                            addItemDate.week = i+1
+                            chooseWeek.add(i+1)
                         }
 
                     }
@@ -145,8 +163,8 @@ class AddHabitActivity : AppCompatActivity() {
                     monthGroup.setVisibility(View.VISIBLE)
                     yearGroup.setVisibility(View.GONE)
                     var dateArrayList =ArrayList<String>()
-                    dateArrayList.add("1 號")
-                    dateArrayList.add("13 號")
+                    dateArrayList.add("1")
+                    dateArrayList.add("13")
                     var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
                     val monthLayoutManager = LinearLayoutManager(this)
                     monthLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -156,7 +174,7 @@ class AddHabitActivity : AppCompatActivity() {
 
                     val addDateOfMonth = findViewById<ImageView>(R.id.addDateOfMonth)
                     addDateOfMonth.setOnClickListener {
-                        dateArrayList.add("24 號")
+                        dateArrayList.add("24")
                         if (dateList != null) {
                             dateList.notifyDataSetChanged()
                         }
@@ -190,19 +208,49 @@ class AddHabitActivity : AppCompatActivity() {
                 }
             }
 
-            if(addToDoName !="日"){
-
-                addItemDate.startDate = "無"
-                addItemDate.endDate = "無"
-                addItemDate.startTime = "無"
-                addItemDate.endTime = "無"
-            }
-            Log.i("AddHabitActivity","addToDoName  i${ i.toInt()}")
         })
 
 
+        //重要
+        val importants =intArrayOf(R.id.important5,R.id.important4,R.id.important3,R.id.important2,R.id.important1)
+        val importantGroup = findViewById<RadioGroup>(R.id.importantGroup)
+        val important3 = findViewById<RadioButton>(R.id.important3)
+        important3.isChecked = true
+        addHabitDate.important = 2
+        importantGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            val groupIndex = importantGroup.indexOfChild(radio)
+            addHabitDate.important  = groupIndex
+
+        })
 
 
+        //急
+        val urgents =intArrayOf(R.id.urgent5,R.id.urgent4,R.id.urgent3,R.id.urgent2,R.id.urgent1)
+        val urgent3 = findViewById<RadioButton>(R.id.urgent3)
+        urgent3.isChecked = true
+        addHabitDate.urgent = 2
+        val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
+        urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            val groupIndex = urgentGroup.indexOfChild(radio)
+            addHabitDate.urgent = groupIndex
+        })
+
+
+        //專案
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val project = arrayListOf("無", "日文", "程式")
+        val projectAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
+        spinner.adapter = projectAdapter
+        addHabitDate.project = project[0]
+        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                addHabitDate.project = project[pos]
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+        }
 
         //儲存
         val save = findViewById<Button>(R.id.save)
@@ -211,12 +259,44 @@ class AddHabitActivity : AppCompatActivity() {
         // val notTime =findViewById<CheckBox>(R.id.notTime)
         save.setOnClickListener{
 
-            addItemDate.name = name.text.toString()
-            Log.i("AddItemActivity", addItemDate.startDate)
-            val addHabitDate =HabitDate()
+            addHabitDate.name = name.text.toString()
+            Log.i("AddHabitActivity", addHabitDate.startDate)
+
             when(modifyToDoName){
                 "null" -> {
-                    AllItemData.setAllHabit(addHabitDate)
+                    when(addToDoName){
+                        "日" -> {
+                          val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                            val mStart = LocalDateTime.parse(addHabitDate.startDate+" 00:00:00",timeFormatter)
+                            val mEnd = LocalDateTime.parse(addHabitDate.endDate+" 00:00:00",timeFormatter)
+
+                            val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
+
+                            for (i in 0..difference step chooseDayInterval){
+                                var addItemDate =ItemDate()
+                                addItemDate.name = addHabitDate.name
+                                addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                                addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                                addItemDate.timeType =1
+                                addItemDate.repeat =addHabitDate.repeat
+                                addItemDate.isHabit = true
+                                var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+                                addHabitDate.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
+                                addHabitDate.notEndItem.add(addItemIndex.toString())
+                            }
+                        }
+                        "週" -> {
+
+                        }
+                        "月" -> {
+
+                        }
+                        "年" -> {
+
+                        }
+                    }
+
+                    AllItemData.setDateHabitToDo(addHabitDate)
                 }
                 "habitToDo" -> {
                     //AllItemData.habitToDo.removeAt(modifyItemIndex)

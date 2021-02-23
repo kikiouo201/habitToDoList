@@ -20,6 +20,7 @@ data class ItemDate(
         var endDate:String = "",
         var startTime:String = "",
         var endTime:String = "",
+        var isHabit:Boolean = false,
         var IsEndItem:Boolean = false
 
 

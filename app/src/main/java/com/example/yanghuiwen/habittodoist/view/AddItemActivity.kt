@@ -96,7 +96,7 @@ class AddItemActivity : AppCompatActivity() {
 
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
-                startDate.setText(chooseTime)
+                endDate.setText(chooseTime)
                 addItemDate.endDate = chooseTime
 
             }, year, month, day)
