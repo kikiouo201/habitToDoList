@@ -1,11 +1,9 @@
 package com.example.yanghuiwen.habittodoist
 
-import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import java.util.*
 import kotlin.collections.ArrayList
 
 object AllItemData {
@@ -25,6 +23,7 @@ object AllItemData {
     val todayToDoItem = mutableSetOf<String>()
     var nowTodayToDoIndex = ""
     var lastallItemIndex =""
+    var lastallHabitIndex = ""
     var todayToDo = ArrayList<ItemDate>()
 
 
@@ -200,6 +199,26 @@ object AllItemData {
         allToDoMap.remove(modifyIndex)
     }
 
+    // 上傳 AllHabit 到firebase
+    fun  setAllHabit(AddHabit:HabitDate):Int{
+        val allHabit = database.getReference("user/allHabit/")
+
+        if(!lastallHabitIndex.equals("")){
+            lastallHabitIndex = (lastallHabitIndex.toInt()+1).toString()
+        }else{
+            lastallHabitIndex = "1"
+        }
+        //上傳firebase
+        allHabit.child(lastallHabitIndex).setValue(AddHabit)
+        //存本地
+       // allToDoMap.put(lastallHabitIndex.toInt(),AddHabit)
+        return lastallHabitIndex.toInt()
+    }
+
+
+
+
+
     fun modifySingleItem(modifyIndex:Int, modifyItem:ItemDate){
       //  Log.i("AllItemData","modifySingleItem")
         modifyAllItem(modifyIndex,modifyItem)
@@ -358,17 +377,19 @@ object AllItemData {
         return habitToDo
 
     }
-    fun setDateHabitToDo(AddItem:ItemDate){
-        var addItemIndex= setAllItem(AddItem)
-        habitToDoItem.add(addItemIndex.toString())
+    fun setDateHabitToDo(AddHabit:HabitDate){
+        //拆成一個個 item
+        //更新addItemIndex
 
-        val habitToDo = database.getReference("user/habitToDoItem/")
-//        if(!nowTodayToDoIndex.equals("")){
-//            val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
-        //上傳firebase
-        habitToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
-        //    Log.i("AllItemData","setDateToDayToDo")
-//        }
+        //上傳到 firebase
+        var addHabitIndex= setAllHabit(AddHabit)
+      //  habitToDoItem.add(addHabitIndex.toString())
+
+
+//        val habitToDo = database.getReference("user/habitToDoItem/")
+//        //上傳firebase
+//        habitToDo.child(addHabitIndex.toString()).setValue(addHabitIndex.toString())
+
 
     }
     fun modifyDateHabitToDo(modifyIndex:Int, modifyItem:ItemDate){

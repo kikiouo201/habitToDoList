@@ -87,12 +87,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/notTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="無" />
+
             <RadioButton
                 android:id="@+id/dayTime"
                 android:layout_width="wrap_content"
@@ -192,6 +187,7 @@
 
 
         <LinearLayout
+            android:id="@+id/monthGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
