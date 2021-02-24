@@ -81,7 +81,17 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
                         }
                         "習慣" -> {
+                            val singleitemView = mainPageList[1] as ProjectSortSingleitemView
+                            sort.setOnClickListener {
+                                chooseSortItem++
+                                if(chooseSortItem == 3){
+                                    chooseSortItem = 0
+                                }
 
+                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+                                sort.text = sortSingleItem[chooseSortItem]
+                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
+                            }
                         }
                     }
                 }

@@ -18,6 +18,7 @@ object AllItemData {
     private lateinit var singleItemReference: DatabaseReference
 
     var allToDoMap = sortedMapOf<Int, ItemDate?>()
+    var allHabitToDoMap = sortedMapOf<Int, HabitDate?>()
 
     // 今天事項
     val todayToDoItem = mutableSetOf<String>()
@@ -139,8 +140,10 @@ object AllItemData {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for (ItemSnapshot in dataSnapshot.children) {
+                    var habitDate= ItemSnapshot.getValue<HabitDate>()
                     val itemIndex = ItemSnapshot.key.toString()
                     lastallHabitIndex = itemIndex
+                    allHabitToDoMap.put(lastallItemIndex.toInt(),habitDate)
                 }
 //                Log.i("AllItemData","allToDoMap="+allToDoMap)
             }
@@ -402,6 +405,23 @@ object AllItemData {
         habitToDo.child(deleteIndex.toString()).removeValue()
         habitToDoItem.remove(deleteIndex.toString())
         //   Log.i("AllItemData","delete todayToDoItem=${todayToDoItem}")
+    }
+
+
+    fun getHabitToDoList():ArrayList<HabitDate>{
+
+       val habitToDoList = ArrayList<HabitDate>()
+
+
+        for (itemIndex in allHabitToDoMap){
+            itemIndex.value?.let { habitToDoList.add(it) }
+            // Log.i("AllItemData","nowItemDate="+nowItemDate)
+
+        }
+        //  Log.i("AllItemData","todayToDo="+todayToDo)
+
+        return habitToDoList
+
     }
 
 
