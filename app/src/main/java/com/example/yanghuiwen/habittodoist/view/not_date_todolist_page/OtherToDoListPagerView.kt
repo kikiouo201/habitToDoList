@@ -24,7 +24,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
         mainPageList.add(SortSingleitemView(context))// 單項
         mainPageList.add(ProjectSortSingleitemView(context))// 清單
-        mainPageList.add(SortSingleitemView(context))// 習慣
+        mainPageList.add(ProjectSortHabitItemView(context))// 習慣
 
         var chooseSortItem = 0
         val sortSingleItem =arrayOf("專案","時間","重要性")
@@ -81,7 +81,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
                         }
                         "習慣" -> {
-                            val singleitemView = mainPageList[1] as ProjectSortSingleitemView
+                            val habitItemView = mainPageList[2] as ProjectSortHabitItemView
                             sort.setOnClickListener {
                                 chooseSortItem++
                                 if(chooseSortItem == 3){
@@ -90,7 +90,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
                                 // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
                                 sort.text = sortSingleItem[chooseSortItem]
-                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
+                                habitItemView.chooseSortPage(sortSingleItem[chooseSortItem])
                             }
                         }
                     }
@@ -136,7 +136,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
         notDate1.chooseThisPage()
         val notDate2 = mainPageList[1] as ProjectSortSingleitemView
         notDate2.chooseThisPage()
-        val notDate3 = mainPageList[2] as SortSingleitemView
+        val notDate3 = mainPageList[2] as ProjectSortHabitItemView
         notDate3.chooseThisPage()
 
     }

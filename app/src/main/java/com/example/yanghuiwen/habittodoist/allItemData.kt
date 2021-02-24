@@ -1,5 +1,6 @@
 package com.example.yanghuiwen.habittodoist
 
+import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -142,10 +143,12 @@ object AllItemData {
                 for (ItemSnapshot in dataSnapshot.children) {
                     var habitDate= ItemSnapshot.getValue<HabitDate>()
                     val itemIndex = ItemSnapshot.key.toString()
+
                     lastallHabitIndex = itemIndex
-                    allHabitToDoMap.put(lastallItemIndex.toInt(),habitDate)
+                    allHabitToDoMap.put(lastallHabitIndex.toInt(),habitDate)
+                    Log.i("AllItemData"," HabitToDoMap lastallItemIndex="+lastallHabitIndex.toInt())
                 }
-//                Log.i("AllItemData","allToDoMap="+allToDoMap)
+                Log.i("AllItemData"," first allHabitToDoMap="+allHabitToDoMap)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -318,6 +321,33 @@ object AllItemData {
 
         //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
+    }
+
+    fun getProjectHabitItem():Map<String, ArrayList<HabitDate>> {
+
+        var habitToDoMap = sortedMapOf<String, ArrayList<HabitDate>>()
+        Log.i("AllItemData","allHabitToDoMap=${allHabitToDoMap}")
+        for ((key,itemIndexs)in allHabitToDoMap){
+            val HabitDates = ArrayList<HabitDate>()
+
+
+                var nowItemDate = itemIndexs
+                if (nowItemDate != null) {
+                    if(habitToDoMap.get(nowItemDate.project) != null){
+                        val endSingleItem =habitToDoMap.get(nowItemDate.project)
+                        endSingleItem?.add(nowItemDate)
+                    }else{
+                        val endHabitItem =ArrayList<HabitDate>()
+                        endHabitItem?.add(nowItemDate)
+                        habitToDoMap.put(nowItemDate.project,endHabitItem)
+                    }
+                    HabitDates.add(nowItemDate)
+                }
+
+
+        }
+        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
+        return habitToDoMap
     }
 
     fun modifyDateToDayToDo(modifyIndex:Int, modifyItem:ItemDate){

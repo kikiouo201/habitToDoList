@@ -32,7 +32,7 @@ class AddHabitActivity : AppCompatActivity() {
         var addToDoName = ""
         var modifyToDoName = "null"
         var addHabitDate = HabitDate()
-
+        var modifyItemIndex = -1
         //start日期
         val startDate = findViewById<Button>(R.id.startDate)
         val endDate = findViewById<Button>(R.id.endDate)
@@ -335,9 +335,9 @@ class AddHabitActivity : AppCompatActivity() {
         }
 
         try{
-//            modifyToDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
-//            var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
-//            when (modifyToDoName){
+            modifyToDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
+            var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
+            when (modifyToDoName){
 //                "singleItemToDo" -> {
 //                    for ((key,todayToDo) in AllItemData.allToDoMap){
 //                        if(addName.equals(todayToDo?.name)){
@@ -354,21 +354,22 @@ class AddHabitActivity : AppCompatActivity() {
 //                    }
 ////
 //                }
-//                "habitToDo" ->{
-//                    AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
-//
-//                        if(addName.equals(habitToDo.name)){
-//                            name.setText(addName)
-//                            startDate.setText(habitToDo.startDate)
-//                            endDate.setText(habitToDo.endDate)
-//                            startTime.setText(habitToDo.startTime)
-//                            endTime.setText(habitToDo.endTime)
-//                            modifyItemIndex = index
-//                            addItemDate = habitToDo
-//
-//                        }
-//                    }
-//                }
+                "habitToDo" ->{
+                    for ((key,habitToDo) in AllItemData.allHabitToDoMap){
+                        if(addName.equals(habitToDo?.name)){
+                            name.setText(addName)
+                            startDate.setText(habitToDo?.startDate)
+                            endDate.setText(habitToDo?.endDate)
+
+//                            startTime.setText(todayToDo?.startTime)
+//                            endTime.setText(todayToDo?.endTime)
+                            modifyItemIndex = key
+                            if (habitToDo != null) {
+                                addHabitDate = habitToDo
+                            }
+                        }
+                    }
+                }
 //                "todayToDo" ->{
 //
 //                    for ((key,todayToDo) in AllItemData.allToDoMap){
@@ -385,7 +386,7 @@ class AddHabitActivity : AppCompatActivity() {
 //                        }
 //                    }
 //                }
-//            }
+            }
 
 
 

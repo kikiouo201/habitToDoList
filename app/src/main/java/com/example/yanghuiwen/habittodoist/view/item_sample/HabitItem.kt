@@ -18,7 +18,7 @@ import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
-class ProjectHabitItem<T>(context: Context, data: ArrayList<HabitDate>, toDoName :String) : RecyclerView.Adapter<ProjectHabitItem<T>.ViewHolder>() {
+class HabitItem<T>(context: Context, data: ArrayList<HabitDate>, toDoName :String) : RecyclerView.Adapter<HabitItem<T>.ViewHolder>() {
     var mData: ArrayList<HabitDate> = ArrayList()
     var toDoName = toDoName
     val context = context
