@@ -21,7 +21,8 @@ data class ItemDate(
         var startTime:String = "",
         var endTime:String = "",
         var isHabit:Boolean = false,
-        var IsEndItem:Boolean = false
+        var IsEndItem:Boolean = false,
+        var IsProhibitItem:Boolean = false
 
 
 )

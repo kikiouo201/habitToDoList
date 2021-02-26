@@ -1,10 +1,15 @@
 package com.example.yanghuiwen.habittodoist
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import kotlin.collections.ArrayList
 
 object AllItemData {
@@ -410,10 +415,41 @@ object AllItemData {
         return habitToDo
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     fun setDateHabitToDo(AddHabit:HabitDate){
         //拆成一個個 item
         //更新addItemIndex
+        when(AddHabit.timeType){
+            "日" -> {
+                val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val mStart = LocalDateTime.parse(AddHabit.startDate+" 00:00:00",timeFormatter)
+                val mEnd = LocalDateTime.parse(AddHabit.endDate+" 00:00:00",timeFormatter)
 
+                val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
+                for (i in 0..difference+1 step AddHabit.repeatCycle[0].toInt()){
+                    var addItemDate =ItemDate()
+                    addItemDate.name = AddHabit.name
+                    addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                    addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                    addItemDate.timeType = 1
+                    addItemDate.repeat =AddHabit.repeat
+                    addItemDate.isHabit = true
+                    var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+                    AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
+                    AddHabit.notEndItem.add(addItemIndex.toString())
+                }
+            }
+            "週" -> {
+
+            }
+            "月" -> {
+
+            }
+            "年" -> {
+
+            }
+        }
         //上傳到 firebase
         var addHabitIndex= setAllHabit(AddHabit)
       //  habitToDoItem.add(addHabitIndex.toString())
@@ -425,18 +461,59 @@ object AllItemData {
 
 
     }
-    fun modifyDateHabitToDo(modifyIndex:Int, modifyItem:ItemDate){
-        modifyAllItem(modifyIndex,modifyItem)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun modifyDateHabitToDo(modifyIndex:Int, modifyItem:HabitDate){
+        //把過去紀錄以外的紀錄刪除
+        val currentDate = LocalDateTime.now()
+        val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val nowDate = LocalDateTime.parse(currentDate.toString(),timeFormatter)
+        val startDate = LocalDateTime.parse(modifyItem.startDate+" 00:00:00",timeFormatter)
+        val endDate = LocalDateTime.parse(modifyItem.endDate+" 00:00:00",timeFormatter)
+
+        val nowToEndDateDifference = ChronoUnit.DAYS.between(nowDate, endDate).toInt()
+        Log.i("AllItemData","nowToEndDateDifference=${nowToEndDateDifference}")
+        if(nowToEndDateDifference>0){
+            //項目中有未來 可動
+            //刪掉未來的
+            for (notEndItemDate in modifyItem.notEndItem){
+                val notEndItem = allToDoMap[notEndItemDate.toInt()]
+                val notEndStartDate = LocalDateTime.parse(notEndItem?.startDate+" 00:00:00",timeFormatter)
+                val nowToNotEndDateDifference = ChronoUnit.DAYS.between(nowDate, notEndStartDate).toInt()
+                if(nowToNotEndDateDifference>0){
+                    //未來的項目
+                    modifyItem.notEndItem.remove(notEndItemDate)
+                }
+            }
+            //重新建未來的
+            addSingleItemOfHabit()
+
+        }
+
+       // modifyAllItem(modifyIndex,modifyItem)
         // Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
     }
     fun deleteDateHabitToDo(deleteIndex:Int){
-        deleteAllItem(deleteIndex)
-        val habitToDo = database.getReference("user/habitToDoItem/")
+        val notEndItems = allHabitToDoMap[deleteIndex]?.notEndItem
+        val endItems = allHabitToDoMap[deleteIndex]?.endItem
+        if (notEndItems != null) {
+            for( Items in notEndItems){
+                Log.i("AllItemData","notEndItems  Items=${Items}")
+                deleteAllItem(Items.toInt())
+            }
+        }
+        if (endItems != null) {
+            for( Items in endItems){
+                deleteAllItem(Items.toInt())
+            }
+        }
+        val habitToDo = database.getReference("user/allHabit/")
         habitToDo.child(deleteIndex.toString()).removeValue()
-        habitToDoItem.remove(deleteIndex.toString())
+        allHabitToDoMap.remove(deleteIndex)
         //   Log.i("AllItemData","delete todayToDoItem=${todayToDoItem}")
     }
+    fun addSingleItemOfHabit(){
 
+    }
 
     fun getHabitToDoList():ArrayList<HabitDate>{
 

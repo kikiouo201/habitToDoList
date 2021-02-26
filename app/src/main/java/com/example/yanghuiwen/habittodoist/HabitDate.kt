@@ -13,6 +13,8 @@ data class HabitDate(
         var urgent:Int = 0,
         var project:String = "無",
         var repeat:Boolean = false,
+        var timeType:String = "日",
+        var repeatCycle :ArrayList<String> = arrayListOf(),
         var allDate:ArrayList<String> = arrayListOf(),
         var notEndItem:ArrayList<String> = arrayListOf(),
         var endItem:ArrayList<String> = arrayListOf(),
