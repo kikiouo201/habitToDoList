@@ -448,10 +448,7 @@ object AllItemData {
                 val mEnd = LocalDateTime.parse(AddHabit.endDate+" 00:00:00",timeFormatter)
 
                 val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
-                val weeks = mStart.dayOfWeek.value
 
-                //重想加法
-                Log.i("AllItemData"," weeks=${ weeks}")
                 for (i in 0..difference){
                     for (j in 0..AddHabit.repeatCycle.size-1){
                         val mDate = mStart.plusDays(i.toLong())
@@ -473,10 +470,71 @@ object AllItemData {
 
             }
             "月" -> {
+                val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val mStart = LocalDateTime.parse(AddHabit.startDate+" 00:00:00",timeFormatter)
+                val mEnd = LocalDateTime.parse(AddHabit.endDate+" 00:00:00",timeFormatter)
 
+                val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
+
+                for (i in 0..difference){
+                    for (j in 0..AddHabit.repeatCycle.size-1){
+                        val mDate = mStart.plusDays(i.toLong())
+                        if(mDate.month.value == AddHabit.repeatCycle[j].toInt()){
+                            var addItemDate =ItemDate()
+                            addItemDate.name = AddHabit.name
+                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                            addItemDate.timeType = 2
+                            addItemDate.repeat =AddHabit.repeat
+                            addItemDate.isHabit = true
+                            addItemDate.IsProhibitItem =true
+                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+                            AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
+                            AddHabit.notEndItem.add(addItemIndex.toString())
+                        }
+                    }
+                }
             }
             "年" -> {
 
+                val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val mStart = LocalDateTime.parse(AddHabit.startDate+" 00:00:00",timeFormatter)
+                val mEnd = LocalDateTime.parse(AddHabit.endDate+" 00:00:00",timeFormatter)
+
+                val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
+
+                for (i in 0..difference){
+                    for (j in 0..AddHabit.repeatCycle.size-1){
+                        val mDate = mStart.plusDays(i.toLong())
+                        var chooseTime =""
+                        if(mDate.monthValue<10){
+                            chooseTime +="0${mDate.monthValue}"
+                        }else{
+                            chooseTime +="${mDate.monthValue}"
+                        }
+                        if (mDate.dayOfMonth<10){
+                            chooseTime +="-0${mDate.dayOfMonth}"
+                        }else{
+                            chooseTime +="-${mDate.dayOfMonth}"
+                        }
+                        Log.i("AllItemData","chooseTime=${chooseTime}")
+                        if(chooseTime == AddHabit.repeatCycle[j]){
+                            var addItemDate =ItemDate()
+                            addItemDate.name = AddHabit.name
+                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                            addItemDate.timeType = 2
+                            addItemDate.repeat =AddHabit.repeat
+                            addItemDate.isHabit = true
+                            addItemDate.IsProhibitItem =true
+                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+                            AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
+                            AddHabit.notEndItem.add(addItemIndex.toString())
+                        }
+                    }
+                }
             }
         }
         //上傳到 firebase

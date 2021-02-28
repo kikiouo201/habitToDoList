@@ -62,7 +62,7 @@ class AddHabitActivity : AppCompatActivity() {
                 }else{
                     chooseTime +="-${monthOfYear+1}"
                 }
-                if (dayOfMonth+1<10){
+                if (dayOfMonth<10){
                     chooseTime +="-0${dayOfMonth}"
                 }else{
                     chooseTime +="-${dayOfMonth}"
@@ -93,11 +93,16 @@ class AddHabitActivity : AppCompatActivity() {
 
 
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                var chooseTime =""
+                var chooseTime ="${year}"
                 if(monthOfYear+1<10){
-                    chooseTime ="${year}-0${monthOfYear+1}-${dayOfMonth}"
+                    chooseTime +="-0${monthOfYear+1}"
                 }else{
-                    chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                    chooseTime +="-${monthOfYear+1}"
+                }
+                if (dayOfMonth<10){
+                    chooseTime +="-0${dayOfMonth}"
+                }else{
+                    chooseTime +="-${dayOfMonth}"
                 }
 
                 endDate.setText(chooseTime)
@@ -204,6 +209,8 @@ class AddHabitActivity : AppCompatActivity() {
                     }
 
 
+
+
                 }
                 "年" -> {
                     dayGroup.setVisibility(View.GONE)
@@ -212,8 +219,6 @@ class AddHabitActivity : AppCompatActivity() {
                     yearGroup.setVisibility(View.VISIBLE)
                     addHabitDate.timeType = "年"
                     var dateArrayList =ArrayList<String>()
-                    dateArrayList.add("01/24")
-                    dateArrayList.add("02/12")
                     var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
                     val yearLayoutManager = LinearLayoutManager(this)
                     yearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -222,13 +227,37 @@ class AddHabitActivity : AppCompatActivity() {
                     dateOfYearRecyclerView?.adapter = dateList
 
                     val addDateOfYear = findViewById<ImageView>(R.id.addDateOfYear)
-                    addDateOfYear.setOnClickListener {
-                        dateArrayList.add("02/24")
-                        if (dateList != null) {
-                            dateList.notifyDataSetChanged()
-                        }
-                        repeatCycle = dateArrayList
+                    addDateOfYear.setOnClickListener{
+                        val c = Calendar.getInstance()
+                        val year = c.get(Calendar.YEAR)
+                        val month = c.get(Calendar.MONTH)
+                        val day = c.get(Calendar.DAY_OF_MONTH)
+
+
+                        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                            var chooseTime =""
+                            if(monthOfYear+1<10){
+                                chooseTime +="0${monthOfYear+1}"
+                            }else{
+                                chooseTime +="${monthOfYear+1}"
+                            }
+                            if (dayOfMonth<10){
+                                chooseTime +="-0${dayOfMonth}"
+                            }else{
+                                chooseTime +="-${dayOfMonth}"
+                            }
+                            dateArrayList.add(chooseTime)
+                            if (dateList != null) {
+                                dateList.notifyDataSetChanged()
+                            }
+                            repeatCycle = dateArrayList
+
+                        }, year, month, day)
+
+                        dpd.show()
+
                     }
+
 
                 }
             }
@@ -328,28 +357,15 @@ class AddHabitActivity : AppCompatActivity() {
             modifyToDoName = intent.getBundleExtra("bundle")?.getString("toDoName").toString()
             var addName = intent.getBundleExtra("bundle")?.getString("name").toString()
             when (modifyToDoName){
-//                "singleItemToDo" -> {
-//                    for ((key,todayToDo) in AllItemData.allToDoMap){
-//                        if(addName.equals(todayToDo?.name)){
-//                            name.setText(addName)
-//                            startDate.setText(todayToDo?.startDate)
-//                            endDate.setText(todayToDo?.endDate)
-//                            startTime.setText(todayToDo?.startTime)
-//                            endTime.setText(todayToDo?.endTime)
-//                            modifyItemIndex = key
-//                            if (todayToDo != null) {
-//                                addItemDate = todayToDo
-//                            }
-//                        }
-//                    }
-////
-//                }
+
                 "habitToDo" ->{
                     for ((key,habitToDo) in AllItemData.allHabitToDoMap){
                         if(addName.equals(habitToDo?.name)){
                             name.setText(addName)
                             startDate.setText(habitToDo?.startDate)
                             endDate.setText(habitToDo?.endDate)
+                            //addToDoName = habitToDo?.timeType.toString()
+                            //addHabitDate.timeType = habitToDo?.timeType.toString()
 
 //                            startTime.setText(todayToDo?.startTime)
 //                            endTime.setText(todayToDo?.endTime)
@@ -360,22 +376,7 @@ class AddHabitActivity : AppCompatActivity() {
                         }
                     }
                 }
-//                "todayToDo" ->{
-//
-//                    for ((key,todayToDo) in AllItemData.allToDoMap){
-//                        if(addName.equals(todayToDo?.name)){
-//                            name.setText(addName)
-//                            startDate.setText(todayToDo?.startDate)
-//                            endDate.setText(todayToDo?.endDate)
-//                            startTime.setText(todayToDo?.startTime)
-//                            endTime.setText(todayToDo?.endTime)
-//                            modifyItemIndex = key
-//                            if (todayToDo != null) {
-//                                addItemDate = todayToDo
-//                            }
-//                        }
-//                    }
-//                }
+
             }
 
 
