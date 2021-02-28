@@ -55,10 +55,17 @@ class AddHabitActivity : AppCompatActivity() {
                 val nowEndDate = LocalDate.of(nowEndDates[0].toInt(),nowEndDates[1].toInt(),nowEndDates[2].toInt())
                 val chooseDate = LocalDate.of(year,monthOfYear+1,dayOfMonth)
                 var chooseTime =""
+
+                chooseTime ="${year}"
                 if(monthOfYear+1<10){
-                    chooseTime ="${year}-0${monthOfYear+1}-${dayOfMonth}"
+                    chooseTime +="-0${monthOfYear+1}"
                 }else{
-                    chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                    chooseTime +="-${monthOfYear+1}"
+                }
+                if (dayOfMonth+1<10){
+                    chooseTime +="-0${dayOfMonth}"
+                }else{
+                    chooseTime +="-${dayOfMonth}"
                 }
                 if(chooseDate.isAfter(nowEndDate)) {
                     endDate.setText(chooseTime)

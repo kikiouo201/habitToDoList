@@ -435,12 +435,41 @@ object AllItemData {
                     addItemDate.timeType = 1
                     addItemDate.repeat =AddHabit.repeat
                     addItemDate.isHabit = true
+                    addItemDate.IsProhibitItem =true
                     var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                     AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                     AddHabit.notEndItem.add(addItemIndex.toString())
                 }
             }
             "週" -> {
+                val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val mStart = LocalDateTime.parse(AddHabit.startDate+" 00:00:00",timeFormatter)
+                val mEnd = LocalDateTime.parse(AddHabit.endDate+" 00:00:00",timeFormatter)
+
+                val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
+                val weeks = mStart.dayOfWeek.value
+
+                //重想加法
+                Log.i("AllItemData"," weeks=${ weeks}")
+                for (i in 0..difference){
+                    for (j in 0..AddHabit.repeatCycle.size-1){
+                        val mDate = mStart.plusDays(i.toLong())
+                        if(mDate.dayOfWeek.value == AddHabit.repeatCycle[j].toInt()){
+                            var addItemDate =ItemDate()
+                            addItemDate.name = AddHabit.name
+                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+                            addItemDate.timeType = 2
+                            addItemDate.repeat =AddHabit.repeat
+                            addItemDate.isHabit = true
+                            addItemDate.IsProhibitItem =true
+                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+                            AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
+                            AddHabit.notEndItem.add(addItemIndex.toString())
+                        }
+                    }
+                }
 
             }
             "月" -> {
@@ -471,7 +500,7 @@ object AllItemData {
         val endDate = LocalDateTime.parse(modifyItem.endDate+" 00:00:00",timeFormatter)
 
         val nowToEndDateDifference = ChronoUnit.DAYS.between(nowDate, endDate).toInt()
-        Log.i("AllItemData","nowToEndDateDifference=${nowToEndDateDifference}")
+//        Log.i("AllItemData","nowToEndDateDifference=${nowToEndDateDifference}")
         if(nowToEndDateDifference>0){
             //項目中有未來 可動
             //刪掉未來的
