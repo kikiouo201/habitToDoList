@@ -2,6 +2,7 @@ package com.example.yanghuiwen.habittodoist.view
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,10 +15,10 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.*
+import com.google.firebase.database.collection.LLRBNode
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -140,18 +141,18 @@ class AddHabitActivity : AppCompatActivity() {
         }
         dayNumSpinner.adapter = adapter
 
+
+
         //Time
         val times =intArrayOf(R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
         val timeGroup = findViewById<RadioGroup>(R.id.timeGroup)
-        val dayTime = findViewById<RadioButton>(R.id.dayTime)
-        var chooseWeek = arrayListOf<Int>()
+
+//        var chooseWeek = arrayListOf<Int>()
         addToDoName = "日"
         addHabitDate.timeType = "日"
-        dayTime.isChecked = true
-        timeGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
-            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            addToDoName = radio.text.toString()
 
+
+        fun chooseTimeGroup(modifyRepeatCycle:ArrayList<String>){
             when(addToDoName){
                 "日" -> {
                     // 日
@@ -169,14 +170,22 @@ class AddHabitActivity : AppCompatActivity() {
                     monthGroup.setVisibility(View.GONE)
                     yearGroup.setVisibility(View.GONE)
                     addHabitDate.timeType = "週"
-
+                    val timeRadio =findViewById<RadioButton>(times[1])
+                    timeRadio.isChecked = true
 
                     val weeks =intArrayOf(R.id.week1,R.id.week2,R.id.week3,R.id.week4,R.id.week5,R.id.week6,R.id.week7)
                     for(i in 0..6){
                         repeatCycle = ArrayList<String>()
                         val week = findViewById<Button>(weeks[i])
+                        if(modifyRepeatCycle.size!=0){
+                            for (j in 0..modifyRepeatCycle.size-1){
+                                if ((i+1)== modifyRepeatCycle[j].toInt()){
+                                    week.setBackgroundColor(Color.parseColor("#84C1FF"))
+                              }
+                            }
+                        }
                         week.setOnClickListener{
-
+                            week.setBackgroundColor(Color.parseColor("#84C1FF"))
                             repeatCycle.add((i+1).toString())
 
                         }
@@ -189,7 +198,12 @@ class AddHabitActivity : AppCompatActivity() {
                     monthGroup.setVisibility(View.VISIBLE)
                     yearGroup.setVisibility(View.GONE)
                     addHabitDate.timeType = "月"
+
+
                     var dateArrayList =ArrayList<String>()
+                    if(modifyRepeatCycle.size != 0){
+                        dateArrayList = modifyRepeatCycle
+                    }
                     dateArrayList.add("1")
                     dateArrayList.add("13")
                     var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
@@ -218,7 +232,11 @@ class AddHabitActivity : AppCompatActivity() {
                     monthGroup.setVisibility(View.GONE)
                     yearGroup.setVisibility(View.VISIBLE)
                     addHabitDate.timeType = "年"
+
                     var dateArrayList =ArrayList<String>()
+                    if(modifyRepeatCycle.size != 0){
+                        dateArrayList = modifyRepeatCycle
+                    }
                     var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
                     val yearLayoutManager = LinearLayoutManager(this)
                     yearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -261,8 +279,14 @@ class AddHabitActivity : AppCompatActivity() {
 
                 }
             }
-
+        }
+        chooseTimeGroup(ArrayList<String>())
+        timeGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+            addToDoName = radio.text.toString()
+            chooseTimeGroup(ArrayList<String>())
         })
+
 
 
         //重要
@@ -364,9 +388,27 @@ class AddHabitActivity : AppCompatActivity() {
                             name.setText(addName)
                             startDate.setText(habitToDo?.startDate)
                             endDate.setText(habitToDo?.endDate)
-                            //addToDoName = habitToDo?.timeType.toString()
-                            //addHabitDate.timeType = habitToDo?.timeType.toString()
-
+                            addToDoName = habitToDo?.timeType.toString()
+                            addHabitDate.timeType = habitToDo?.timeType.toString()
+                            repeatCycle = habitToDo?.repeatCycle!!
+                            chooseTimeGroup(habitToDo?.repeatCycle!!)
+                            var chooseTimeRadio = 0
+                            when(addToDoName){
+                                "日" -> {
+                                    chooseTimeRadio = 0
+                                }
+                                "週" -> {
+                                    chooseTimeRadio = 1
+                                }
+                                "月" -> {
+                                    chooseTimeRadio = 2
+                                }
+                                "年" -> {
+                                    chooseTimeRadio = 3
+                                }
+                            }
+                            val timeRadio =findViewById<RadioButton>(times[chooseTimeRadio])
+                            timeRadio.isChecked = true
 //                            startTime.setText(todayToDo?.startTime)
 //                            endTime.setText(todayToDo?.endTime)
                             modifyItemIndex = key
