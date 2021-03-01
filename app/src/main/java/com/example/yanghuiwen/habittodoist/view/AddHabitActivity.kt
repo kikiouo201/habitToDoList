@@ -15,12 +15,12 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.*
-import com.google.firebase.database.collection.LLRBNode
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class AddHabitActivity : AppCompatActivity() {
 
@@ -122,19 +122,20 @@ class AddHabitActivity : AppCompatActivity() {
         monthGroup.setVisibility(View.GONE)
         val yearGroup =findViewById<LinearLayout>(R.id.yearGroup)
         yearGroup.setVisibility(View.GONE)
-        var chooseDayInterval = 1
+
+
+        var dayTime = String()
+        var weekTime = ArrayList<String>()
+        var monthTime = ArrayList<String>()
+        var yearTime = ArrayList<String>()
         val dayNumSpinner =findViewById<Spinner>(R.id.dayNumSpinner)
         val adapter = ArrayAdapter.createFromResource(this, R.array.dayNum, android.R.layout.simple_spinner_dropdown_item)
         dayNumSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                chooseDayInterval = pos+1
-                if(repeatCycle.size == 0){
-                    repeatCycle.add(chooseDayInterval.toString())
-                }else{
-                    repeatCycle.removeAt(0)
-                    repeatCycle.add(chooseDayInterval.toString())
-                }
-
+                dayTime = (pos+1).toString()
+                var dayRepeatCycle = ArrayList<String>()
+                dayRepeatCycle.add(dayTime)
+                repeatCycle = dayRepeatCycle
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
@@ -179,7 +180,7 @@ class AddHabitActivity : AppCompatActivity() {
 
                     val weeks =intArrayOf(R.id.week1,R.id.week2,R.id.week3,R.id.week4,R.id.week5,R.id.week6,R.id.week7)
                     for(i in 0..6){
-                        repeatCycle = ArrayList<String>()
+
                         val week = findViewById<Button>(weeks[i])
                         if(modifyRepeatCycle.size!=0){
                             for (j in 0..modifyRepeatCycle.size-1){
@@ -190,7 +191,8 @@ class AddHabitActivity : AppCompatActivity() {
                         }
                         week.setOnClickListener{
                             week.setBackgroundColor(Color.parseColor("#84C1FF"))
-                            repeatCycle.add((i+1).toString())
+                            weekTime.add((i+1).toString())
+                            repeatCycle = weekTime
 
                         }
 
@@ -237,11 +239,11 @@ class AddHabitActivity : AppCompatActivity() {
                     yearGroup.setVisibility(View.VISIBLE)
                     addHabitDate.timeType = "年"
 
-                    var dateArrayList =ArrayList<String>()
+
                     if(modifyRepeatCycle.size != 0){
-                        dateArrayList = modifyRepeatCycle
+                        yearTime = modifyRepeatCycle
                     }
-                    var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
+                    var dateList: AddDayItem<String>? = AddDayItem(yearTime)
                     val yearLayoutManager = LinearLayoutManager(this)
                     yearLayoutManager.orientation = LinearLayoutManager.VERTICAL
                     var dateOfYearRecyclerView:RecyclerView?  = findViewById<View>(R.id.yearRecyclerView) as RecyclerView
@@ -268,11 +270,11 @@ class AddHabitActivity : AppCompatActivity() {
                             }else{
                                 chooseTime +="-${dayOfMonth}"
                             }
-                            dateArrayList.add(chooseTime)
+                            yearTime.add(chooseTime)
                             if (dateList != null) {
                                 dateList.notifyDataSetChanged()
                             }
-                            repeatCycle = dateArrayList
+                            repeatCycle = yearTime
 
                         }, year, month, day)
 
@@ -347,7 +349,7 @@ class AddHabitActivity : AppCompatActivity() {
 
             when(modifyToDoName){
                 "null" -> {
-
+                    repeatCycle = ArrayList<String>(HashSet<String>(repeatCycle))
                     addHabitDate.repeatCycle = repeatCycle
                     AllItemData.setDateHabitToDo(addHabitDate)
                 }
