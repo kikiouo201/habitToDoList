@@ -66,37 +66,6 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         AllItemData.scheduleToDo.add(scheduleItemDate2)
 
 
-
-
-        var habitDate=ItemDate()
-        habitDate.name = "sports 10 min"
-        habitDate.startDate ="2021-01-24"
-        habitDate.endDate ="2021-01-24"
-        AllItemData.habitToDo.add(habitDate)
-        var habitDate2=ItemDate()
-        habitDate2.name = "亥亥"
-        habitDate2.startDate ="2020-12-27"
-        habitDate2.endDate ="2020-12-27"
-        AllItemData.habitToDo.add(habitDate2)
-        var habitDate3=ItemDate()
-        habitDate3.name = "呵"
-        habitDate3.startDate ="2020-12-18"
-        habitDate3.endDate ="2020-12-18"
-        AllItemData.habitToDo.add(habitDate3)
-
-//        var nowDate = LocalDateTime.now()
-//        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//        val currentDate = nowDate.format(formatter)
-//        initAllToDoList(currentDate)
-//
-//        //set now date
-//        val year = findViewById<TextView>(R.id.year)
-//        year.setText(nowDate.year.toString())
-//        val month = findViewById<TextView>(R.id.month)
-//        month.setText((nowDate.month.value).toString())
-//        val day = findViewById<TextView>(R.id.day)
-//        day.setText(nowDate.dayOfMonth.toString())
-
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
         addItemFab.setOnClickListener { view ->
             supportFragmentManager.let {

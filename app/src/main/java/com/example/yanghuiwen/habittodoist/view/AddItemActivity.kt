@@ -279,7 +279,7 @@ class AddItemActivity : AppCompatActivity() {
                         AllItemData.deleteSingleItem(modifyItemIndex)
                     }
                     "habitToDo" -> {
-                        AllItemData.habitToDo.removeAt(modifyItemIndex)
+//                        AllItemData.habitToDo.removeAt(modifyItemIndex)
                     }
                     "todayToDo" -> {
                         AllItemData.deleteDateToDayToDo(modifyItemIndex)
@@ -312,19 +312,19 @@ class AddItemActivity : AppCompatActivity() {
 //
                 }
                 "habitToDo" ->{
-                    AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
-
-                        if(addName.equals(habitToDo.name)){
-                            name.setText(addName)
-                            startDate.setText(habitToDo.startDate)
-                            endDate.setText(habitToDo.endDate)
-                            startTime.setText(habitToDo.startTime)
-                            endTime.setText(habitToDo.endTime)
-                            modifyItemIndex = index
-                            addItemDate = habitToDo
-
-                        }
-                    }
+//                    AllItemData.habitToDo.forEachIndexed { index, habitToDo ->
+//
+//                        if(addName.equals(habitToDo.name)){
+//                            name.setText(addName)
+//                            startDate.setText(habitToDo.startDate)
+//                            endDate.setText(habitToDo.endDate)
+//                            startTime.setText(habitToDo.startTime)
+//                            endTime.setText(habitToDo.endTime)
+//                            modifyItemIndex = index
+//                            addItemDate = habitToDo
+//
+//                        }
+//                    }
                 }
                 "todayToDo" ->{
 

@@ -38,9 +38,6 @@ object AllItemData {
     var endSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
     var notEndSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
 
-    //習慣
-    val habitToDoItem = mutableSetOf<String>()
-    var habitToDo = ArrayList<ItemDate>()
 
 
 
@@ -331,7 +328,7 @@ object AllItemData {
     fun getProjectHabitItem():Map<String, ArrayList<HabitDate>> {
 
         var habitToDoMap = sortedMapOf<String, ArrayList<HabitDate>>()
-        Log.i("AllItemData","allHabitToDoMap=${allHabitToDoMap}")
+       // Log.i("AllItemData","allHabitToDoMap=${allHabitToDoMap}")
         for ((key,itemIndexs)in allHabitToDoMap){
             val HabitDates = ArrayList<HabitDate>()
 
@@ -398,20 +395,20 @@ object AllItemData {
 
     fun getDateHabitToDo():ArrayList<ItemDate>{
 
-        habitToDo = ArrayList<ItemDate>()
+         var habitToDo = ArrayList<ItemDate>()
 
-
-        for (itemIndex in todayToDoItem){
-            var nowItemDate = allToDoMap.get(itemIndex.toInt())
-            // Log.i("AllItemData","nowItemDate="+nowItemDate)
-            if(currentDate.equals(nowItemDate?.startDate)){
-                if (nowItemDate != null && nowItemDate.isHabit) {
-                    habitToDo .add(nowItemDate)
+        for ((key,itemIndexs)in allHabitToDoMap){
+            for (i in itemIndexs?.notEndItem!!){
+                var nowItemDate = allToDoMap.get(i.toInt())
+                 if(currentDate.equals(nowItemDate?.startDate)){
+              //      Log.i("AllItemData","nowItemDate="+nowItemDate)
+                    if (nowItemDate != null &&  nowItemDate.isHabit) {
+                        habitToDo .add(nowItemDate)
+                    }
                 }
+
             }
         }
-        //  Log.i("AllItemData","todayToDo="+todayToDo)
-
         return habitToDo
 
     }
@@ -429,8 +426,6 @@ object AllItemData {
                 val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
                 val repeatNum = AddHabit.repeatCycle[0].toInt()
                 for (i in 0..difference step repeatNum){
-                    Log.i("AllItemData","difference=${difference}")
-                    Log.i("AllItemData","i=${i}")
                     var addItemDate =ItemDate()
                     addItemDate.name = AddHabit.name
                     addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
@@ -438,7 +433,6 @@ object AllItemData {
                     addItemDate.timeType = 1
                     addItemDate.repeat =AddHabit.repeat
                     addItemDate.isHabit = true
-                    addItemDate.IsProhibitItem =true
                     var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                     AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                     AddHabit.notEndItem.add(addItemIndex.toString())
@@ -463,7 +457,6 @@ object AllItemData {
                             addItemDate.timeType = 2
                             addItemDate.repeat =AddHabit.repeat
                             addItemDate.isHabit = true
-                            addItemDate.IsProhibitItem =true
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItem.add(addItemIndex.toString())
@@ -491,7 +484,6 @@ object AllItemData {
                             addItemDate.timeType = 2
                             addItemDate.repeat =AddHabit.repeat
                             addItemDate.isHabit = true
-                            addItemDate.IsProhibitItem =true
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItem.add(addItemIndex.toString())
@@ -522,7 +514,7 @@ object AllItemData {
                         }else{
                             chooseTime +="-${mDate.dayOfMonth}"
                         }
-                        Log.i("AllItemData","chooseTime=${chooseTime}")
+                     //   Log.i("AllItemData","chooseTime=${chooseTime}")
                         if(chooseTime == AddHabit.repeatCycle[j]){
                             var addItemDate =ItemDate()
                             addItemDate.name = AddHabit.name
@@ -531,7 +523,6 @@ object AllItemData {
                             addItemDate.timeType = 2
                             addItemDate.repeat =AddHabit.repeat
                             addItemDate.isHabit = true
-                            addItemDate.IsProhibitItem =true
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItem.add(addItemIndex.toString())
@@ -587,7 +578,7 @@ object AllItemData {
         val endItems = allHabitToDoMap[deleteIndex]?.endItem
         if (notEndItems != null) {
             for( Items in notEndItems){
-                Log.i("AllItemData","notEndItems  Items=${Items}")
+             //   Log.i("AllItemData","notEndItems  Items=${Items}")
                 deleteAllItem(Items.toInt())
             }
         }

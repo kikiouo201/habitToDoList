@@ -22,6 +22,7 @@ data class ItemDate(
         var endTime:String = "",
         var isHabit:Boolean = false,
         var IsEndItem:Boolean = false,
+        //被禁止
         var IsProhibitItem:Boolean = false
 
 

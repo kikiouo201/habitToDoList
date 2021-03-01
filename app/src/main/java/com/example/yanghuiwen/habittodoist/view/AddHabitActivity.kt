@@ -344,7 +344,7 @@ class AddHabitActivity : AppCompatActivity() {
         save.setOnClickListener{
 
             addHabitDate.name = name.text.toString()
-            Log.i("AddHabitActivity", addHabitDate.startDate)
+           // Log.i("AddHabitActivity", addHabitDate.startDate)
 
 
             when(modifyToDoName){

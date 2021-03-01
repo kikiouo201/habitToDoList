@@ -112,6 +112,7 @@ class MainPageView(context: Context) : RelativeLayout(context){
         pageList.add(WeekPageView(context, current.plusDays(14),this::initAllToDoList))
         pageList.add(WeekPageView(context, current.plusDays(21),this::initAllToDoList))
 
+
         val page = view.findViewById<ViewPager>(R.id.pager)
         val weekPagerAdapter = WeekPagerAdapter(pageList)
 
