@@ -146,7 +146,8 @@ class AddHabitActivity : AppCompatActivity() {
         //Time
         val times =intArrayOf(R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
         val timeGroup = findViewById<RadioGroup>(R.id.timeGroup)
-
+        val timeRadio =findViewById<RadioButton>(times[0])
+        timeRadio.isChecked = true
 //        var chooseWeek = arrayListOf<Int>()
         addToDoName = "日"
         addHabitDate.timeType = "日"
@@ -160,6 +161,9 @@ class AddHabitActivity : AppCompatActivity() {
                     weekGroup.setVisibility(View.GONE)
                     monthGroup.setVisibility(View.GONE)
                     yearGroup.setVisibility(View.GONE)
+                    if(modifyRepeatCycle.size!=0){
+                    dayNumSpinner.setSelection(modifyRepeatCycle[0].toInt()-1)
+                    }
                     addHabitDate.timeType = "日"
 
                 }

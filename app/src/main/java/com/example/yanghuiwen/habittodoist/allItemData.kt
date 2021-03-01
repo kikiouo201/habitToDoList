@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 object AllItemData {
 
 
-
+//    Log.i("AllItemData","")
 
     val database = Firebase.database
     private lateinit var allItemReference: DatabaseReference
@@ -427,7 +427,10 @@ object AllItemData {
                 val mEnd = LocalDateTime.parse(AddHabit.endDate+" 00:00:00",timeFormatter)
 
                 val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
-                for (i in 0..difference+1 step AddHabit.repeatCycle[0].toInt()){
+                val repeatNum = AddHabit.repeatCycle[0].toInt()
+                for (i in 0..difference step repeatNum){
+                    Log.i("AllItemData","difference=${difference}")
+                    Log.i("AllItemData","i=${i}")
                     var addItemDate =ItemDate()
                     addItemDate.name = AddHabit.name
                     addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
