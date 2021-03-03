@@ -56,7 +56,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 />
-
+            <Button
+                android:id="@+id/startTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -77,7 +80,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 />
-
+            <Button
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -317,53 +323,14 @@
         </RadioGroup>
 
         <CheckBox
-            android:id="@+id/repeat"
+            android:id="@+id/isProgressRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="進度" />
 
-        <RadioGroup
-            android:id="@+id/plannedSpeedGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/fixed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="固定" />
-            <RadioButton
-                android:id="@+id/unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="單元" />
-            <RadioButton
-                android:id="@+id/page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="頁數" />
-            <RadioButton
-                android:id="@+id/custom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="自訂" />
-            <EditText
-                android:id="@+id/customEditText"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-        </RadioGroup>
-
 
         <LinearLayout
+            android:id="@+id/progressRateGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -380,7 +347,7 @@
                     android:text="開始" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/startPoint"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -389,14 +356,13 @@
                     android:text="1" />
 
                 <TextView
-                    android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="結束" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/endPoint"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -404,34 +370,60 @@
                     android:inputType="textPersonName"
                     android:text="10" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="單位" />
+
+                <EditText
+                    android:id="@+id/pointUnit"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="次" />
+
             </LinearLayout>
 
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/progressRate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                >
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/average"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="平均" />
 
-                <EditText
-                    android:id="@+id/editText3"
+                <RadioButton
+                    android:id="@+id/progressiveRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:text="漸進" />
 
+            </RadioGroup>
+            <LinearLayout
+                android:id="@+id/averageGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="次" />
+                    android:text="預計每天" />
+                <TextView
+                    android:id="@+id/averageCycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="10次" />
             </LinearLayout>
 
             <LinearLayout
@@ -443,13 +435,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/progressiveRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="漸進" />
 
                 <EditText
                     android:id="@+id/editText4"
@@ -480,7 +465,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="次" />
+                <EditText
+                    android:id="@+id/editText6"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="10" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="次" />
 
             </LinearLayout>
             <ImageView

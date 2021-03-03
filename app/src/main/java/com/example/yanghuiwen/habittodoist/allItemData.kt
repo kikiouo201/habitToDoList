@@ -614,12 +614,7 @@ object AllItemData {
 
 
     fun getDateScheduleToDo():ArrayList<ItemDate>{
-        var DateScheduleToDo = ArrayList<ItemDate>()
-        for(i in 0..scheduleToDo.size-1){
-            if(currentDate.equals(scheduleToDo[i].startDate)){
-                DateScheduleToDo.add(scheduleToDo[i])
-            }
-        }
+        var DateScheduleToDo =  getDateToDayToDo()
         return DateScheduleToDo
     }
 

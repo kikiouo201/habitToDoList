@@ -15,6 +15,8 @@ data class HabitDate(
         var repeat:Boolean = false,
         var timeType:String = "日",
         var repeatCycle :ArrayList<String> = arrayListOf(),
+        var progressRate :String ="無",
+        var progressRateFrequency:ArrayList<String> = arrayListOf(),
         var allDate:ArrayList<String> = arrayListOf(),
         var notEndItem:ArrayList<String> = arrayListOf(),
         var endItem:ArrayList<String> = arrayListOf(),

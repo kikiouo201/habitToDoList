@@ -1,6 +1,7 @@
 package com.example.yanghuiwen.habittodoist.view
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -13,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.*
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -115,7 +118,45 @@ class AddHabitActivity : AppCompatActivity() {
             dpd.show()
 
         }
-        //Time 預設 日
+
+        // start時間
+        val startTime = findViewById<Button>(R.id.startTime)
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        val startTimeFormatted = currentDate.format(timeFormatter)
+        startTime.setText(startTimeFormatted)
+        addHabitDate.startTime = startTimeFormatted
+        startTime.setOnClickListener{
+            val cal = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+                val chooseTime = SimpleDateFormat("HH:mm").format(cal.time)
+                startTime.setText(chooseTime)
+                addHabitDate.startTime = chooseTime
+            }
+            TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        }
+
+        // end時間
+        val endTime = findViewById<Button>(R.id.endTime)
+        var endTimeFormatted = endCurrentDate.format(timeFormatter)
+        endTime.setText(endTimeFormatted)
+        addHabitDate.endTime = endTimeFormatted
+        endTime.setOnClickListener{
+            val cal = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+
+                val chooseTime = SimpleDateFormat("HH:mm").format(cal.time)
+                endTime.setText(chooseTime)
+                addHabitDate.endTime = chooseTime
+            }
+            TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        }
+
+
+        //repeat Group 預設 日
         val dayGroup =findViewById<LinearLayout>(R.id.dayGroup)
         val weekGroup =findViewById<View>(R.id.weekGroup)
         weekGroup.setVisibility(View.GONE)
@@ -143,9 +184,6 @@ class AddHabitActivity : AppCompatActivity() {
         }
         dayNumSpinner.adapter = adapter
 
-
-
-        //Time
         val times =intArrayOf(R.id.dayTime,R.id.weekTime,R.id.monthTime,R.id.yearTime)
         val timeGroup = findViewById<RadioGroup>(R.id.timeGroup)
         val timeRadio =findViewById<RadioButton>(times[0])
@@ -211,8 +249,7 @@ class AddHabitActivity : AppCompatActivity() {
                     if(modifyRepeatCycle.size != 0){
                         monthTime = modifyRepeatCycle
                     }
-                    monthTime.add("1")
-                    monthTime.add("13")
+
                     var dateList: AddDayItem<String>? = AddDayItem(this,monthTime)
                     val monthLayoutManager = LinearLayoutManager(this)
                     monthLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -337,6 +374,48 @@ class AddHabitActivity : AppCompatActivity() {
 
         }
 
+
+        //進度
+        var isProgressRate = findViewById<CheckBox>(R.id.isProgressRate)
+        val progressRateGroup =findViewById<View>(R.id.progressRateGroup)
+        progressRateGroup.setVisibility(View.GONE)
+
+        isProgressRate.setOnCheckedChangeListener{ buttonView, isChecked ->
+
+            if (!isChecked) {
+                progressRateGroup.setVisibility(View.GONE)
+            }else{
+                progressRateGroup.setVisibility(View.VISIBLE)
+                var progressRate = findViewById<RadioGroup>(R.id.progressRate)
+                var averageGroup = findViewById<LinearLayout>(R.id.averageGroup)
+                var progressiveGroup = findViewById<LinearLayout>(R.id.progressiveGroup)
+                progressRate.check(R.id.average)
+                addHabitDate.progressRate = "平均"
+                averageGroup.setVisibility(View.VISIBLE)
+                progressiveGroup.setVisibility(View.GONE)
+                addHabitDate.progressRateFrequency.add("10")
+                progressRate.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+                    val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+                    val progressRateText = radio.text
+                    addHabitDate.progressRate = progressRateText.toString()
+                    when(progressRateText.toString()){
+                        "平均" ->{
+                            averageGroup.setVisibility(View.VISIBLE)
+                            progressiveGroup.setVisibility(View.GONE)
+                            addHabitDate.progressRateFrequency.add("10")
+                        }
+                        "漸進" ->{
+                            averageGroup.setVisibility(View.GONE)
+                            progressiveGroup.setVisibility(View.VISIBLE)
+                        }
+                    }
+                })
+
+            }
+        }
+
+
+
         //儲存
         val save = findViewById<Button>(R.id.save)
         val name =findViewById<EditText>(R.id.name)
@@ -345,6 +424,17 @@ class AddHabitActivity : AppCompatActivity() {
         save.setOnClickListener{
 
             addHabitDate.name = name.text.toString()
+
+
+            when(addHabitDate.progressRate.toString()){
+                "平均" ->{
+
+                }
+                "漸進" ->{
+
+                }
+
+            }
            // Log.i("AddHabitActivity", addHabitDate.startDate)
 
 
@@ -395,6 +485,8 @@ class AddHabitActivity : AppCompatActivity() {
                             name.setText(addName)
                             startDate.setText(habitToDo?.startDate)
                             endDate.setText(habitToDo?.endDate)
+                            startTime.setText(habitToDo?.startTime)
+                            endTime.setText(habitToDo?.endTime)
                             addToDoName = habitToDo?.timeType.toString()
                             addHabitDate.timeType = habitToDo?.timeType.toString()
                             repeatCycle = habitToDo?.repeatCycle!!
@@ -416,8 +508,7 @@ class AddHabitActivity : AppCompatActivity() {
                             }
                             val timeRadio =findViewById<RadioButton>(times[chooseTimeRadio])
                             timeRadio.isChecked = true
-//                            startTime.setText(todayToDo?.startTime)
-//                            endTime.setText(todayToDo?.endTime)
+//
                             modifyItemIndex = key
                             if (habitToDo != null) {
                                 addHabitDate = habitToDo
