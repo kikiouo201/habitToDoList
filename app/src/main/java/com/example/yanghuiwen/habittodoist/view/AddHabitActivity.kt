@@ -1,6 +1,7 @@
 package com.example.yanghuiwen.habittodoist.view
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -206,13 +207,13 @@ class AddHabitActivity : AppCompatActivity() {
                     addHabitDate.timeType = "月"
 
 
-                    var dateArrayList =ArrayList<String>()
+
                     if(modifyRepeatCycle.size != 0){
-                        dateArrayList = modifyRepeatCycle
+                        monthTime = modifyRepeatCycle
                     }
-                    dateArrayList.add("1")
-                    dateArrayList.add("13")
-                    var dateList: AddDayItem<String>? = AddDayItem(dateArrayList)
+                    monthTime.add("1")
+                    monthTime.add("13")
+                    var dateList: AddDayItem<String>? = AddDayItem(this,monthTime)
                     val monthLayoutManager = LinearLayoutManager(this)
                     monthLayoutManager.orientation = LinearLayoutManager.VERTICAL
                     var dateOfMonthRecyclerView:RecyclerView?  = findViewById<View>(R.id.monthRecyclerView) as RecyclerView
@@ -221,11 +222,11 @@ class AddHabitActivity : AppCompatActivity() {
 
                     val addDateOfMonth = findViewById<ImageView>(R.id.addDateOfMonth)
                     addDateOfMonth.setOnClickListener {
-                        dateArrayList.add("24")
+                        monthTime.add("1")
                         if (dateList != null) {
                             dateList.notifyDataSetChanged()
                         }
-                        repeatCycle = dateArrayList
+                        repeatCycle = monthTime
                     }
 
 
@@ -243,7 +244,7 @@ class AddHabitActivity : AppCompatActivity() {
                     if(modifyRepeatCycle.size != 0){
                         yearTime = modifyRepeatCycle
                     }
-                    var dateList: AddDayItem<String>? = AddDayItem(yearTime)
+                    var dateList: AddYearItem<String>? = AddYearItem(yearTime)
                     val yearLayoutManager = LinearLayoutManager(this)
                     yearLayoutManager.orientation = LinearLayoutManager.VERTICAL
                     var dateOfYearRecyclerView:RecyclerView?  = findViewById<View>(R.id.yearRecyclerView) as RecyclerView
@@ -438,7 +439,58 @@ class AddHabitActivity : AppCompatActivity() {
 
 
 
-    inner class AddDayItem<T>(data: ArrayList<String>) : RecyclerView.Adapter<AddDayItem<T>.ViewHolder>() {
+    inner class AddDayItem<T>(context: Context,data: ArrayList<String>) : RecyclerView.Adapter<AddDayItem<T>.ViewHolder>() {
+        var dateData: ArrayList<String> = ArrayList()
+        var context:Context = context
+
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var date: Spinner
+            var minus: ImageView
+            init {
+
+                date = itemView.findViewById<View>(R.id.dateSpinner) as Spinner
+                minus= itemView.findViewById<View>(R.id.minus) as ImageView
+
+            }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.add_month_item, parent, false)
+            return ViewHolder(v)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+         holder.minus.setOnClickListener {
+             dateData.removeAt(position)
+             notifyDataSetChanged()
+         }
+
+            val adapter = ArrayAdapter.createFromResource(context, R.array.dayNum, android.R.layout.simple_spinner_dropdown_item)
+            holder.date.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                    dateData.set(position,parent.selectedItem.toString())
+                  //  notifyDataSetChanged()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
+            holder.date.adapter = adapter
+            holder.date.setSelection(dateData[position].toInt()-1)
+            Log.i("AddHabitActivity"," dateData[position].toInt()"+dateData[position].toInt())
+        }
+
+        override fun getItemCount(): Int {
+            return dateData.size
+        }
+
+        init {
+            dateData = data
+        }
+    }
+
+
+
+    inner class AddYearItem<T>(data: ArrayList<String>) : RecyclerView.Adapter<AddYearItem<T>.ViewHolder>() {
         var dateData: ArrayList<String> = ArrayList()
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -453,15 +505,15 @@ class AddHabitActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val v = LayoutInflater.from(parent.context).inflate(R.layout.add_day, parent, false)
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.add_year_item, parent, false)
             return ViewHolder(v)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.minus.setOnClickListener {
-             dateData.removeAt(position)
-             notifyDataSetChanged()
-         }
+            holder.minus.setOnClickListener {
+                dateData.removeAt(position)
+                notifyDataSetChanged()
+            }
             holder.date.text = dateData[position]
 
         }
@@ -474,7 +526,6 @@ class AddHabitActivity : AppCompatActivity() {
             dateData = data
         }
     }
-
 
 
 }

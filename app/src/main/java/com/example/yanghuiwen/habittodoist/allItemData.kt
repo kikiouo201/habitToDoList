@@ -476,7 +476,7 @@ object AllItemData {
                 for (i in 0..difference){
                     for (j in 0..AddHabit.repeatCycle.size-1){
                         val mDate = mStart.plusDays(i.toLong())
-                        if(mDate.month.value == AddHabit.repeatCycle[j].toInt()){
+                        if(mDate.dayOfMonth == AddHabit.repeatCycle[j].toInt()){
                             var addItemDate =ItemDate()
                             addItemDate.name = AddHabit.name
                             addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
