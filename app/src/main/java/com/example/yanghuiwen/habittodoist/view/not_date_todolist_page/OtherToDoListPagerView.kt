@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
@@ -21,30 +20,30 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
     init {
 
         mainPageList = ArrayList()
-
+        mainPageList.add(SortSingleitemView(context))// 重要性
         mainPageList.add(SortSingleitemView(context))// 單項
         mainPageList.add(ProjectSortSingleitemView(context))// 清單
         mainPageList.add(ProjectSortHabitItemView(context))// 習慣
 
         var chooseSortItem = 0
-        val sortSingleItem =arrayOf("專案","時間","重要性")
-        val sort= view.findViewById<Button>(R.id.sort)
+//        val sortSingleItem =arrayOf("重要性","單項","專案")
+//        val sort= view.findViewById<Button>(R.id.sort)
 
         val tabs= view.findViewById<TabLayout>(R.id.tabLayout)
         val page = view.findViewById<ViewPager>(R.id.pager)
         val mainPagerAdapter = PagerAdapter(mainPageList)
 
         val notDate = mainPageList[0] as SortSingleitemView
-        sort.setOnClickListener {
-            chooseSortItem++
-            if(chooseSortItem == 3){
-                chooseSortItem = 0
-            }
-
-            Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-            sort.text = sortSingleItem[chooseSortItem]
-            notDate.chooseSortPage(sortSingleItem[chooseSortItem])
-        }
+//        sort.setOnClickListener {
+//            chooseSortItem++
+//            if(chooseSortItem == 3){
+//                chooseSortItem = 0
+//            }
+//
+//            Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+//            sort.text = sortSingleItem[chooseSortItem]
+//            notDate.chooseSortPage(sortSingleItem[chooseSortItem])
+//        }
 
 
         // tab 的換頁
@@ -53,45 +52,52 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                 Log.i("OtherToDoListPagerView","p0=${tab?.text}")
                 if(tab != null){
                     when(tab.text){
-                        "單項" -> {
-                            val singleitemView = mainPageList[0] as SortSingleitemView
-                            sort.setOnClickListener {
-                                chooseSortItem++
-                                if(chooseSortItem == 3){
-                                    chooseSortItem = 0
-                                }
-
-                               // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-                                sort.text = sortSingleItem[chooseSortItem]
-                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
-                            }
+                        "重要性" ->{
+                            val singleItemView = mainPageList[0] as SortSingleitemView
+                            singleItemView.chooseSortPage(tab.text.toString())
                         }
-                        "清單" -> {
-                            val singleitemView = mainPageList[1] as ProjectSortSingleitemView
-                            sort.setOnClickListener {
-                                chooseSortItem++
-                                if(chooseSortItem == 3){
-                                    chooseSortItem = 0
-                                }
-
-                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-                                sort.text = sortSingleItem[chooseSortItem]
-                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
-                            }
+                        "單項" -> {
+                            val singleItemView = mainPageList[1] as SortSingleitemView
+                            singleItemView.chooseSortPage(tab.text.toString())
+//                            sort.setOnClickListener {
+//                                chooseSortItem++
+//                                if(chooseSortItem == 3){
+//                                    chooseSortItem = 0
+//                                }
+//
+//                               // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+//                           //     sort.text = sortSingleItem[chooseSortItem]
+//                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
+//                            }
+                        }
+                        "專案" -> {
+                            val singleItemView = mainPageList[2] as ProjectSortSingleitemView
+                            singleItemView.chooseSortPage(tab.text.toString())
+//                            sort.setOnClickListener {
+//                                chooseSortItem++
+//                                if(chooseSortItem == 3){
+//                                    chooseSortItem = 0
+//                                }
+//
+//                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+//                                sort.text = sortSingleItem[chooseSortItem]
+//                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
+//                            }
 
                         }
                         "習慣" -> {
-                            val habitItemView = mainPageList[2] as ProjectSortHabitItemView
-                            sort.setOnClickListener {
-                                chooseSortItem++
-                                if(chooseSortItem == 3){
-                                    chooseSortItem = 0
-                                }
-
-                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-                                sort.text = sortSingleItem[chooseSortItem]
-                                habitItemView.chooseSortPage(sortSingleItem[chooseSortItem])
-                            }
+                            val habitItemView = mainPageList[3] as ProjectSortHabitItemView
+                            habitItemView.chooseSortPage(tab.text.toString())
+//                            sort.setOnClickListener {
+//                                chooseSortItem++
+//                                if(chooseSortItem == 3){
+//                                    chooseSortItem = 0
+//                                }
+//
+//                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
+//                                sort.text = sortSingleItem[chooseSortItem]
+//                                habitItemView.chooseSortPage(sortSingleItem[chooseSortItem])
+//                            }
                         }
                     }
                 }
@@ -132,11 +138,13 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 //            val notDate = mainPageList[i] as ProjectSortSingleitemView
 //            notDate.chooseThisPage()
 //        }
-        val notDate1 = mainPageList[0] as SortSingleitemView
+        val notDate0 = mainPageList[0] as SortSingleitemView
+        notDate0.chooseThisPage()
+        val notDate1 = mainPageList[1] as SortSingleitemView
         notDate1.chooseThisPage()
-        val notDate2 = mainPageList[1] as ProjectSortSingleitemView
+        val notDate2 = mainPageList[2] as ProjectSortSingleitemView
         notDate2.chooseThisPage()
-        val notDate3 = mainPageList[2] as ProjectSortHabitItemView
+        val notDate3 = mainPageList[3] as ProjectSortHabitItemView
         notDate3.chooseThisPage()
 
     }

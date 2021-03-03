@@ -28,13 +28,13 @@
                         app:srcCompat="@android:drawable/arrow_down_float" />
 
 
-                    <Button
-                        android:id="@+id/sort"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="專案"
-                        />
+<!--                    <Button-->
+<!--                        android:id="@+id/sort"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="專案"-->
+<!--                        />-->
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
@@ -45,12 +45,16 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="重要性" />
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="單項" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="清單" />
+                            android:text="專案" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"

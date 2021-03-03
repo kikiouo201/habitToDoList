@@ -40,7 +40,7 @@ class SortSingleitemView(context: Context) : RelativeLayout(context){
             "專案" ->{
                 singleItemData= AllItemData.getProjectSingleItem()
             }
-            "時間" ->{
+            "單項" ->{
                 singleItemData= AllItemData.getTimeSingleItem()
             }
             "重要性" ->{
