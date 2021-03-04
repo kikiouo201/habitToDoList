@@ -224,12 +224,12 @@ class AddHabitActivity : AppCompatActivity() {
                         if(modifyRepeatCycle.size!=0){
                             for (j in 0..modifyRepeatCycle.size-1){
                                 if ((i+1)== modifyRepeatCycle[j].toInt()){
-                                    week.setBackgroundColor(Color.parseColor("#84C1FF"))
+                                    week.setBackgroundResource(R.color.blue)
                               }
                             }
                         }
                         week.setOnClickListener{
-                            week.setBackgroundColor(Color.parseColor("#84C1FF"))
+                            week.setBackgroundResource(R.color.blue)
                             weekTime.add((i+1).toString())
                             repeatCycle = weekTime
 

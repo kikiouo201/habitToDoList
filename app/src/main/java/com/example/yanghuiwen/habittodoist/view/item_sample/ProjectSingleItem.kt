@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -20,13 +21,15 @@ class ProjectSingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName
     var mData: ArrayList<ItemDate> = ArrayList()
     var toDoName = toDoName
     val context = context
+    val important = arrayOf(R.color.important0,R.color.important1,R.color.important2,R.color.important3,R.color.important4)
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mTextView: TextView
         var checkBox: CheckBox
-
+        var item: RelativeLayout
         init {
-            mTextView = itemView.findViewById<View>(R.id.info_text) as TextView
-            checkBox = itemView.findViewById<View>(R.id.checkBox) as CheckBox
+            mTextView = itemView.findViewById(R.id.info_text)
+            checkBox = itemView.findViewById(R.id.checkBox)
+            item = itemView.findViewById(R.id.item)
         }
     }
 
@@ -36,7 +39,7 @@ class ProjectSingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.item.setBackgroundResource(important[mData[position].important])
         holder.mTextView.text = mData[position].name
         holder.mTextView.setOnClickListener {
             startAddItemActivity(context,mData[position] , toDoName)

@@ -321,9 +321,32 @@ object AllItemData {
 
         }
 
+//        if(singleItemMap.get("無") != null){
+//            var sortSingleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+//            var notTime = singleItemMap.get("無")
+//            var sortTime =singleItemMap.toSortedMap(compareByDescending { convertDate(it) })
+//
+//            sortSingleItemMap.put("無",notTime)
+//            for ((key,itemIndexs)in singleItemMap){
+//                sortSingleItemMap.put(key,itemIndexs)
+//            }
+//            singleItemMap = sortSingleItemMap
+//
+//        }else{
+//            singleItemMap.toSortedMap(compareByDescending { convertDate(it) })
+//        }
         //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
     }
+
+//    fun convertDate(d: String): String {
+//        if (d.equals("無")){
+//            return "無"
+//        }else{
+//            val array = d.split("-")
+//            return array[0] + array[1] + array[2]
+//        }
+//    }
 
     fun getProjectHabitItem():Map<String, ArrayList<HabitDate>> {
 
@@ -431,7 +454,11 @@ object AllItemData {
                     addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
                     addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
                     addItemDate.timeType = 1
+                    addItemDate.urgent = AddHabit.urgent
+                    addItemDate.important = AddHabit.important
                     addItemDate.repeat =AddHabit.repeat
+                    addItemDate.project = AddHabit.project
+
                     addItemDate.isHabit = true
                     var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                     AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))

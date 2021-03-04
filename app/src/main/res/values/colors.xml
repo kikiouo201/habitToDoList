@@ -7,4 +7,9 @@
     <color name="blue">#84C1FF</color>
     <color name="darkBlue">#004B97</color>
     <color name="tabbackgroud">#F3F3FA</color>
+    <color name="important0">#E8FFC4</color>
+    <color name="important1">#B3D9D9</color>
+    <color name="important2">#FFF4C1</color>
+    <color name="important3">#FFDAC8</color>
+    <color name="important4">#FFB5B5</color>
 </resources>

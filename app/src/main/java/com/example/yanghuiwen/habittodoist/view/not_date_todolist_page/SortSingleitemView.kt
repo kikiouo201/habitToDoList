@@ -33,7 +33,7 @@ class SortSingleitemView(context: Context) : RelativeLayout(context){
     }
 
     fun chooseSortPage(chooseSort:String){
-        var singleItemData= AllItemData.getProjectSingleItem()
+        var singleItemData= AllItemData.getImportantSingleItem()
 
         Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
         when(chooseSort){
@@ -55,7 +55,7 @@ class SortSingleitemView(context: Context) : RelativeLayout(context){
     fun chooseThisPage(){
 
         var todayList: SortSingleItem<String>?  = null
-        todayList = SortSingleItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
+        todayList = SortSingleItem(context,AllItemData.getImportantSingleItem(),"singleItemToDo")
         mRecyclerView.adapter = todayList
     }
     fun refreshView() {
