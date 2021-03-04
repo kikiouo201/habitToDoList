@@ -24,6 +24,8 @@ class ProjectSortHabitItem<T>(context: Context, data: Map<String, ArrayList<Habi
     var projectNames:MutableList<String> =mData.keys.toMutableList()
     var toDoName = toDoName
     val context = context
+    var allIsDisplay = ArrayList<ImageView>()
+    var allRecyclerView =ArrayList<RecyclerView>()
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var projectName: TextView
         var isDisplay: ImageView
@@ -36,6 +38,8 @@ class ProjectSortHabitItem<T>(context: Context, data: Map<String, ArrayList<Habi
 
             layoutManager.orientation = LinearLayoutManager.VERTICAL
             mRecyclerView.layoutManager = layoutManager
+//            allIsDisplay.add(isDisplay)
+//            allRecyclerView.add(mRecyclerView)
         }
     }
 
@@ -65,6 +69,8 @@ class ProjectSortHabitItem<T>(context: Context, data: Map<String, ArrayList<Habi
             }
 
         }
+        allIsDisplay.add(holder.isDisplay)
+        allRecyclerView.add(holder.mRecyclerView)
 //        holder.projectName.setOnClickListener {
 //            startAddItemActivity(context,mData[position] , toDoName)
 //        }
@@ -73,6 +79,20 @@ class ProjectSortHabitItem<T>(context: Context, data: Map<String, ArrayList<Habi
 //        }
 
         holder.projectName.setOnLongClickListener { false }
+    }
+
+    fun isDisplayOff(){
+       for (i in  0..allIsDisplay.size-1){
+           allIsDisplay[i].setImageResource(R.drawable.up_arrow)
+           allRecyclerView[i].visibility = View.GONE
+       }
+    }
+
+    fun isDisplayOn(){
+        for (i in  0..allIsDisplay.size-1){
+            allIsDisplay[i].setImageResource(R.drawable.down_arrow)
+            allRecyclerView[i].visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {

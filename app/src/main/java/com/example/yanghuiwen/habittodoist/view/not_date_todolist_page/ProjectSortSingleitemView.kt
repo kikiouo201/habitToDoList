@@ -20,7 +20,7 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
     val view = LayoutInflater.from(context).inflate(R.layout.to_do_list, null)
     val layoutManager = LinearLayoutManager(context)
     val mRecyclerView = view.findViewById<View>(R.id.toDoList) as RecyclerView
-
+    var todayList: ProjectSortSingleItem<String>?  = null
 
     init {
 
@@ -48,16 +48,25 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
                 singleItemData= AllItemData.getImportantSingleItem()
             }
         }
-        var todayList: ProjectSortSingleItem<String>?  = null
+
         todayList = ProjectSortSingleItem(context,singleItemData,"singleItemToDo")
         mRecyclerView.adapter = todayList
     }
 
     fun chooseThisPage(){
 
-        var todayList: ProjectSortSingleItem<String>?  = null
+
         todayList = ProjectSortSingleItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
         mRecyclerView.adapter = todayList
+    }
+
+    fun isDisplayOn(){
+
+        todayList?.isDisplayOn()
+
+    }
+    fun isDisplayOff(){
+        todayList?.isDisplayOff()
     }
     fun refreshView() {
 

@@ -22,6 +22,8 @@ class SortSingleItem<T>(context: Context, data: Map<String, ArrayList<ItemDate>>
     var projectNames:MutableList<String> =mData.keys.toMutableList()
     var toDoName = toDoName
     val context = context
+    var allIsDisplay = ArrayList<ImageView>()
+    var allRecyclerView =ArrayList<RecyclerView>()
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var projectName: TextView
         var isDisplay: ImageView
@@ -63,6 +65,8 @@ class SortSingleItem<T>(context: Context, data: Map<String, ArrayList<ItemDate>>
             }
 
         }
+        allIsDisplay.add(holder.isDisplay)
+        allRecyclerView.add(holder.mRecyclerView)
 //        holder.projectName.setOnClickListener {
 //            startAddItemActivity(context,mData[position] , toDoName)
 //        }
@@ -71,6 +75,20 @@ class SortSingleItem<T>(context: Context, data: Map<String, ArrayList<ItemDate>>
 //        }
 
         holder.projectName.setOnLongClickListener { false }
+    }
+
+    fun isDisplayOff(){
+        for (i in  0..allIsDisplay.size-1){
+            allIsDisplay[i].setImageResource(R.drawable.up_arrow)
+            allRecyclerView[i].visibility = View.GONE
+        }
+    }
+
+    fun isDisplayOn(){
+        for (i in  0..allIsDisplay.size-1){
+            allIsDisplay[i].setImageResource(R.drawable.down_arrow)
+            allRecyclerView[i].visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {

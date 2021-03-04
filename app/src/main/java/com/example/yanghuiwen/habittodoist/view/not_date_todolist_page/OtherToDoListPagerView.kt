@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
@@ -32,6 +34,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
         val tabs= view.findViewById<TabLayout>(R.id.tabLayout)
         val page = view.findViewById<ViewPager>(R.id.pager)
         val mainPagerAdapter = PagerAdapter(mainPageList)
+        val isDisplays =view.findViewById<ImageButton>(R.id.isDisplay)
 
         val notDate = mainPageList[0] as SortSingleitemView
 //        sort.setOnClickListener {
@@ -55,10 +58,28 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                         "重要性" ->{
                             val singleItemView = mainPageList[0] as SortSingleitemView
                             singleItemView.chooseSortPage(tab.text.toString())
+                            var isDisplay =true
+                            isDisplays.setOnClickListener{
+                                if(isDisplay){
+                                    singleItemView.isDisplayOff()
+                                }else{
+                                    singleItemView.isDisplayOn()
+                                }
+                                isDisplay = !isDisplay
+                            }
                         }
                         "單項" -> {
                             val singleItemView = mainPageList[1] as SortSingleitemView
                             singleItemView.chooseSortPage(tab.text.toString())
+                            var isDisplay =true
+                            isDisplays.setOnClickListener{
+                                if(isDisplay){
+                                    singleItemView.isDisplayOff()
+                                }else{
+                                    singleItemView.isDisplayOn()
+                                }
+                                isDisplay = !isDisplay
+                            }
 //                            sort.setOnClickListener {
 //                                chooseSortItem++
 //                                if(chooseSortItem == 3){
@@ -73,6 +94,15 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                         "專案" -> {
                             val singleItemView = mainPageList[2] as ProjectSortSingleitemView
                             singleItemView.chooseSortPage(tab.text.toString())
+                            var isDisplay =true
+                            isDisplays.setOnClickListener{
+                                if(isDisplay){
+                                    singleItemView.isDisplayOff()
+                                }else{
+                                    singleItemView.isDisplayOn()
+                                }
+                                isDisplay = !isDisplay
+                            }
 //                            sort.setOnClickListener {
 //                                chooseSortItem++
 //                                if(chooseSortItem == 3){
@@ -88,6 +118,15 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                         "習慣" -> {
                             val habitItemView = mainPageList[3] as ProjectSortHabitItemView
                             habitItemView.chooseSortPage(tab.text.toString())
+                            var isDisplay =true
+                            isDisplays.setOnClickListener{
+                                if(isDisplay){
+                                    habitItemView.isDisplayOff()
+                                }else{
+                                    habitItemView.isDisplayOn()
+                                }
+                                isDisplay = !isDisplay
+                            }
 //                            sort.setOnClickListener {
 //                                chooseSortItem++
 //                                if(chooseSortItem == 3){
