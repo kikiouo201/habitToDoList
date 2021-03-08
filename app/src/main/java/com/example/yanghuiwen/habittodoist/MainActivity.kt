@@ -14,6 +14,7 @@ import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
 import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.OtherToDoListPagerView
 import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
+import com.example.yanghuiwen.habittodoist.view.main_page.PersonalPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
         mainPageList.add(MainPageView(this@MainActivity))
         mainPageList.add(OtherToDoListPagerView(this@MainActivity))
-
+        mainPageList.add(PersonalPageView(this@MainActivity))
 
         var tabs= findViewById<TabLayout>(R.id.tabLayout)
         val page = findViewById<ViewPager>(R.id.main_pager)
