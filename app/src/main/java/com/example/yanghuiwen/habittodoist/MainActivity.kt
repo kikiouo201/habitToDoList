@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
+import com.example.yanghuiwen.habittodoist.view.calendar_page.CalendarPageView
 import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
 import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.OtherToDoListPagerView
 import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
@@ -55,16 +56,6 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         initMainViewpage()
 
 
-        val scheduleItemDate=ItemDate()
-        scheduleItemDate.name = "猶疑你離12/26"
-        scheduleItemDate.startDate = "2020-12-26"
-        scheduleItemDate.startTime = "13:00"
-        AllItemData.scheduleToDo.add(scheduleItemDate)
-        var scheduleItemDate2 = ItemDate()
-        scheduleItemDate2.name = "猶疑你離12/27"
-        scheduleItemDate2.startDate = "2020-12-27"
-        scheduleItemDate2.startTime = "1:00"
-        AllItemData.scheduleToDo.add(scheduleItemDate2)
 
 
         val addItemFab: FloatingActionButton = findViewById(R.id.addItem)
@@ -113,9 +104,10 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         AllItemData.currentWeekIndex = current.dayOfWeek.getValue()%7
                 mainPageList = ArrayList()
 
-        mainPageList.add(MainPageView(this@MainActivity))
-        mainPageList.add(OtherToDoListPagerView(this@MainActivity))
-        mainPageList.add(PersonalPageView(this@MainActivity))
+        mainPageList.add(MainPageView(this@MainActivity)) // 行程表
+        mainPageList.add(OtherToDoListPagerView(this@MainActivity)) // 待辦事項
+        mainPageList.add(CalendarPageView(this@MainActivity)) //行事曆
+        mainPageList.add(PersonalPageView(this@MainActivity)) // 個人
 
         var tabs= findViewById<TabLayout>(R.id.tabLayout)
         val page = findViewById<ViewPager>(R.id.main_pager)

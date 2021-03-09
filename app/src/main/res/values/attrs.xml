@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GeneralCalendar">
+        <attr name="dayNum" format="integer" />
+        <attr name="holiday" format="boolean"/>
+        <attr name="thisMonth" format="boolean"/>
+        <attr name="today" format="boolean"/>
+    </declare-styleable>
+</resources>
