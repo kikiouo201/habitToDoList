@@ -3,6 +3,9 @@ import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -43,6 +46,14 @@ class CalendarPageView(context: Context) : RelativeLayout(context){
     fun refreshView() {
 
     }
+
+//    override fun onDraw(canvas: Canvas) {
+//        super.onDraw(canvas)
+//
+//        val paint = Paint()
+//        paint.color = Color.BLACK
+//        canvas.drawRect(0f,0f,100f,100f,paint)
+//    }
 
 
 
