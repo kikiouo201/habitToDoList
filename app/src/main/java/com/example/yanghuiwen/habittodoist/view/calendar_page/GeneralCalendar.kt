@@ -69,15 +69,29 @@ class GeneralCalendar: ConstraintLayout{
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        val events =ArrayList<String>()
+        events.add("讀日文")
+        events.add("讀12文")
+        events.add("讀文")
+        drawEvent(canvas,events)
 
-        val paint = Paint()
-        paint.color = getResources().getColor(R.color.lightBlue)
-        canvas.drawRect(0f,50f,140f,100f,paint)
-        val paint1 = Paint()
-        paint1.color = Color.BLACK
 
-        paint1.textSize = 30F
-        canvas.drawText("讀日文",10F, 85F,paint1)
+    }
+
+    private fun drawEvent(canvas: Canvas,events:ArrayList<String>){
+
+        for (i in 0..events.size-1){
+            val eventPosition = 50f*(i+1)+10f*i
+            val paint = Paint()
+            paint.color = getResources().getColor(R.color.lightBlue)
+            canvas.drawRect(0f,eventPosition,140f,eventPosition+50f,paint)
+            val paint1 = Paint()
+            paint1.color = Color.BLACK
+
+            paint1.textSize = 30F
+            canvas.drawText(events[i],10F, eventPosition+35F,paint1)
+        }
+
     }
 
     fun isHoliday(): Boolean {
