@@ -6,4 +6,8 @@
         <attr name="thisMonth" format="boolean"/>
         <attr name="today" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="Schedule">
+        <attr name="complete" format="boolean"/>
+    </declare-styleable>
 </resources>

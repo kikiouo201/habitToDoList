@@ -75,9 +75,9 @@ class MainPageView(context: Context) : RelativeLayout(context){
         scheduleList = ScheduleItem(AllItemData.getDateScheduleToDo())
         val scheduleLayoutManager = LinearLayoutManager(context);
         scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        val schedule_RecyclerView = view.findViewById<View>(R.id.timeList) as RecyclerView
-        schedule_RecyclerView.layoutManager = scheduleLayoutManager
-        schedule_RecyclerView.adapter = scheduleList
+//        val schedule_RecyclerView = view.findViewById<View>(R.id.timeList) as RecyclerView
+//        schedule_RecyclerView.layoutManager = scheduleLayoutManager
+//        schedule_RecyclerView.adapter = scheduleList
 
         todayList = SingleItem(context,AllItemData.getDateToDayToDo(),"todayToDo")
         val layoutManager = LinearLayoutManager(context)
@@ -195,6 +195,8 @@ class MainPageView(context: Context) : RelativeLayout(context){
             holder.startTimeTextView.setOnLongClickListener { false }
             holder.endTimeTextView.setOnLongClickListener { false }
         }
+
+
 
         override fun getItemCount(): Int {
             return 24
