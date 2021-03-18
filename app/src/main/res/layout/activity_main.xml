@@ -72,6 +72,15 @@
             app:fabSize="mini"
             app:srcCompat="@drawable/cycle" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/activity" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

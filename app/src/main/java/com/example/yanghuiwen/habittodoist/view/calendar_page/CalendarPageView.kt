@@ -1,20 +1,26 @@
 package com.example.yanghuiwen.habittodoist.view.calendar_page
-import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 
 
+import android.Manifest
+import android.content.ContentResolver
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
+import android.provider.CalendarContract
+import android.provider.CalendarContract.Calendars
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.DatePageView
+import java.security.AccessController.checkPermission
 import java.time.LocalDateTime
 import java.util.*
 
@@ -27,18 +33,13 @@ class CalendarPageView(context: Context) : RelativeLayout(context){
 
     init {
 
-//
-//        val  yearGoalPager = view.findViewById<ViewPager>(R.id.yearGoalPager)
-//        initWeekViewpage(yearGoalPager,"year")
-//        val  monthGoalPager = view.findViewById<ViewPager>(R.id.monthGoalPager)
-//        initWeekViewpage(monthGoalPager,"month")
-//        val  weekGoalPager = view.findViewById<ViewPager>(R.id.weekGoalPager)
-//        initWeekViewpage(weekGoalPager,"week")
-//        val  diaryPager = view.findViewById<ViewPager>(R.id.diary)
-//        initWeekViewpage(diaryPager,"diary")
+
+
 
         addView(view)
     }
+
+
 
     fun chooseThisPage(){
 
