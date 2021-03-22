@@ -1,9 +1,12 @@
 package com.example.yanghuiwen.habittodoist.view.item_sample
 
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.MainActivity
 import com.example.yanghuiwen.habittodoist.R
@@ -68,21 +72,34 @@ class SingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName :Strin
         bundle.putString("toDoName",toDoName)
 
 
-        var intent = Intent(context, AddItemActivity::class.java)
-        intent.putExtra("bundle",bundle)
-        context.startActivity(intent)
-//        when(toDoName){
-//            "habitToDo" ->{
-//                var intent = Intent(context, AddHabitActivity::class.java)
-//                intent.putExtra("bundle",bundle)
-//                context.startActivity(intent)
-//            }
-//            "todayToDo" ->{
-//                var intent = Intent(context, AddItemActivity::class.java)
-//                intent.putExtra("bundle",bundle)
-//                context.startActivity(intent)
-//            }
-//        }
+        when(toDoName){
+            "habitToDo" ->{
+                var intent = Intent(context, AddItemActivity::class.java)
+                intent.putExtra("bundle",bundle)
+                context.startActivity(intent)
+            }
+            "todayToDo" ->{
+                var intent = Intent(context, AddItemActivity::class.java)
+                intent.putExtra("bundle",bundle)
+                context.startActivity(intent)
+            }
+            "activity" ->{
+                var eventID: Long = 1
+                for ((id,itemDate) in AllItemData.allActivityMap){
+                    if (itemDate != null) {
+                        if(currentItemDate.name.equals(itemDate.name)){
+                            eventID = id.toLong()
+                            val uri: Uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventID)
+                            val intent = Intent(Intent.ACTION_EDIT)
+                                    .setData(uri)
+                                    .putExtra(CalendarContract.Events.TITLE, currentItemDate.name)
+                            startActivity(context,intent,null)
+                        }
+
+                    }
+                }
+            }
+        }
 
     }
 }

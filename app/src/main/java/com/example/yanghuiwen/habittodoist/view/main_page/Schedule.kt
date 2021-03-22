@@ -134,6 +134,9 @@ class Schedule: ConstraintLayout{
             val eventPosition = 150f*(i+1)+10f*i
             val paint = Paint()
             paint.color = getResources().getColor(R.color.lightBlue)
+            if(events[i].isActivity){
+                paint.color = getResources().getColor(R.color.blue)
+            }
             canvas.drawRect(eventLeft,eventTop,eventRight,eventBottom,paint)
             val paint1 = Paint()
             paint1.color = Color.BLACK

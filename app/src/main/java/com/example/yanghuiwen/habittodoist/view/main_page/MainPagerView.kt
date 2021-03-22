@@ -36,7 +36,7 @@ class MainPageView(context: Context) : RelativeLayout(context){
 
     var todayList: SingleItem<String>?  = null
     var habitList: SingleItem<String>?  = null
-    var scheduleList: ScheduleItem<String>? =null
+    var scheduleList: SingleItem<String>? =null
     private lateinit var pageList: MutableList<WeekPageView>
     var habit_RecyclerView:RecyclerView? = null
     init {
@@ -72,12 +72,12 @@ class MainPageView(context: Context) : RelativeLayout(context){
 
     fun initAllToDoList(currentDate :String) {
         AllItemData.currentDate = currentDate
-//        scheduleList = ScheduleItem(AllItemData.getDateActivity())
-//        val scheduleLayoutManager = LinearLayoutManager(context);
-//        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
-//        val schedule_RecyclerView = view.findViewById<View>(R.id.timeList) as RecyclerView
-//        schedule_RecyclerView.layoutManager = scheduleLayoutManager
-//        schedule_RecyclerView.adapter = scheduleList
+        scheduleList = SingleItem(context,AllItemData.getDateActivity(),"activity")
+        val scheduleLayoutManager = LinearLayoutManager(context);
+        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        val schedule_RecyclerView = view.findViewById<View>(R.id.activityList) as RecyclerView
+        schedule_RecyclerView.layoutManager = scheduleLayoutManager
+        schedule_RecyclerView.adapter = scheduleList
 
         todayList = SingleItem(context,AllItemData.getDateToDayToDo(),"todayToDo")
         val layoutManager = LinearLayoutManager(context)

@@ -668,6 +668,7 @@ object AllItemData {
         addItem.endDate = endDate
         addItem.startTime = startTime
         addItem.endTime = endTime
+        addItem.isActivity = true
 
         allActivityMap.put(eventID.toInt(),addItem)
     }
