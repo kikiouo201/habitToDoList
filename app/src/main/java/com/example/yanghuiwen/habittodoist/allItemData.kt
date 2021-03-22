@@ -24,6 +24,7 @@ object AllItemData {
     private lateinit var singleItemReference: DatabaseReference
 
     var allToDoMap = sortedMapOf<Int, ItemDate?>()
+    var allActivityMap = sortedMapOf<Int, ItemDate?>()
     var allHabitToDoMap = sortedMapOf<Int, HabitDate?>()
 
     // 今天事項
@@ -42,12 +43,7 @@ object AllItemData {
 
 
 
-    var nowHabitToDoIndex = ""
-    val scheduleToDo = ArrayList<ItemDate>()
-    var nowScheduleToDoIndex = ""
-    var notTimToDo = ArrayList<ItemDate>()
-    val notTimeToDoMap = sortedMapOf<Int, ItemDate?>()
-    var nowNotTimeToDoIndex = ""
+
     var currentDate ="2020-02-07"
     var currentWeekIndex = 1
     fun getFirebaseDate(){
@@ -426,7 +422,7 @@ object AllItemData {
                  if(currentDate.equals(nowItemDate?.startDate)){
               //      Log.i("AllItemData","nowItemDate="+nowItemDate)
                     if (nowItemDate != null &&  nowItemDate.isHabit) {
-                        habitToDo .add(nowItemDate)
+                        habitToDo.add(nowItemDate)
                     }
                 }
 
@@ -458,6 +454,8 @@ object AllItemData {
                     addItemDate.important = AddHabit.important
                     addItemDate.repeat =AddHabit.repeat
                     addItemDate.project = AddHabit.project
+                    addItemDate.startTime =AddHabit.startTime
+                    addItemDate.endTime =AddHabit.endTime
 
                     addItemDate.isHabit = true
                     var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
@@ -484,6 +482,8 @@ object AllItemData {
                             addItemDate.timeType = 2
                             addItemDate.repeat =AddHabit.repeat
                             addItemDate.isHabit = true
+                            addItemDate.startTime =AddHabit.startTime
+                            addItemDate.endTime =AddHabit.endTime
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItem.add(addItemIndex.toString())
@@ -511,6 +511,8 @@ object AllItemData {
                             addItemDate.timeType = 2
                             addItemDate.repeat =AddHabit.repeat
                             addItemDate.isHabit = true
+                            addItemDate.startTime =AddHabit.startTime
+                            addItemDate.endTime =AddHabit.endTime
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItem.add(addItemIndex.toString())
@@ -550,6 +552,8 @@ object AllItemData {
                             addItemDate.timeType = 2
                             addItemDate.repeat =AddHabit.repeat
                             addItemDate.isHabit = true
+                            addItemDate.startTime =AddHabit.startTime
+                            addItemDate.endTime =AddHabit.endTime
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItem.add(addItemIndex.toString())
@@ -574,7 +578,7 @@ object AllItemData {
         //把過去紀錄以外的紀錄刪除
         val currentDate = LocalDateTime.now()
         val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val nowDate = LocalDateTime.parse(currentDate.toString(),timeFormatter)
+        val nowDate = LocalDateTime.parse(currentDate.format(timeFormatter),timeFormatter)
         val startDate = LocalDateTime.parse(modifyItem.startDate+" 00:00:00",timeFormatter)
         val endDate = LocalDateTime.parse(modifyItem.endDate+" 00:00:00",timeFormatter)
 
@@ -640,12 +644,33 @@ object AllItemData {
     }
 
 
-    fun getDateScheduleToDo():ArrayList<ItemDate>{
-        var DateScheduleToDo =  getDateToDayToDo()
-        return DateScheduleToDo
+    fun getDateActivity():ArrayList<ItemDate>{
+        var activity = ArrayList<ItemDate>()
+
+        for ((key,nowItemDate)in  allActivityMap){
+
+                if(currentDate.equals(nowItemDate?.startDate)){
+                          Log.i("AllItemData","nowItemDate="+nowItemDate?.startDate)
+                    if (nowItemDate != null ){
+                        activity.add(nowItemDate)
+                    }
+                }
+
+        }
+        return activity
     }
 
 
+    fun setActivity(eventID:Long,startDate:String,endDate:String,startTime:String,endTime:String,title:String){
+        val addItem =ItemDate()
+        addItem.name = title
+        addItem.startDate = startDate
+        addItem.endDate = endDate
+        addItem.startTime = startTime
+        addItem.endTime = endTime
+
+        allActivityMap.put(eventID.toInt(),addItem)
+    }
 
 
 }

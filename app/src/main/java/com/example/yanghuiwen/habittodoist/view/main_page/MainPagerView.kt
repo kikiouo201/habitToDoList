@@ -72,9 +72,9 @@ class MainPageView(context: Context) : RelativeLayout(context){
 
     fun initAllToDoList(currentDate :String) {
         AllItemData.currentDate = currentDate
-        scheduleList = ScheduleItem(AllItemData.getDateScheduleToDo())
-        val scheduleLayoutManager = LinearLayoutManager(context);
-        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
+//        scheduleList = ScheduleItem(AllItemData.getDateActivity())
+//        val scheduleLayoutManager = LinearLayoutManager(context);
+//        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
 //        val schedule_RecyclerView = view.findViewById<View>(R.id.timeList) as RecyclerView
 //        schedule_RecyclerView.layoutManager = scheduleLayoutManager
 //        schedule_RecyclerView.adapter = scheduleList

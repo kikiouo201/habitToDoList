@@ -52,7 +52,7 @@
         <View
 
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -64,7 +64,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -101,7 +101,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -113,7 +113,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -150,7 +150,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -162,7 +162,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -199,7 +199,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -211,7 +211,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -248,7 +248,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -260,7 +260,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -297,7 +297,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -309,7 +309,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -346,7 +346,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -358,7 +358,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -395,7 +395,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -407,7 +407,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -444,7 +444,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -456,7 +456,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -493,7 +493,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -505,7 +505,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -542,7 +542,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -554,7 +554,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -591,7 +591,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -603,7 +603,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -640,7 +640,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -652,7 +652,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -689,7 +689,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -701,7 +701,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -738,7 +738,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -750,7 +750,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -787,7 +787,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -799,7 +799,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -836,7 +836,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -848,7 +848,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -885,7 +885,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -897,7 +897,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -934,7 +934,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -948,7 +948,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -985,7 +985,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -997,7 +997,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -1034,7 +1034,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -1046,7 +1046,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -1083,7 +1083,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -1095,7 +1095,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 
@@ -1132,7 +1132,7 @@
             <View
 
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -1144,7 +1144,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <LinearLayout
 

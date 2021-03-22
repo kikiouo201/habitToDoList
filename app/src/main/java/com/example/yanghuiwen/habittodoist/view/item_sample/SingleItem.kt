@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.MainActivity
 import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
@@ -70,6 +71,18 @@ class SingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName :Strin
         var intent = Intent(context, AddItemActivity::class.java)
         intent.putExtra("bundle",bundle)
         context.startActivity(intent)
+//        when(toDoName){
+//            "habitToDo" ->{
+//                var intent = Intent(context, AddHabitActivity::class.java)
+//                intent.putExtra("bundle",bundle)
+//                context.startActivity(intent)
+//            }
+//            "todayToDo" ->{
+//                var intent = Intent(context, AddItemActivity::class.java)
+//                intent.putExtra("bundle",bundle)
+//                context.startActivity(intent)
+//            }
+//        }
 
     }
 }

@@ -4,13 +4,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.yanghuiwen.habittodoist.AllItemData
+import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
-import kotlinx.android.synthetic.main.customview_calendar_day.view.*
 
 class Schedule: ConstraintLayout{
 //JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
@@ -69,27 +68,79 @@ class Schedule: ConstraintLayout{
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val events =ArrayList<String>()
-        events.add("讀日文")
-        events.add("讀12文")
-        events.add("讀文")
-        drawEvent(canvas,events)
+        val todayToDoList =AllItemData.getDateToDayToDo()
+        val habitToDoList=AllItemData.getDateHabitToDo()
+        val activityList =AllItemData.getDateActivity()
+        val sortToDoList = sortedMapOf<String, ArrayList<ItemDate>>()
+        for (todayToDo in todayToDoList){
+            val hour =todayToDo.startTime.split(":")
+
+            if(sortToDoList.get(hour[0]) != null){
+                sortToDoList.get(hour[0])!!.add(todayToDo)
+            }else{
+                val todo = ArrayList<ItemDate>()
+                todo.add(todayToDo)
+                sortToDoList.put(hour[0],todo)
+            }
+        }
+
+        for (habitToDo in habitToDoList){
+            val hour =habitToDo.startTime.split(":")
+
+            if(sortToDoList.get(hour[0]) != null){
+                sortToDoList.get(hour[0])!!.add(habitToDo)
+            }else{
+                val todo = ArrayList<ItemDate>()
+                todo.add(habitToDo)
+                sortToDoList.put(hour[0],todo)
+            }
+        }
+
+        for (activity in activityList){
+            val hour =activity.startTime.split(":")
+
+            if(sortToDoList.get(hour[0]) != null){
+                sortToDoList.get(hour[0])!!.add(activity)
+            }else{
+                val todo = ArrayList<ItemDate>()
+                todo.add(activity)
+                sortToDoList.put(hour[0],todo)
+            }
+        }
+
+        for ((key,toDo) in sortToDoList){
+            drawEvent(canvas,toDo)
+        }
+
 
 
     }
 
-    private fun drawEvent(canvas: Canvas,events:ArrayList<String>){
+    private fun drawEvent(canvas: Canvas,events:ArrayList<ItemDate>){
+
 
         for (i in 0..events.size-1){
-            val eventPosition = 50f*(i+1)+10f*i
+            val eventStartTime =events[i].startTime.split(":")
+            val eventEndTime =events[i].endTime.split(":")
+            val eventTop = eventStartTime[0].toInt()*167f+eventStartTime[1].toInt()*3f
+            val eventBottom = eventEndTime[0].toInt()*167f+eventEndTime[1].toInt()*3f
+            var eventLeft = 140f
+            var eventRight =600f
+            if (events.size!= 1){
+                eventLeft =140f+(460f/events.size)*i+10f*i
+                eventRight = eventLeft+(460f/events.size)
+            }
+
+            val eventPosition = 150f*(i+1)+10f*i
             val paint = Paint()
             paint.color = getResources().getColor(R.color.lightBlue)
-            canvas.drawRect(0f,eventPosition,140f,eventPosition+50f,paint)
+            canvas.drawRect(eventLeft,eventTop,eventRight,eventBottom,paint)
             val paint1 = Paint()
             paint1.color = Color.BLACK
 
             paint1.textSize = 30F
-            canvas.drawText(events[i],10F, eventPosition+35F,paint1)
+            canvas.drawText(events[i].name,eventLeft+15F, eventTop+40f,paint1)
+
         }
 
     }

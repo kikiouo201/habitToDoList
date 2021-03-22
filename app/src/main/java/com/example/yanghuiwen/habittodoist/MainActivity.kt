@@ -1,7 +1,7 @@
 package com.example.yanghuiwen.habittodoist
 
 import android.Manifest
-import android.content.ContentResolver
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +13,6 @@ import android.provider.CalendarContract
 import android.util.Log
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,19 +22,17 @@ import com.example.yanghuiwen.habittodoist.view.AddHabitToDoDialogFragment
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import com.example.yanghuiwen.habittodoist.view.calendar_page.CalendarPageView
 import com.example.yanghuiwen.habittodoist.view.main_page.MainPageView
-import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.OtherToDoListPagerView
 import com.example.yanghuiwen.habittodoist.view.main_page.PagerAdapter
 import com.example.yanghuiwen.habittodoist.view.main_page.PersonalPageView
+import com.example.yanghuiwen.habittodoist.view.not_date_todolist_page.OtherToDoListPagerView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
 
-// 加 事項到 行事曆和todolist上
-// 加 年 月曆
-// 事項的 完成 結束 刪除 儲存
 
 
 class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineSelectedListener {
@@ -46,64 +43,20 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
     private var isFabOpen = false
     private lateinit var mainPageList: MutableList<RelativeLayout>
     private lateinit var pageList: MutableList<WeekPageView>
-//    var habit_RecyclerView:RecyclerView? = null
-    // Write a message to the database
-
-//    private var dbRef: DatabaseReference = fireDB.getReference("Users")
-//    private var list: MutableList<User> = mutableListOf()
 
 
-    private  val PROJECTION_ID_INDEX: Int = 0
-    private  val PROJECTION_ACCOUNT_NAME_INDEX: Int = 1
-    private  val PROJECTION_DISPLAY_NAME_INDEX: Int = 2
-    private  val PROJECTION_OWNER_ACCOUNT_INDEX: Int = 3
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val EVENT_PROJECTION: Array<String> = arrayOf(
-                CalendarContract.Calendars._ID,                     // 0
-                CalendarContract.Calendars.ACCOUNT_NAME,            // 1
-                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,   // 2
-                CalendarContract.Calendars.OWNER_ACCOUNT            // 3
-        )
-
-        // 權限檢查
-         val MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100
-        if (ContextCompat.checkSelfPermission(this@MainActivity,  Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.READ_EXTERNAL_STORAGE),
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS)
-        }
 
 
 
-        val uri: Uri = CalendarContract.Calendars.CONTENT_URI
-        val selection: String = "((${CalendarContract.Calendars.ACCOUNT_NAME} = ?) AND (" +
-                "${CalendarContract.Calendars.ACCOUNT_TYPE} = ?) AND (" +
-                "${CalendarContract.Calendars.OWNER_ACCOUNT} = ?))"
-        val selectionArgs: Array<String> = arrayOf("testorsalmon@gmail.com", "com.google", "testorsalmon@gmail.com")
-
-        val cur = contentResolver.query(uri, EVENT_PROJECTION, selection, selectionArgs, null)
-
-        if (cur != null) {
-            while (cur.moveToNext()) {
-                // Get the field values
-                val calID: Long = cur.getLong(PROJECTION_ID_INDEX)
-                val displayName: String = cur.getString(PROJECTION_DISPLAY_NAME_INDEX)
-                val accountName: String = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX)
-                val ownerName: String = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX)
-                // Do something with the values...
-
-            }
-        }else{
-            Log.i("MainActivity", "cur== null")
-        }
-
-       // addEvents()
-
+        queryCalendar()
+        queryEvent()
 
         AllItemData.getFirebaseDate()
         AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
@@ -267,5 +220,228 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
                 .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
                 .putExtra(Intent.EXTRA_EMAIL, "")
         startActivity(intent)
+    }
+
+//    fun findEvent(){
+//        val MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100
+//        if (ContextCompat.checkSelfPermission(this@MainActivity,  Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this@MainActivity,
+//                    arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.READ_EXTERNAL_STORAGE),
+//                    MY_PERMISSIONS_REQUEST_READ_CONTACTS)
+//        }
+//        val INSTANCE_PROJECTION: Array<String> = arrayOf(
+//                CalendarContract.Instances.EVENT_ID, // 0
+//                CalendarContract.Instances.BEGIN, // 1
+//                CalendarContract.Instances.TITLE // 2
+//        )
+//
+//        val PROJECTION_ID_INDEX: Int = 0
+//        val PROJECTION_BEGIN_INDEX: Int = 1
+//        val PROJECTION_TITLE_INDEX: Int = 2
+//
+//        val startMillis: Long = Calendar.getInstance().run {
+//            set(2021, 1, 23, 8, 0)
+//            timeInMillis
+//        }
+//        val endMillis: Long = Calendar.getInstance().run {
+//            set(2021, 3, 24, 8, 0)
+//            timeInMillis
+//        }
+//
+//        val selection: String = "${CalendarContract.Instances.EVENT_ID} = ?"
+//        val selectionArgs: Array<String> = arrayOf("207")
+//
+//        val builder: Uri.Builder = CalendarContract.Instances.CONTENT_URI.buildUpon()
+//        ContentUris.appendId(builder, startMillis)
+//        ContentUris.appendId(builder, endMillis)
+//
+//// Submit the query
+//        val cur: Cursor? = contentResolver.query(
+//                builder.build(),
+//                INSTANCE_PROJECTION,
+//                selection,
+//                selectionArgs, null
+//        )
+//        if (cur != null) {
+//            Log.i("MainActivity", "cur: $cur")
+//            while (cur.moveToNext()) {
+//                // Get the field values
+//                val eventID: Long = cur.getLong(PROJECTION_ID_INDEX)
+//                val beginVal: Long = cur.getLong(PROJECTION_BEGIN_INDEX)
+//                val title: String = cur.getString(PROJECTION_TITLE_INDEX)
+//
+//                // Do something with the values.
+//                Log.i("MainActivity", "Event: $title")
+//                val calendar = Calendar.getInstance().apply {
+//                    timeInMillis = beginVal
+//                }
+//                val formatter = SimpleDateFormat("MM/dd/yyyy")
+//                Log.i("MainActivity", "Date: ${formatter.format(calendar.time)}")
+//            }
+//        }
+//    }
+
+    fun queryEvent() {
+
+        val INSTANCE_PROJECTION = arrayOf(
+                CalendarContract.Instances.EVENT_ID,
+                CalendarContract.Instances.BEGIN,
+                CalendarContract.Instances.END,
+                CalendarContract.Instances.TITLE)
+
+        val PROJECTION_ID_INDEX = 0
+        val PROJECTION_BEGIN_INDEX = 1
+        val PROJECTION_END_INDEX = 2
+        val PROJECTION_TITLE_INDEX = 3
+
+        val targetCalendar: String =  "testorsalmon@gmail.com"
+        // 指定一個時間段，查詢以下時間內的所有活動
+        // 月份是從0開始，0-11
+        val beginTime = Calendar.getInstance()
+        beginTime[2021, 0, 1, 8] = 0
+        val startMillis = beginTime.timeInMillis
+        val endTime = Calendar.getInstance()
+        endTime[2021, 4, 1, 8] = 0
+        val endMillis = endTime.timeInMillis
+        // 查詢活動
+        var cur: Cursor? = null
+        val cr = contentResolver
+        val builder = CalendarContract.Instances.CONTENT_URI.buildUpon()
+        // 定義查詢條件，找出上面日歷中指定時間段的所有活動
+        val selection = CalendarContract.Events.CALENDAR_ID + " = ?"
+        val selectionArgs = arrayOf("1")
+        ContentUris.appendId(builder, startMillis)
+        ContentUris.appendId(builder, endMillis)
+        // 因為targetSDK=25，所以要在Apps運行時檢查權限
+        val permissionCheck = ContextCompat.checkSelfPermission(this@MainActivity,
+                Manifest.permission.READ_CALENDAR)
+        // 建立List來暫存查詢的結果
+        val eventIdList: List<Int> = ArrayList()
+        val beginList: List<Long> = ArrayList()
+        val titleList: List<String> = ArrayList()
+        // 如果使用者給了權限便開始查詢日歷
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+
+            cur = cr.query(builder.build(),
+                    INSTANCE_PROJECTION,
+                    selection,
+                    selectionArgs,
+                    null)
+            Log.i("query_event", String.format("cur =%s", cur))
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    var eventID: Long = 0
+
+                    var beginVal: Long = 0
+                    var endVal: Long = 0
+                    var title: String? = null
+
+                    // 取得所需的資料
+                    eventID = cur.getLong(PROJECTION_ID_INDEX)
+                    beginVal = cur.getLong(PROJECTION_BEGIN_INDEX)
+                    endVal = cur.getLong(PROJECTION_END_INDEX)
+                    title = cur.getString(PROJECTION_TITLE_INDEX)
+
+                    val calendar = Calendar.getInstance().apply {
+                        timeInMillis = beginVal
+                    }
+                    val endCalendar = Calendar.getInstance().apply {
+                        timeInMillis = endVal
+                    }
+
+
+                    val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+                    val timeFormatter = SimpleDateFormat("HH:mm")
+                    Log.i("query_event", "Date: ${dateFormatter.format(calendar.time)}")
+                    Log.i("query_event", "Date: ${dateFormatter.format(endCalendar.time)}")
+
+                    AllItemData.setActivity(eventID,dateFormatter.format(calendar.time),dateFormatter.format(endCalendar.time),timeFormatter.format(calendar.time),timeFormatter.format(endCalendar.time),title )
+                    Log.i("query_event", String.format("eventID=%s", eventID))
+                    Log.i("query_event", String.format("beginVal=%s", beginVal))
+                    Log.i("query_event", String.format("endVal=%s", endVal))
+                    Log.i("query_event", String.format("title=%s", title))
+                    // 暫存資料讓使用者選擇
+//                    eventIdList.add(eventID.toInt())
+//                    beginList.add(beginVal)
+//                    titleList.add(title)
+                }
+                cur.close()
+            }
+//            if (eventIdList.size() !== 0) {
+//                // 建立一個Dialog讓使用者選擇活動
+//                val adb = AlertDialog.Builder(this)
+//                val items: Array<CharSequence> = titleList.toArray(arrayOfNulls<CharSequence>(titleList.size()))
+//                adb.setSingleChoiceItems(items, 0, object : OnClickListener() {
+//                    fun onClick(dialog: DialogInterface, which: Int) {
+//                        val targetEventId: EditText = findViewById(R.id.event_id) as EditText
+//                        val targetStartDateTime: EditText = findViewById(R.id.start_date_time) as EditText
+//                        val targetTitle: EditText = findViewById(R.id.title) as EditText
+//                        targetEventId.setText(java.lang.String.format("%s", eventIdList[which]))
+//                        val startDateTime: String = DateFormat.getDateTimeInstance().format(beginList[which])
+//                        targetStartDateTime.setText(startDateTime)
+//                        targetTitle.setText(java.lang.String.format("%s", titleList[which]))
+//                        dialog.dismiss()
+//                    }
+//                })
+//                adb.setNegativeButton("CANCEL", null)
+//                adb.show()
+//            } else {
+//                val toast: Toast = Toast.makeText(this, "找不到活動", Toast.LENGTH_LONG)
+//                toast.show()
+//            }
+        } else {
+//            val toast: Toast = Toast.makeText(this, "沒有所需的權限", Toast.LENGTH_LONG)
+//            toast.show()
+        }
+    }
+
+    fun queryCalendar(){
+
+
+        val EVENT_PROJECTION: Array<String> = arrayOf(
+                CalendarContract.Calendars._ID,                     // 0
+                CalendarContract.Calendars.ACCOUNT_NAME,            // 1
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,   // 2
+                CalendarContract.Calendars.OWNER_ACCOUNT            // 3
+        )
+
+        val PROJECTION_ID_INDEX: Int = 0
+        val PROJECTION_ACCOUNT_NAME_INDEX: Int = 1
+        val PROJECTION_DISPLAY_NAME_INDEX: Int = 2
+        val PROJECTION_OWNER_ACCOUNT_INDEX: Int = 3
+
+        // 權限檢查
+        val MY_PERMISSIONS_REQUEST_READ_CONTACTS = 100
+        if (ContextCompat.checkSelfPermission(this@MainActivity,  Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.READ_EXTERNAL_STORAGE),
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS)
+        }
+
+
+
+        val uri: Uri = CalendarContract.Calendars.CONTENT_URI
+        val selection: String = "((${CalendarContract.Calendars.ACCOUNT_NAME} = ?) AND (" +
+                "${CalendarContract.Calendars.ACCOUNT_TYPE} = ?) AND (" +
+                "${CalendarContract.Calendars.OWNER_ACCOUNT} = ?))"
+        val selectionArgs: Array<String> = arrayOf("testorsalmon@gmail.com", "com.google", "testorsalmon@gmail.com")
+
+        val cur = contentResolver.query(uri, EVENT_PROJECTION, selection, selectionArgs, null)
+
+        if (cur != null) {
+            while (cur.moveToNext()) {
+                // Get the field values
+                val calID: Long = cur.getLong(PROJECTION_ID_INDEX)
+                val displayName: String = cur.getString(PROJECTION_DISPLAY_NAME_INDEX)
+                val accountName: String = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX)
+                val ownerName: String = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX)
+                // Do something with the values...
+                Log.i("MainActivity","calID${calID} ")
+
+            }
+            cur.close()
+        }else{
+            Log.i("MainActivity", "cur== null")
+        }
     }
 }
