@@ -33,7 +33,44 @@ class CalendarPageView(context: Context) : RelativeLayout(context){
 
     init {
 
+        val current = LocalDateTime.now()
 
+        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()%7
+        pageList = ArrayList()
+        var currentMonth =Calendar.MONTH
+        for (i in -2..4){
+            currentMonth =Calendar.MONTH + i
+            if(currentMonth<1){
+               currentMonth += 12
+
+            }else if(currentMonth>12){
+                currentMonth -= 12
+            }
+            pageList.add(CalendarView(context, currentMonth))
+        }
+
+
+        val page = view.findViewById<ViewPager>(R.id.calendarViewPager)
+        val weekPagerAdapter = PagerAdapter(pageList)
+
+
+        val listener = object: ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(p0: Int) {}
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                val pageNow = position + 1
+                //textView.setText("$pageNow / ${list.size}")
+            }
+            override fun onPageSelected(p0: Int) {
+                Log.i("kiki","p0=${p0}")
+              //  pageList[p0].chooseThisPage()
+            }
+        }
+
+        page.adapter = weekPagerAdapter
+        page.addOnPageChangeListener(listener)
+
+        page.setCurrentItem(3 , false);
 
 
         addView(view)
@@ -59,38 +96,38 @@ class CalendarPageView(context: Context) : RelativeLayout(context){
 
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun initWeekViewpage(page:ViewPager,dateTypes:String) {
-
-        val current = LocalDateTime.now()
-
-        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()%7
-        pageList = ArrayList()
-
-        pageList.add(DatePageView(context, current,dateTypes))
-
-
-        val weekPagerAdapter = PagerAdapter(pageList)
-
-
-        val listener = object: ViewPager.OnPageChangeListener{
-            override fun onPageScrollStateChanged(p0: Int) {}
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                val pageNow = position + 1
-                //textView.setText("$pageNow / ${list.size}")
-            }
-            override fun onPageSelected(p0: Int) {
-                Log.i("kiki","p0=${p0}")
-                //pageList[p0].chooseThisPage()
-            }
-        }
-
-        page.adapter = weekPagerAdapter
-        page.addOnPageChangeListener(listener)
-
-        page.setCurrentItem(3 , false);
-    }
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun initWeekViewpage(page:ViewPager,dateTypes:String) {
+//
+//        val current = LocalDateTime.now()
+//
+//        AllItemData.currentWeekIndex = current.dayOfWeek.getValue()%7
+//        pageList = ArrayList()
+//
+//        pageList.add(DatePageView(context, current,dateTypes))
+//
+//
+//        val weekPagerAdapter = PagerAdapter(pageList)
+//
+//
+//        val listener = object: ViewPager.OnPageChangeListener{
+//            override fun onPageScrollStateChanged(p0: Int) {}
+//
+//            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+//                val pageNow = position + 1
+//                //textView.setText("$pageNow / ${list.size}")
+//            }
+//            override fun onPageSelected(p0: Int) {
+//                Log.i("kiki","p0=${p0}")
+//                //pageList[p0].chooseThisPage()
+//            }
+//        }
+//
+//        page.adapter = weekPagerAdapter
+//        page.addOnPageChangeListener(listener)
+//
+//        page.setCurrentItem(3 , false);
+//    }
 
 
 }

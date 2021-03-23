@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.yanghuiwen.habittodoist.R
-import kotlinx.android.synthetic.main.customview_calendar_day.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GeneralCalendar: ConstraintLayout{
 //JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
@@ -18,10 +19,12 @@ class GeneralCalendar: ConstraintLayout{
 //    (context: Context, attrs: AttributeSet) : View(context, attrs){
 
     val view =View.inflate(context, R.layout.customview_calendar_day, this)
-    private var mHoliday =false
-    private var mThisMonth  =false
-    private var mToday =false
+    private var mMondayDay = 1
+    private var mMondayMonth  = 1
+    private var mToday = 0
+    private var mWeekNum = 0
 
+    val weeks =intArrayOf(R.id.week7,R.id.week1,R.id.week2,R.id.week3,R.id.week4,R.id.week5,R.id.week6)
 
 //
     constructor(context: Context?) : super(context){
@@ -52,13 +55,15 @@ class GeneralCalendar: ConstraintLayout{
                 0, 0).apply {
 
             try {
-                mToday = getBoolean(R.styleable.GeneralCalendar_today, false)
-                mThisMonth = getBoolean(R.styleable.GeneralCalendar_thisMonth, true)
-                mHoliday = getBoolean(R.styleable.GeneralCalendar_holiday, false)
-                view.dayNum.text = getInteger(R.styleable.GeneralCalendar_dayNum, 1).toString()
-                if(mHoliday){
-                    view.dayNum.setTextColor(getResources().getColor(R.color.blue))
-                }
+                mToday = getInteger(R.styleable.GeneralCalendar_today, 0)
+                mMondayMonth = getInteger(R.styleable.GeneralCalendar_mondayMonth, 1)
+                mMondayDay = getInteger(R.styleable.GeneralCalendar_monday, 0)
+                mWeekNum= getInteger(R.styleable.GeneralCalendar_weekNum, 1)
+                setCalendarDate()
+
+//                if(mHoliday){
+//                    view.dayNum.setTextColor(getResources().getColor(R.color.blue))
+//                }
             } finally {
                 recycle()
             }
@@ -66,6 +71,34 @@ class GeneralCalendar: ConstraintLayout{
 
 
     }
+
+
+    fun setCalendarDate(){
+        var monthEndDate= getMonthEndDate(mMondayMonth)
+        var currentMonth = mMondayMonth
+        var currentDate = mMondayDay
+        for (i in 0..6){
+            val week = view.findViewById<TextView>(weeks[i])
+
+            if ( monthEndDate >= currentDate){
+                week.text = currentDate.toString()
+            }else{
+                monthEndDate = getMonthEndDate(currentMonth)
+                currentDate = 1
+                week.text = currentDate.toString()
+            }
+
+            currentDate++
+        }
+    }
+
+    fun getMonthEndDate(mondayNum: Int): Int {
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.MONTH, mondayNum-1)
+//        Log.i("GeneralCalendar","endDate:${cal.getActualMaximum(Calendar.DAY_OF_MONTH)}")
+        return cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+    }
+
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -94,21 +127,23 @@ class GeneralCalendar: ConstraintLayout{
 
     }
 
-    fun isHoliday(): Boolean {
-        return mHoliday
-    }
+//    fun isHoliday(): Boolean {
+//        return mMonday
+//    }
 
-    fun setHoliday(holiday: Boolean) {
-        mHoliday = holiday
-        if(mHoliday){
-            view.dayNum.setTextColor(getResources().getColor(R.color.blue))
-        }
-        invalidate()
-        requestLayout()
-    }
+//    fun setHoliday(holiday: Boolean) {
+//        mMonday = holiday
+//        if(mMonday){
+//            view.dayNum.setTextColor(getResources().getColor(R.color.blue))
+//        }
+//        invalidate()
+//        requestLayout()
+//    }
 
-    fun setDayNum(dayNum: Int) {
-        view.dayNum.text = dayNum.toString()
+    fun setMondayDate(month: Int,day: Int) {
+        mMondayMonth = month
+        mMondayDay  = day
+        setCalendarDate()
         invalidate()
         requestLayout()
     }
