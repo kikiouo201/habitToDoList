@@ -1,7 +1,9 @@
 package com.example.yanghuiwen.habittodoist.view.main_page
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings.Global.getString
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -11,16 +13,24 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat.startActivity
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.ItemDate
+import com.example.yanghuiwen.habittodoist.MainActivity
 import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.view.GoogleSignInActivity
 import com.example.yanghuiwen.habittodoist.view.item_sample.SingleItem
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.DatePageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.android.synthetic.main.personal_page.view.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -33,7 +43,16 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
     private lateinit var pageList: MutableList<RelativeLayout>
 
     init {
+        if (AllItemData.auth.currentUser != null){
+            view.account.text = AllItemData.auth.currentUser!!.email.toString()
+            Log.i("PersonalPageView",AllItemData.auth.currentUser!!.email.toString())
+        }
+        Log.i("PersonalPageView",AllItemData.auth.currentUser.toString())
+    view.signInButton.setOnClickListener {
+        var intent = Intent(context,GoogleSignInActivity::class.java)
 
+        context.startActivity(intent)
+    }
 
     val  yearGoalPager = view.findViewById<ViewPager>(R.id.yearGoalPager)
     initWeekViewpage(yearGoalPager,"year")
@@ -46,6 +65,7 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
 
         addView(view)
     }
+
 
     fun chooseThisPage(){
 

@@ -3,6 +3,7 @@ package com.example.yanghuiwen.habittodoist
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -22,6 +23,9 @@ object AllItemData {
     private lateinit var todayToDoItemReference: DatabaseReference
     private lateinit var habitToDoItemReference: DatabaseReference
     private lateinit var singleItemReference: DatabaseReference
+
+
+    lateinit var auth: FirebaseAuth
 
     var allToDoMap = sortedMapOf<Int, ItemDate?>()
     var allActivityMap = sortedMapOf<Int, ItemDate?>()

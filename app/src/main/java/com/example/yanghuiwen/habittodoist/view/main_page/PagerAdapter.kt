@@ -17,9 +17,9 @@ class PagerAdapter(private val pageList : MutableList<RelativeLayout>) : PagerAd
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        Log.i("PagerAdapter","i`m come in ${position}")
+       // Log.i("PagerAdapter","i`m come in ${position}")
         container.addView(pageList[position])
-        Log.i("PagerAdapter","position${position}")
+        //Log.i("PagerAdapter","position${position}")
         return pageList[position]
     }
 

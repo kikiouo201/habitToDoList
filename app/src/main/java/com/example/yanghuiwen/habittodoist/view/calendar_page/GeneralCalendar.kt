@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.yanghuiwen.habittodoist.R
+import java.lang.reflect.Array
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,6 +26,7 @@ class GeneralCalendar: ConstraintLayout{
     private var mWeekNum = 0
 
     val weeks =intArrayOf(R.id.week7,R.id.week1,R.id.week2,R.id.week3,R.id.week4,R.id.week5,R.id.week6)
+    var daysOfWeek = ArrayList<String>()
 
 //
     constructor(context: Context?) : super(context){
@@ -82,12 +84,14 @@ class GeneralCalendar: ConstraintLayout{
 
             if ( monthEndDate >= currentDate){
                 week.text = currentDate.toString()
+
             }else{
                 monthEndDate = getMonthEndDate(currentMonth)
                 currentDate = 1
                 week.text = currentDate.toString()
-            }
 
+            }
+            daysOfWeek.add("${currentMonth}-${currentDate}")
             currentDate++
         }
     }
@@ -103,6 +107,7 @@ class GeneralCalendar: ConstraintLayout{
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val events =ArrayList<String>()
+
         events.add("讀日文")
         events.add("讀12文")
         events.add("讀文")
