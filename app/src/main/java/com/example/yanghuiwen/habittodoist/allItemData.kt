@@ -16,8 +16,7 @@ import kotlin.collections.ArrayList
 object AllItemData {
 
 
-//    Log.i("AllItemData","")
-
+    private const val TAG = "AllItemData"
     val database = Firebase.database
     private lateinit var allItemReference: DatabaseReference
     private lateinit var todayToDoItemReference: DatabaseReference
@@ -148,9 +147,9 @@ object AllItemData {
 
                     lastallHabitIndex = itemIndex
                     allHabitToDoMap.put(lastallHabitIndex.toInt(),habitDate)
-                    Log.i("AllItemData"," HabitToDoMap lastallItemIndex="+lastallHabitIndex.toInt())
+                   // Log.i(TAG," HabitToDoMap lastallItemIndex="+lastallHabitIndex.toInt())
                 }
-                Log.i("AllItemData"," first allHabitToDoMap="+allHabitToDoMap)
+               // Log.i(TAG," first allHabitToDoMap="+allHabitToDoMap)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -402,6 +401,27 @@ object AllItemData {
       //  Log.i("AllItemData","todayToDo="+todayToDo)
         return todayToDo
     }
+    fun getIntervalDateToDayToDo(intervalDates: ArrayList<String>):ArrayList<ItemDate>{
+
+        todayToDo = ArrayList<ItemDate>()
+
+        for (itemIndex in todayToDoItem){
+            var nowItemDate = allToDoMap.get(itemIndex.toInt())
+             //Log.i(TAG,"nowItemDate="+nowItemDate)
+            for (intervalDate in intervalDates) {
+                Log.i(TAG,"intervalDate="+intervalDate)
+                Log.i(TAG,"nowItemDate?.startDate="+nowItemDate?.startDate)
+                if (intervalDate.equals(nowItemDate?.startDate)) {
+                    if (nowItemDate != null && !nowItemDate.isHabit) {
+
+                        todayToDo.add(nowItemDate)
+                    }
+                }
+            }
+        }
+          Log.i(TAG,"todayToDo="+todayToDo)
+        return todayToDo
+    }
     fun setDateToDayToDo(AddItem:ItemDate):Int{
         var addItemIndex= setAllItem(AddItem)
         todayToDoItem.add(addItemIndex.toString())
@@ -424,9 +444,30 @@ object AllItemData {
             for (i in itemIndexs?.notEndItem!!){
                 var nowItemDate = allToDoMap.get(i.toInt())
                  if(currentDate.equals(nowItemDate?.startDate)){
-              //      Log.i("AllItemData","nowItemDate="+nowItemDate)
+              //      Log.i(TAG,"nowItemDate="+nowItemDate)
                     if (nowItemDate != null &&  nowItemDate.isHabit) {
                         habitToDo.add(nowItemDate)
+                    }
+                }
+
+            }
+        }
+        return habitToDo
+
+    }
+    fun getIntervalDateHabitToDo(intervalDates: ArrayList<String>):ArrayList<ItemDate>{
+
+        var habitToDo = ArrayList<ItemDate>()
+
+        for ((key,itemIndexs)in allHabitToDoMap){
+            for (i in itemIndexs?.notEndItem!!){
+                var nowItemDate = allToDoMap.get(i.toInt())
+                for (intervalDate in intervalDates) {
+                    if (intervalDate.equals(nowItemDate?.startDate)) {
+                        //      Log.i("AllItemData","nowItemDate="+nowItemDate)
+                        if (nowItemDate != null && nowItemDate.isHabit) {
+                            habitToDo.add(nowItemDate)
+                        }
                     }
                 }
 
@@ -641,7 +682,7 @@ object AllItemData {
             // Log.i("AllItemData","nowItemDate="+nowItemDate)
 
         }
-        //  Log.i("AllItemData","todayToDo="+todayToDo)
+        //  Log.i(TAG,"todayToDo="+todayToDo)
 
         return habitToDoList
 
@@ -654,7 +695,7 @@ object AllItemData {
         for ((key,nowItemDate)in  allActivityMap){
 
                 if(currentDate.equals(nowItemDate?.startDate)){
-                          Log.i("AllItemData","nowItemDate="+nowItemDate?.startDate)
+                        //  Log.i("AllItemData","nowItemDate="+nowItemDate?.startDate)
                     if (nowItemDate != null ){
                         activity.add(nowItemDate)
                     }
@@ -664,6 +705,23 @@ object AllItemData {
         return activity
     }
 
+    fun getIntervalDateActivity(intervalDates: ArrayList<String>):ArrayList<ItemDate>{
+        var activity = ArrayList<ItemDate>()
+
+        for ((key,nowItemDate)in  allActivityMap){
+            for (intervalDate in intervalDates){
+                if(intervalDate.equals(nowItemDate?.startDate)){
+                  //  Log.i("AllItemData","nowItemDate="+nowItemDate?.startDate)
+                    if (nowItemDate != null ){
+                        activity.add(nowItemDate)
+                    }
+                }
+            }
+
+
+        }
+        return activity
+    }
 
     fun setActivity(eventID:Long,startDate:String,endDate:String,startTime:String,endTime:String,title:String){
         val addItem =ItemDate()
@@ -677,6 +735,24 @@ object AllItemData {
         allActivityMap.put(eventID.toInt(),addItem)
     }
 
+    fun dateFormatter(year:Int,monthOfYear:Int,dayOfMonth:Int):String{
+        var chooseTime =""
+
+        chooseTime ="${year}"
+        if(monthOfYear+1<10){
+            chooseTime +="-0${monthOfYear+1}"
+        }else{
+            chooseTime +="-${monthOfYear+1}"
+        }
+        if (dayOfMonth<10){
+            chooseTime +="-0${dayOfMonth}"
+        }else{
+            chooseTime +="-${dayOfMonth}"
+        }
+       // Log.i(TAG,"chooseTime$chooseTime")
+        return chooseTime
+
+    }
 
 }
 

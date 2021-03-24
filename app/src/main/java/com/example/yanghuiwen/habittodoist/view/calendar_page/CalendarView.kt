@@ -43,10 +43,11 @@ class CalendarView(context: Context, month: Int) : RelativeLayout(context){
         for (i in 0..4){
 
             val week = view.findViewById<GeneralCalendar>(weekOfMonth[i])
-            week.setMondayDate(currentWeekOfMonth.month+1,currentWeekOfMonth.date)
+
+            week.setMondayDate(2021,currentWeekOfMonth.month,currentWeekOfMonth.date)
             cal.add(Calendar.DATE, +7)
             currentWeekOfMonth = cal.time
-//            Log.i("CalendarView","cal.time${cal.time}")
+            Log.i("CalendarView","currentWeekOfMonth.year${currentWeekOfMonth.year}")
 //            Log.i("CalendarView","Month${cal.time.month+1}")
 //            Log.i("CalendarView","currentWeekOfMonth${currentWeekOfMonth.month}")
 

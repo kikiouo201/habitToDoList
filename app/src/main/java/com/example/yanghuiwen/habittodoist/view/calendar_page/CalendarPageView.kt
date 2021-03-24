@@ -31,6 +31,9 @@ class CalendarPageView(context: Context) : RelativeLayout(context){
 
     private lateinit var pageList: MutableList<RelativeLayout>
 
+    companion object {
+        private const val TAG = "CalendarPageView"
+    }
     init {
 
         val current = LocalDateTime.now()
@@ -62,7 +65,7 @@ class CalendarPageView(context: Context) : RelativeLayout(context){
                 //textView.setText("$pageNow / ${list.size}")
             }
             override fun onPageSelected(p0: Int) {
-                Log.i("kiki","p0=${p0}")
+                Log.i(TAG,"p0=${p0}")
               //  pageList[p0].chooseThisPage()
             }
         }
