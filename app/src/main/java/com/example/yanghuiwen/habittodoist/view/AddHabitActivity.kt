@@ -59,19 +59,9 @@ class AddHabitActivity : AppCompatActivity() {
                 val nowEndDates= endDate.text.split("-")
                 val nowEndDate = LocalDate.of(nowEndDates[0].toInt(),nowEndDates[1].toInt(),nowEndDates[2].toInt())
                 val chooseDate = LocalDate.of(year,monthOfYear+1,dayOfMonth)
-                var chooseTime =""
+                var chooseTime =AllItemData.dateFormatter(year,monthOfYear,dayOfMonth)
 
-                chooseTime ="${year}"
-                if(monthOfYear+1<10){
-                    chooseTime +="-0${monthOfYear+1}"
-                }else{
-                    chooseTime +="-${monthOfYear+1}"
-                }
-                if (dayOfMonth<10){
-                    chooseTime +="-0${dayOfMonth}"
-                }else{
-                    chooseTime +="-${dayOfMonth}"
-                }
+
                 if(chooseDate.isAfter(nowEndDate)) {
                     endDate.setText(chooseTime)
                 }
@@ -342,7 +332,7 @@ class AddHabitActivity : AppCompatActivity() {
         importantGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             val groupIndex = importantGroup.indexOfChild(radio)
-            addHabitDate.important  = groupIndex
+            addHabitDate.important  = 4-groupIndex
 
         })
 

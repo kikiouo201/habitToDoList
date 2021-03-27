@@ -67,12 +67,13 @@ class AddItemActivity : AppCompatActivity() {
                 val nowEndDates= endDate.text.split("-")
                 val nowEndDate = LocalDate.of(nowEndDates[0].toInt(),nowEndDates[1].toInt(),nowEndDates[2].toInt())
                 val chooseDate = LocalDate.of(year,monthOfYear+1,dayOfMonth)
-                val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
-                if(chooseDate.isAfter(nowEndDate)) {
-                    endDate.setText(chooseTime)
-                }
+                val chooseTime =AllItemData.dateFormatter(year,monthOfYear,dayOfMonth)
+//                if(chooseDate.isAfter(nowEndDate)) {
+//                    endDate.setText(chooseTime)
+//                }
 
                 startDate.setText(chooseTime)
+                endDate.setText(chooseTime)
                 addItemDate.startDate = chooseTime
 
             }, year, month, day)
@@ -95,7 +96,7 @@ class AddItemActivity : AppCompatActivity() {
 
 
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                val chooseTime ="${year}-${monthOfYear+1}-${dayOfMonth}"
+                val chooseTime =AllItemData.dateFormatter(year,monthOfYear,dayOfMonth)
                 endDate.setText(chooseTime)
                 addItemDate.endDate = chooseTime
 
@@ -151,22 +152,23 @@ class AddItemActivity : AppCompatActivity() {
         importantGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             val groupIndex = importantGroup.indexOfChild(radio)
-            addItemDate.important  = groupIndex
+
+            addItemDate.important  = 4-groupIndex
 
         })
 
 
         //急
-        val urgents =intArrayOf(R.id.urgent5,R.id.urgent4,R.id.urgent3,R.id.urgent2,R.id.urgent1)
-        val urgent3 = findViewById<RadioButton>(R.id.urgent3)
-        urgent3.isChecked = true
-        addItemDate.urgent = 2
-        val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
-        urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
-            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            val groupIndex = urgentGroup.indexOfChild(radio)
-            addItemDate.urgent = groupIndex
-        })
+//        val urgents =intArrayOf(R.id.urgent5,R.id.urgent4,R.id.urgent3,R.id.urgent2,R.id.urgent1)
+//        val urgent3 = findViewById<RadioButton>(R.id.urgent3)
+//        urgent3.isChecked = true
+//        addItemDate.urgent = 2
+//        val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
+//        urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+//            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+//            val groupIndex = urgentGroup.indexOfChild(radio)
+//            addItemDate.urgent = groupIndex
+//        })
 
         //重複
         val repeat =findViewById<CheckBox>(R.id.repeat)

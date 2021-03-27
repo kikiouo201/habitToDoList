@@ -169,45 +169,45 @@
             android:layout_height="wrap_content"
             android:text="緊急" />
 
-        <RadioGroup
-            android:id="@+id/urgentGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <RadioGroup-->
+<!--            android:id="@+id/urgentGroup"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <RadioButton
-                android:id="@+id/urgent5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="非常急" />
+<!--            <RadioButton-->
+<!--                android:id="@+id/urgent5"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="非常急" />-->
 
-            <RadioButton
-                android:id="@+id/urgent4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="有點急" />
-            <RadioButton
-                android:id="@+id/urgent3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="普通" />
+<!--            <RadioButton-->
+<!--                android:id="@+id/urgent4"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="有點急" />-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/urgent3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="普通" />-->
 
-            <RadioButton
-                android:id="@+id/urgent2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="不緊急" />
-            <RadioButton
-                android:id="@+id/urgent1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="可不做" />
-        </RadioGroup>
+<!--            <RadioButton-->
+<!--                android:id="@+id/urgent2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="不緊急" />-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/urgent1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="可不做" />-->
+<!--        </RadioGroup>-->
 
         <CheckBox
             android:id="@+id/repeat"

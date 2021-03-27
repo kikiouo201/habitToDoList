@@ -21,11 +21,10 @@ data class ItemDate(
         var startTime:String = "",
         var endTime:String = "",
         var isHabit:Boolean = false,
-        var IsEndItem:Boolean = false,
+        var IsEndItem:Boolean = false,//完成項目
         var isActivity:Boolean = false,
         var manyDays:Boolean = false,
-        //被禁止
-        var IsProhibitItem:Boolean = false
+        var IsProhibitItem:Boolean = false//過期 被禁止
 
 
 )

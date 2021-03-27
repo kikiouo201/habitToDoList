@@ -49,11 +49,18 @@ object AllItemData {
 
     var currentDate ="2020-02-07"
     var currentWeekIndex = 1
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getFirebaseDate(){
+
+        val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+
+
 
         // allItem 所有單項
         allItemReference = database.getReference("user/allItem/")
         val allItemPostListener = object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
 
@@ -64,32 +71,52 @@ object AllItemData {
                     allToDoMap.put(lastallItemIndex.toInt(),itemDate)
 
 
+
+
+
                     if (itemDate != null) {
-                        if(itemDate.IsEndItem){
-                            //單項項目完成
-                           if(endSingleItemMap.get("all") != null){
-                               val endSingleItem =endSingleItemMap.get("all")
-                               endSingleItem?.add(itemIndex.toInt())
-                           }else{
-                               val endSingleItem =ArrayList<Int>()
-                               endSingleItem?.add(itemIndex.toInt())
-                               endSingleItemMap.put("all",endSingleItem)
-                           }
-                        }else{
-                            //單項項目未完成
 
+                        //檢查項目有沒有過期
+                        if (!itemDate.endDate.equals("無")){
+                            Log.i(TAG,"itemDate.startDate${itemDate.endDate}")
+                            val itemStartDateFormatter = LocalDateTime.parse(itemDate.endDate+" 00:00:00",timeFormatter)
+                            val currentDateFormatter = LocalDateTime.now()
+                            val dateDifference = ChronoUnit.DAYS.between(itemStartDateFormatter, currentDateFormatter).toInt()
+                            if(dateDifference>0){
+                                itemDate.IsProhibitItem = true
+                               allItemReference.child(itemIndex).setValue(itemDate)
+                                // Log.i(TAG,"itemDate.startDate${itemDate.startDate}")
+                            }
 
-                            if(notEndSingleItemMap.get("all") != null){
-                                val notEndSingleItem =notEndSingleItemMap.get("all")
-                                notEndSingleItem?.add(itemIndex.toInt())
-                             //   Log.i("AllItemData","notEndSingleItem${notEndSingleItem}")
+                        }
+
+                        //單項項目沒有被禁止
+                        if(!itemDate.IsProhibitItem){
+                            if(itemDate.IsEndItem){
+                                //單項項目完成
+                                if(endSingleItemMap.get("all") != null){
+                                    val endSingleItem =endSingleItemMap.get("all")
+                                    endSingleItem?.add(itemIndex.toInt())
+                                }else{
+                                    val endSingleItem =ArrayList<Int>()
+                                    endSingleItem?.add(itemIndex.toInt())
+                                    endSingleItemMap.put("all",endSingleItem)
+                                }
                             }else{
+                                //單項項目未完成
+                                if(notEndSingleItemMap.get("all") != null){
+                                    val notEndSingleItem =notEndSingleItemMap.get("all")
+                                    notEndSingleItem?.add(itemIndex.toInt())
+                                    //   Log.i("AllItemData","notEndSingleItem${notEndSingleItem}")
+                                }else{
 
-                                val notEndSingleItem =ArrayList<Int>()
-                                notEndSingleItem?.add(itemIndex.toInt())
-                                notEndSingleItemMap.put("all",notEndSingleItem)
+                                    val notEndSingleItem =ArrayList<Int>()
+                                    notEndSingleItem?.add(itemIndex.toInt())
+                                    notEndSingleItemMap.put("all",notEndSingleItem)
+                                }
                             }
                         }
+
                        // Log.i("AllItemData","endSingleItemMap${endSingleItemMap}")
                        // Log.i("AllItemData","notEndSingleItemMap.size${notEndSingleItemMap.size}")
 
@@ -146,7 +173,29 @@ object AllItemData {
                     val itemIndex = ItemSnapshot.key.toString()
 
                     lastallHabitIndex = itemIndex
-                    allHabitToDoMap.put(lastallHabitIndex.toInt(),habitDate)
+
+
+                    if (habitDate != null) {
+
+                        //檢查項目有沒有過期
+                        if (!habitDate.endDate.equals("無")){
+                            Log.i(TAG,"itemDate.startDate${habitDate.endDate}")
+                            val itemStartDateFormatter = LocalDateTime.parse(habitDate.endDate+" 00:00:00",timeFormatter)
+                            val currentDateFormatter = LocalDateTime.now()
+                            val dateDifference = ChronoUnit.DAYS.between(itemStartDateFormatter, currentDateFormatter).toInt()
+                            if(dateDifference>0){
+                                habitDate.IsProhibitItem = true
+                                habitToDoItemReference.child(itemIndex).setValue(habitDate)
+                                 Log.i(TAG,"habitDate.endDate${habitDate.endDate}")
+                            }
+                        }
+
+
+                        if (!habitDate.IsProhibitItem){
+                            allHabitToDoMap.put(lastallHabitIndex.toInt(),habitDate)
+                        }
+
+                    }
                    // Log.i(TAG," HabitToDoMap lastallItemIndex="+lastallHabitIndex.toInt())
                 }
                // Log.i(TAG," first allHabitToDoMap="+allHabitToDoMap)
@@ -279,7 +328,7 @@ object AllItemData {
             val itemDates = ArrayList<ItemDate>()
             for (itemIndex in itemIndexs) {
                 var nowItemDate = allToDoMap.get(itemIndex.toInt())
-                if (nowItemDate != null) {
+                if (nowItemDate != null && !nowItemDate.isHabit) {
                     if(singleItemMap.get(nowItemDate.important.toString()) != null){
                         val endSingleItem =singleItemMap.get(nowItemDate.important.toString())
                         endSingleItem?.add(nowItemDate)
@@ -409,8 +458,8 @@ object AllItemData {
             var nowItemDate = allToDoMap.get(itemIndex.toInt())
              //Log.i(TAG,"nowItemDate="+nowItemDate)
             for (intervalDate in intervalDates) {
-                Log.i(TAG,"intervalDate="+intervalDate)
-                Log.i(TAG,"nowItemDate?.startDate="+nowItemDate?.startDate)
+              //  Log.i(TAG,"intervalDate="+intervalDate)
+              //  Log.i(TAG,"nowItemDate?.startDate="+nowItemDate?.startDate)
                 if (intervalDate.equals(nowItemDate?.startDate)) {
                     if (nowItemDate != null && !nowItemDate.isHabit) {
 
@@ -441,7 +490,7 @@ object AllItemData {
          var habitToDo = ArrayList<ItemDate>()
 
         for ((key,itemIndexs)in allHabitToDoMap){
-            for (i in itemIndexs?.notEndItem!!){
+            for (i in itemIndexs?.notEndItemList!!){
                 var nowItemDate = allToDoMap.get(i.toInt())
                  if(currentDate.equals(nowItemDate?.startDate)){
               //      Log.i(TAG,"nowItemDate="+nowItemDate)
@@ -460,7 +509,7 @@ object AllItemData {
         var habitToDo = ArrayList<ItemDate>()
 
         for ((key,itemIndexs)in allHabitToDoMap){
-            for (i in itemIndexs?.notEndItem!!){
+            for (i in itemIndexs?.notEndItemList!!){
                 var nowItemDate = allToDoMap.get(i.toInt())
                 for (intervalDate in intervalDates) {
                     if (intervalDate.equals(nowItemDate?.startDate)) {
@@ -505,7 +554,7 @@ object AllItemData {
                     addItemDate.isHabit = true
                     var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                     AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                    AddHabit.notEndItem.add(addItemIndex.toString())
+                    AddHabit.notEndItemList.add(addItemIndex.toString())
                 }
             }
             "週" -> {
@@ -531,7 +580,7 @@ object AllItemData {
                             addItemDate.endTime =AddHabit.endTime
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                            AddHabit.notEndItem.add(addItemIndex.toString())
+                            AddHabit.notEndItemList.add(addItemIndex.toString())
                         }
                     }
                 }
@@ -560,7 +609,7 @@ object AllItemData {
                             addItemDate.endTime =AddHabit.endTime
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                            AddHabit.notEndItem.add(addItemIndex.toString())
+                            AddHabit.notEndItemList.add(addItemIndex.toString())
                         }
                     }
                 }
@@ -601,7 +650,7 @@ object AllItemData {
                             addItemDate.endTime =AddHabit.endTime
                             var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                            AddHabit.notEndItem.add(addItemIndex.toString())
+                            AddHabit.notEndItemList.add(addItemIndex.toString())
                         }
                     }
                 }
@@ -632,13 +681,13 @@ object AllItemData {
         if(nowToEndDateDifference>0){
             //項目中有未來 可動
             //刪掉未來的
-            for (notEndItemDate in modifyItem.notEndItem){
+            for (notEndItemDate in modifyItem.notEndItemList){
                 val notEndItem = allToDoMap[notEndItemDate.toInt()]
                 val notEndStartDate = LocalDateTime.parse(notEndItem?.startDate+" 00:00:00",timeFormatter)
                 val nowToNotEndDateDifference = ChronoUnit.DAYS.between(nowDate, notEndStartDate).toInt()
                 if(nowToNotEndDateDifference>0){
                     //未來的項目
-                    modifyItem.notEndItem.remove(notEndItemDate)
+                    modifyItem.notEndItemList.remove(notEndItemDate)
                 }
             }
             //重新建未來的
@@ -650,8 +699,8 @@ object AllItemData {
         // Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
     }
     fun deleteDateHabitToDo(deleteIndex:Int){
-        val notEndItems = allHabitToDoMap[deleteIndex]?.notEndItem
-        val endItems = allHabitToDoMap[deleteIndex]?.endItem
+        val notEndItems = allHabitToDoMap[deleteIndex]?.notEndItemList
+        val endItems = allHabitToDoMap[deleteIndex]?.endItemList
         if (notEndItems != null) {
             for( Items in notEndItems){
              //   Log.i("AllItemData","notEndItems  Items=${Items}")

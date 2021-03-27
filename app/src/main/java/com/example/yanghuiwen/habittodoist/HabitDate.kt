@@ -18,12 +18,14 @@ data class HabitDate(
         var progressRate :String ="無",
         var progressRateFrequency:ArrayList<String> = arrayListOf(),
         var allDate:ArrayList<String> = arrayListOf(),
-        var notEndItem:ArrayList<String> = arrayListOf(),
-        var endItem:ArrayList<String> = arrayListOf(),
+        var notEndItemList:ArrayList<String> = arrayListOf(),
+        var endItemList:ArrayList<String> = arrayListOf(),
+        var IsProhibitItemList:ArrayList<String> = arrayListOf(),//過期 被禁止
         var startDate:String = "",
         var endDate:String = "",
         var startTime:String = "",
         var endTime:String = "",
-        var IsEndItem:Boolean = false
+        var IsEndItem:Boolean = false,//完成項目
+        var IsProhibitItem:Boolean = false//過期 被禁止
 
 )

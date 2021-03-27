@@ -194,8 +194,6 @@ class GeneralCalendar: ConstraintLayout{
             var eventLeft = 10f+153f*dayIndex
             var eventRight =eventLeft+140f
 
-
-
             val paint = Paint()
             paint.color = getResources().getColor(R.color.lightBlue)
             if(events[i].isActivity){
