@@ -68,7 +68,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
                                 isDisplay = !isDisplay
                             }
                         }
-                        "單項" -> {
+                        "時間" -> {
                             val singleItemView = mainPageList[1] as SortSingleitemView
                             singleItemView.chooseSortPage(tab.text.toString())
                             var isDisplay =true

@@ -34,7 +34,7 @@ class AddItemActivity : AppCompatActivity() {
         var addItemDate = ItemDate()
         var modifyItemIndex = -1
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val project = arrayListOf("無", "日文", "程式")
+        val project = arrayListOf("無", "日常", "運動")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
         spinner.adapter = adapter
         addItemDate.project = project[0]

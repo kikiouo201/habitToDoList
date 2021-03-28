@@ -163,11 +163,11 @@
                 android:text="可不做" />
         </RadioGroup>
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="緊急" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView4"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="緊急" />-->
 
 <!--        <RadioGroup-->
 <!--            android:id="@+id/urgentGroup"-->
