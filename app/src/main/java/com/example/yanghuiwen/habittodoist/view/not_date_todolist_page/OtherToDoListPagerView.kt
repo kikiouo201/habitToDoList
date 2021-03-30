@@ -5,7 +5,6 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
@@ -24,8 +23,8 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
         mainPageList = ArrayList()
         mainPageList.add(SortSingleitemView(context))// 重要性
         mainPageList.add(SortSingleitemView(context))// 單項
-        mainPageList.add(ProjectSortSingleitemView(context))// 清單
-        mainPageList.add(ProjectSortHabitItemView(context))// 習慣
+        mainPageList.add(TableItemView(context,"專案"))// 清單
+        mainPageList.add(TableItemView(context,"習慣"))// 習慣
 
         var chooseSortItem = 0
 //        val sortSingleItem =arrayOf("重要性","單項","專案")
@@ -92,7 +91,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 //                            }
                         }
                         "專案" -> {
-                            val singleItemView = mainPageList[2] as ProjectSortSingleitemView
+                            val singleItemView = mainPageList[2] as TableItemView
                             singleItemView.chooseSortPage(tab.text.toString())
                             var isDisplay =true
                             isDisplays.setOnClickListener{
@@ -116,7 +115,7 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
 
                         }
                         "習慣" -> {
-                            val habitItemView = mainPageList[3] as ProjectSortHabitItemView
+                            val habitItemView = mainPageList[3] as TableItemView
                             habitItemView.chooseSortPage(tab.text.toString())
                             var isDisplay =true
                             isDisplays.setOnClickListener{
@@ -181,9 +180,9 @@ class OtherToDoListPagerView(context: Context) : RelativeLayout(context){
         notDate0.chooseThisPage()
         val notDate1 = mainPageList[1] as SortSingleitemView
         notDate1.chooseThisPage()
-        val notDate2 = mainPageList[2] as ProjectSortSingleitemView
+        val notDate2 = mainPageList[2] as TableItemView
         notDate2.chooseThisPage()
-        val notDate3 = mainPageList[3] as ProjectSortHabitItemView
+        val notDate3 = mainPageList[3] as TableItemView
         notDate3.chooseThisPage()
 
     }
