@@ -2,12 +2,16 @@ package com.example.yanghuiwen.habittodoist.view.item_sample
 
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
+import com.example.yanghuiwen.habittodoist.view.HabitResultActivity
 import java.util.ArrayList
 class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) :  BaseAdapter() {
     private var datas =data
@@ -21,7 +25,7 @@ class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, t
     inner class MyHolder(){
         lateinit var infoText : TextView
         lateinit var completionRate : TextView
-//            lateinit var mRelative : RelativeLayout
+        lateinit var mTableItem : RelativeLayout
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -39,7 +43,7 @@ class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, t
             if (view != null) {
                 myHolder.infoText = view.findViewById(R.id.info_text)
                 myHolder.completionRate = view.findViewById(R.id.completion_rate)
-//                    myHolder.mRelative = view.findViewById(R.id.Realtive)
+                myHolder.mTableItem = view.findViewById(R.id.tableItem)
                 view.tag = myHolder
             }
 
@@ -52,7 +56,16 @@ class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, t
 
         myHolder.infoText.text =  "habit"
         myHolder.completionRate.text = "堅持78天"
-//            myHolder.mRelative.setBackgroundColor(datas.get(position).colorId)
+            myHolder.mTableItem.setOnClickListener {
+                var bundle= Bundle()
+                bundle.putString("name","")
+                bundle.putString("habitIndex","")
+
+
+                var intent = Intent(context, HabitResultActivity::class.java)
+                intent.putExtra("bundle",bundle)
+                context.startActivity(intent)
+            }
 
         return view!!
     }
