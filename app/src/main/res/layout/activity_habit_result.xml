@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/tabbackgroud"
     >
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp"
@@ -220,12 +220,17 @@
             android:gravity="center"
             android:text="歷史紀錄" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/yearGoalPager"
+        <com.example.yanghuiwen.habittodoist.view.chart_sample.BarChart
             android:layout_width="wrap_content"
-            android:layout_height="100dp" >
+            android:layout_height="wrap_content">
 
-        </androidx.viewpager.widget.ViewPager>
+        </com.example.yanghuiwen.habittodoist.view.chart_sample.BarChart>
+<!--        <androidx.viewpager.widget.ViewPager-->
+<!--            android:id="@+id/yearGoalPager"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="100dp" >-->
+
+<!--        </androidx.viewpager.widget.ViewPager>-->
 
 
         <TextView

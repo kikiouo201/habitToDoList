@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chartScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    >
+    <View
+        android:id="@+id/chart"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp" />
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+
+<!--&lt;!&ndash;        <LinearLayout&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:orientation="horizontal">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/textView8"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_margin="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:text="歷史紀錄" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <Spinner&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/dateCategorySpinner"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_margin="10dp"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </LinearLayout>&ndash;&gt;-->
+
+<!--        <ScrollView-->
+<!--            android:id="@+id/chartScrollView"-->
+<!--            android:layout_width="500dp"-->
+<!--            android:layout_height="240dp"-->
+<!--            >-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/chart"-->
+<!--                android:layout_width="500dp"-->
+<!--                android:layout_height="240dp"-->
+<!--                android:orientation="vertical" >-->
+
+<!--               -->
+<!--            </LinearLayout>-->
+<!--        </ScrollView>-->
+<!--    </LinearLayout>-->
+
+</ScrollView>

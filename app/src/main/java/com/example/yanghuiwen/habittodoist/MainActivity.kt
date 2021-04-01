@@ -61,8 +61,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         AllItemData.auth = Firebase.auth
         Log.i("MainActivity",AllItemData.auth.currentUser.toString())
 
-        queryCalendar()
-        queryEvent()
+
 
         AllItemData.getFirebaseDate()
         AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
@@ -109,7 +108,8 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
         }
 
 
-
+        queryCalendar()
+        queryEvent()
 
     }
 
