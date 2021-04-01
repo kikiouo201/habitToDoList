@@ -239,12 +239,12 @@
             android:gravity="center"
             android:text="日曆" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/weekGoalPager"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp" >
+       <com.example.yanghuiwen.habittodoist.view.chart_sample.SimpleCalendar
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center">
 
-        </androidx.viewpager.widget.ViewPager>
+       </com.example.yanghuiwen.habittodoist.view.chart_sample.SimpleCalendar>
 
         <TextView
             android:id="@+id/textView9"

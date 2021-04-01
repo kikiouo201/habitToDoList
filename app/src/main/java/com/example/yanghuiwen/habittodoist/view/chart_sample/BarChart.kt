@@ -5,10 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ScrollView
-import android.widget.Spinner
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.yanghuiwen.habittodoist.R
 
