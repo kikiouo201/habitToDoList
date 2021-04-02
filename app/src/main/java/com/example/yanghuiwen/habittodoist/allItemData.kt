@@ -485,18 +485,15 @@ object AllItemData {
         return addItemIndex
     }
 
-    fun getDateHabitToDo():ArrayList<ItemDate>{
+    fun getDateHabitToDo():ArrayList<HabitDate>{
 
-         var habitToDo = ArrayList<ItemDate>()
+         var habitToDo = ArrayList<HabitDate>()
 
         for ((key,itemIndexs)in allHabitToDoMap){
-            for (i in itemIndexs?.notEndItemList!!){
-                var nowItemDate = allToDoMap.get(i.toInt())
-                 if(currentDate.equals(nowItemDate?.startDate)){
-              //      Log.i(TAG,"nowItemDate="+nowItemDate)
-                    if (nowItemDate != null &&  nowItemDate.isHabit) {
-                        habitToDo.add(nowItemDate)
-                    }
+            for (date in itemIndexs?.allDate!!){
+
+                 if(currentDate.equals(date)){
+                        habitToDo.add(itemIndexs)
                 }
 
             }
@@ -504,19 +501,19 @@ object AllItemData {
         return habitToDo
 
     }
-    fun getIntervalDateHabitToDo(intervalDates: ArrayList<String>):ArrayList<ItemDate>{
+    fun getIntervalDateHabitToDo(intervalDates: ArrayList<String>):ArrayList<HabitDate>{
 
-        var habitToDo = ArrayList<ItemDate>()
+        var habitToDo = ArrayList<HabitDate>()
 
         for ((key,itemIndexs)in allHabitToDoMap){
-            for (i in itemIndexs?.notEndItemList!!){
-                var nowItemDate = allToDoMap.get(i.toInt())
+            for (date in itemIndexs?.allDate!!){
+
                 for (intervalDate in intervalDates) {
-                    if (intervalDate.equals(nowItemDate?.startDate)) {
+                    if (intervalDate.equals(date)) {
                         //      Log.i("AllItemData","nowItemDate="+nowItemDate)
-                        if (nowItemDate != null && nowItemDate.isHabit) {
-                            habitToDo.add(nowItemDate)
-                        }
+
+                            habitToDo.add(itemIndexs)
+
                     }
                 }
 
@@ -539,22 +536,22 @@ object AllItemData {
                 val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
                 val repeatNum = AddHabit.repeatCycle[0].toInt()
                 for (i in 0..difference step repeatNum){
-                    var addItemDate =ItemDate()
-                    addItemDate.name = AddHabit.name
-                    addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                    addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                    addItemDate.timeType = 1
-                    addItemDate.urgent = AddHabit.urgent
-                    addItemDate.important = AddHabit.important
-                    addItemDate.repeat =AddHabit.repeat
-                    addItemDate.project = AddHabit.project
-                    addItemDate.startTime =AddHabit.startTime
-                    addItemDate.endTime =AddHabit.endTime
-
-                    addItemDate.isHabit = true
-                    var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+//                    var addItemDate =ItemDate()
+//                    addItemDate.name = AddHabit.name
+//                    addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                    addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                    addItemDate.timeType = 1
+//                    addItemDate.urgent = AddHabit.urgent
+//                    addItemDate.important = AddHabit.important
+//                    addItemDate.repeat =AddHabit.repeat
+//                    addItemDate.project = AddHabit.project
+//                    addItemDate.startTime =AddHabit.startTime
+//                    addItemDate.endTime =AddHabit.endTime
+//
+//                    addItemDate.isHabit = true
+//                    var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                     AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                    AddHabit.notEndItemList.add(addItemIndex.toString())
+                    AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                 }
             }
             "週" -> {
@@ -569,18 +566,18 @@ object AllItemData {
                     for (j in 0..AddHabit.repeatCycle.size-1){
                         val mDate = mStart.plusDays(i.toLong())
                         if(mDate.dayOfWeek.value == AddHabit.repeatCycle[j].toInt()){
-                            var addItemDate =ItemDate()
-                            addItemDate.name = AddHabit.name
-                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                            addItemDate.timeType = 2
-                            addItemDate.repeat =AddHabit.repeat
-                            addItemDate.isHabit = true
-                            addItemDate.startTime =AddHabit.startTime
-                            addItemDate.endTime =AddHabit.endTime
-                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+//                            var addItemDate =ItemDate()
+//                            addItemDate.name = AddHabit.name
+//                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                            addItemDate.timeType = 2
+//                            addItemDate.repeat =AddHabit.repeat
+//                            addItemDate.isHabit = true
+//                            addItemDate.startTime =AddHabit.startTime
+//                            addItemDate.endTime =AddHabit.endTime
+//                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                            AddHabit.notEndItemList.add(addItemIndex.toString())
+                            AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                         }
                     }
                 }
@@ -598,18 +595,18 @@ object AllItemData {
                     for (j in 0..AddHabit.repeatCycle.size-1){
                         val mDate = mStart.plusDays(i.toLong())
                         if(mDate.dayOfMonth == AddHabit.repeatCycle[j].toInt()){
-                            var addItemDate =ItemDate()
-                            addItemDate.name = AddHabit.name
-                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                            addItemDate.timeType = 2
-                            addItemDate.repeat =AddHabit.repeat
-                            addItemDate.isHabit = true
-                            addItemDate.startTime =AddHabit.startTime
-                            addItemDate.endTime =AddHabit.endTime
-                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+//                            var addItemDate =ItemDate()
+//                            addItemDate.name = AddHabit.name
+//                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                            addItemDate.timeType = 2
+//                            addItemDate.repeat =AddHabit.repeat
+//                            addItemDate.isHabit = true
+//                            addItemDate.startTime =AddHabit.startTime
+//                            addItemDate.endTime =AddHabit.endTime
+//                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                            AddHabit.notEndItemList.add(addItemIndex.toString())
+                            AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                         }
                     }
                 }
@@ -639,18 +636,18 @@ object AllItemData {
                         }
                      //   Log.i("AllItemData","chooseTime=${chooseTime}")
                         if(chooseTime == AddHabit.repeatCycle[j]){
-                            var addItemDate =ItemDate()
-                            addItemDate.name = AddHabit.name
-                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-                            addItemDate.timeType = 2
-                            addItemDate.repeat =AddHabit.repeat
-                            addItemDate.isHabit = true
-                            addItemDate.startTime =AddHabit.startTime
-                            addItemDate.endTime =AddHabit.endTime
-                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
+//                            var addItemDate =ItemDate()
+//                            addItemDate.name = AddHabit.name
+//                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
+//                            addItemDate.timeType = 2
+//                            addItemDate.repeat =AddHabit.repeat
+//                            addItemDate.isHabit = true
+//                            addItemDate.startTime =AddHabit.startTime
+//                            addItemDate.endTime =AddHabit.endTime
+//                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
-                            AddHabit.notEndItemList.add(addItemIndex.toString())
+                            AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                         }
                     }
                 }

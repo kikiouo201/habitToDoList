@@ -151,11 +151,17 @@ class GeneralCalendar: ConstraintLayout{
         for (habitToDo in habitToDoList){
             val date =habitToDo.startDate.split("-")
 
+            var addItemDate =ItemDate()
+            addItemDate.name = habitToDo.name
+            addItemDate.startDate = habitToDo.startDate
+            addItemDate.endDate = habitToDo.endDate
+            addItemDate.startTime = habitToDo.startTime
+            addItemDate.endTime =habitToDo.endTime
             if(sortToDoList.get(date[2]) != null){
-                sortToDoList.get(date[2])!!.add(habitToDo)
+                sortToDoList.get(date[2])!!.add(addItemDate)
             }else{
                 val todo = ArrayList<ItemDate>()
-                todo.add(habitToDo)
+                todo.add(addItemDate)
                 sortToDoList.put(date[2],todo)
             }
         }

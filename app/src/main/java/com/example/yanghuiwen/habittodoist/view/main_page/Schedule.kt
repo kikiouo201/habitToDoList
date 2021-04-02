@@ -87,11 +87,15 @@ class Schedule: ConstraintLayout{
         for (habitToDo in habitToDoList){
             val hour =habitToDo.startTime.split(":")
 
+            var addItemDate =ItemDate()
+            addItemDate.name = habitToDo.name
+            addItemDate.startTime =habitToDo.startTime
+            addItemDate.endTime =habitToDo.endTime
             if(sortToDoList.get(hour[0]) != null){
-                sortToDoList.get(hour[0])!!.add(habitToDo)
+                sortToDoList.get(hour[0])!!.add(addItemDate)
             }else{
                 val todo = ArrayList<ItemDate>()
-                todo.add(habitToDo)
+                todo.add(addItemDate)
                 sortToDoList.put(hour[0],todo)
             }
         }

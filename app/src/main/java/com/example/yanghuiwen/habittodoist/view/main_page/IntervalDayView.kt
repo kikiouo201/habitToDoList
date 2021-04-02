@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.view.item_sample.HabitItem
 import com.example.yanghuiwen.habittodoist.view.item_sample.SingleItem
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
@@ -34,7 +35,7 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
 //    var currentOnDateChange = onDateChange
 
     var todayList: SingleItem<String>?  = null
-    var habitList: SingleItem<String>?  = null
+    var habitList: HabitItem<String>?  = null
     var scheduleList: SingleItem<String>? =null
     private lateinit var pageList: MutableList<WeekPageView>
 //    var habit_RecyclerView:RecyclerView? = null
@@ -77,7 +78,7 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
         mRecyclerView.layoutManager = layoutManager
         mRecyclerView.adapter = todayList
 
-        habitList = SingleItem(context,AllItemData.getDateHabitToDo(),"habitToDo")
+        habitList = HabitItem(context,AllItemData.getDateHabitToDo(),"habitToDo")
         val habitLayoutManager = LinearLayoutManager(context)
         habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
         val habit_RecyclerView = view.findViewById<View>(R.id.habitList) as RecyclerView

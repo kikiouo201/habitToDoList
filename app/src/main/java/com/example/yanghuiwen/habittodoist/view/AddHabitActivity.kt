@@ -338,16 +338,16 @@ class AddHabitActivity : AppCompatActivity() {
 
 
         //急
-        val urgents =intArrayOf(R.id.urgent5,R.id.urgent4,R.id.urgent3,R.id.urgent2,R.id.urgent1)
-        val urgent3 = findViewById<RadioButton>(R.id.urgent3)
-        urgent3.isChecked = true
-        addHabitDate.urgent = 2
-        val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
-        urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
-            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            val groupIndex = urgentGroup.indexOfChild(radio)
-            addHabitDate.urgent = groupIndex
-        })
+//        val urgents =intArrayOf(R.id.urgent5,R.id.urgent4,R.id.urgent3,R.id.urgent2,R.id.urgent1)
+//        val urgent3 = findViewById<RadioButton>(R.id.urgent3)
+//        urgent3.isChecked = true
+//        addHabitDate.urgent = 2
+//        val urgentGroup = findViewById<RadioGroup>(R.id.urgentGroup)
+//        urgentGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+//            val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+//            val groupIndex = urgentGroup.indexOfChild(radio)
+//            addHabitDate.urgent = groupIndex
+//        })
 
 
         //專案
@@ -366,44 +366,44 @@ class AddHabitActivity : AppCompatActivity() {
 
 
         //進度
-        var isProgressRate = findViewById<CheckBox>(R.id.isProgressRate)
-        val progressRateGroup =findViewById<View>(R.id.progressRateGroup)
-        progressRateGroup.setVisibility(View.GONE)
-
-        isProgressRate.setOnCheckedChangeListener{ buttonView, isChecked ->
-
-            if (!isChecked) {
-                progressRateGroup.setVisibility(View.GONE)
-            }else{
-                progressRateGroup.setVisibility(View.VISIBLE)
-                var progressRate = findViewById<RadioGroup>(R.id.progressRate)
-                var averageGroup = findViewById<LinearLayout>(R.id.averageGroup)
-                var progressiveGroup = findViewById<LinearLayout>(R.id.progressiveGroup)
-                progressRate.check(R.id.average)
-                addHabitDate.progressRate = "平均"
-                averageGroup.setVisibility(View.VISIBLE)
-                progressiveGroup.setVisibility(View.GONE)
-                addHabitDate.progressRateFrequency.add("10")
-                progressRate.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
-                    val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-                    val progressRateText = radio.text
-                    addHabitDate.progressRate = progressRateText.toString()
-                    when(progressRateText.toString()){
-                        "平均" ->{
-                            averageGroup.setVisibility(View.VISIBLE)
-                            progressiveGroup.setVisibility(View.GONE)
-                            addHabitDate.progressRateFrequency.add("10")
-                        }
-                        "漸進" ->{
-                            averageGroup.setVisibility(View.GONE)
-                            progressiveGroup.setVisibility(View.VISIBLE)
-                        }
-                    }
-                })
-
-            }
-        }
-
+//        var isProgressRate = findViewById<CheckBox>(R.id.isProgressRate)
+//        val progressRateGroup =findViewById<View>(R.id.progressRateGroup)
+//        progressRateGroup.setVisibility(View.GONE)
+//
+//        isProgressRate.setOnCheckedChangeListener{ buttonView, isChecked ->
+//
+//            if (!isChecked) {
+//                progressRateGroup.setVisibility(View.GONE)
+//            }else{
+//                progressRateGroup.setVisibility(View.VISIBLE)
+//                var progressRate = findViewById<RadioGroup>(R.id.progressRate)
+//                var averageGroup = findViewById<LinearLayout>(R.id.averageGroup)
+//                var progressiveGroup = findViewById<LinearLayout>(R.id.progressiveGroup)
+//                progressRate.check(R.id.average)
+//                addHabitDate.progressRate = "平均"
+//                averageGroup.setVisibility(View.VISIBLE)
+//                progressiveGroup.setVisibility(View.GONE)
+//                addHabitDate.progressRateFrequency.add("10")
+//                progressRate.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+//                    val radio =findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+//                    val progressRateText = radio.text
+//                    addHabitDate.progressRate = progressRateText.toString()
+//                    when(progressRateText.toString()){
+//                        "平均" ->{
+//                            averageGroup.setVisibility(View.VISIBLE)
+//                            progressiveGroup.setVisibility(View.GONE)
+//                            addHabitDate.progressRateFrequency.add("10")
+//                        }
+//                        "漸進" ->{
+//                            averageGroup.setVisibility(View.GONE)
+//                            progressiveGroup.setVisibility(View.VISIBLE)
+//                        }
+//                    }
+//                })
+//
+//            }
+//        }
+//
 
 
         //儲存
