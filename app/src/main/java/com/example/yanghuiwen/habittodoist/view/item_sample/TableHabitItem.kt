@@ -8,17 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.yanghuiwen.habittodoist.HabitDate
 import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.HabitResultActivity
 import java.util.ArrayList
-class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) :  BaseAdapter() {
+class TableHabitItem(context: Context, data: Map<Int, HabitDate>, toDoName :String) :  BaseAdapter() {
     private var datas =data
     private var context =context
+    private var dataKeys = ArrayList<Int>()
 
     init {
         datas =data
+        for ((key,value) in datas){
+            dataKeys.add(key)
+        }
+
         this.context =context
     }
 
@@ -52,10 +58,13 @@ class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, t
             view = convertView
             myHolder = view.tag as MyHolder
         }
+        val habitItem = datas[dataKeys[position]]
+        if (habitItem !=null){
+            myHolder.infoText.text = habitItem.name
+            myHolder.completionRate.text = "堅持${habitItem.endItemList.size}天"
+        }
 
 
-        myHolder.infoText.text =  "habit"
-        myHolder.completionRate.text = "堅持78天"
             myHolder.mTableItem.setOnClickListener {
                 var bundle= Bundle()
                 bundle.putString("name","")
@@ -79,7 +88,7 @@ class TableHabitItem(context: Context, data: Map<String, ArrayList<ItemDate>>, t
 
     override fun getCount(): Int {
         //返回一个整数,就是要在listview中现实的数据的条数
-        return 10
+        return datas.size
     }
 
 }

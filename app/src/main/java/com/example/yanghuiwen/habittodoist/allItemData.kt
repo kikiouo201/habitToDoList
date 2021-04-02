@@ -485,6 +485,18 @@ object AllItemData {
         return addItemIndex
     }
 
+
+    fun getAllHabitToDo(): Map<Int,HabitDate>{
+
+        var habitToDoMap = sortedMapOf<Int, HabitDate>()
+        // Log.i("AllItemData","allHabitToDoMap=${allHabitToDoMap}")
+
+        for ((key,itemIndexs)in allHabitToDoMap){
+            habitToDoMap.put(key,itemIndexs)
+        }
+        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
+        return habitToDoMap
+    }
     fun getDateHabitToDo():ArrayList<HabitDate>{
 
          var habitToDo = ArrayList<HabitDate>()

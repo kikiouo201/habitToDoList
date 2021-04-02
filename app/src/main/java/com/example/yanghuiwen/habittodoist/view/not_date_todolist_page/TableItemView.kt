@@ -57,7 +57,7 @@ class TableItemView(context: Context,category :String) : RelativeLayout(context)
                 mGridView.adapter = tableProjectList
             }
             "習慣" ->{
-                tableHabitList = TableHabitItem(context,singleItemData,"singleItemToDo")
+                tableHabitList = TableHabitItem(context,AllItemData.getAllHabitToDo(),"singleItemToDo")
                 mGridView.adapter = tableHabitList
             }
         }
@@ -73,7 +73,7 @@ class TableItemView(context: Context,category :String) : RelativeLayout(context)
                 mGridView.adapter = tableProjectList
             }
             "習慣" ->{
-                tableHabitList = TableHabitItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
+                tableHabitList = TableHabitItem(context,AllItemData.getAllHabitToDo(),"singleItemToDo")
                 mGridView.adapter = tableHabitList
             }
         }
