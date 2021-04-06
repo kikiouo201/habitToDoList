@@ -1,11 +1,14 @@
 package com.example.yanghuiwen.habittodoist.view
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -34,17 +37,44 @@ class AddItemActivity : AppCompatActivity() {
         var addItemDate = ItemDate()
         var modifyItemIndex = -1
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val project = arrayListOf("無", "日常", "運動")
+        var project = AllItemData.getProjectName()
+        project.add("自訂")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
         spinner.adapter = adapter
         addItemDate.project = project[0]
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                addItemDate.project = project[pos]
+                if(pos == project.size-1){
+                    val item = LayoutInflater.from(this@AddItemActivity).inflate(R.layout.dialog_signin, null)
+                    AlertDialog.Builder(this@AddItemActivity)
+                            .setTitle("請輸入專案名稱")
+                            .setView(item)
+                            .setPositiveButton("OK") { _, _ ->
+                                val editText = item.findViewById(R.id.edit_text) as EditText
+                                val name = editText.text.toString()
+                                if (TextUtils.isEmpty(name)) {
+                                    Toast.makeText(applicationContext, "請輸入專案名稱", Toast.LENGTH_SHORT).show()
+                                    spinner.setSelection(0)
+                                } else {
+                                    Toast.makeText(applicationContext,  "已新增"+name, Toast.LENGTH_SHORT).show()
+                                    AllItemData.setProject(name)
+                                    project.add((project.size-1),name)
+                                    addItemDate.project = project[(project.size-2)]
+                                    adapter.notifyDataSetChanged()
+                                    spinner.setSelection(project.size-2)
+                                }
+                            }
+                            .show()
+
+                }else{
+                    addItemDate.project = project[pos]
+                }
+
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
         }
+
 
 
 

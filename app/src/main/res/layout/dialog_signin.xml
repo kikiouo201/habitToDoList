@@ -6,32 +6,22 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="207dp"
-        android:layout_height="202dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="#FFFFBB33"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center" />
 
         <EditText
-            android:id="@+id/toDo"
+            android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="4dp"
-            android:hint="To do thing"
+
+            android:hint="Project Name"
              />
-
-
 
 
     </LinearLayout>

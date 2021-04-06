@@ -1,5 +1,6 @@
 package com.example.yanghuiwen.habittodoist.view
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -8,6 +9,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -352,17 +355,46 @@ class AddHabitActivity : AppCompatActivity() {
 
         //專案
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val project = arrayListOf("無", "日文", "程式")
+        val project =  AllItemData.getProjectName()
         val projectAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, project)
         spinner.adapter = projectAdapter
         addHabitDate.project = project[0]
+        project.add("自訂")
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                addHabitDate.project = project[pos]
+                if(pos == project.size-1){
+                    val item = LayoutInflater.from(this@AddHabitActivity).inflate(R.layout.dialog_signin, null)
+                    AlertDialog.Builder(this@AddHabitActivity)
+                            .setTitle("請輸入專案名稱")
+                            .setView(item)
+                            .setPositiveButton("OK") { _, _ ->
+                                val editText = item.findViewById(R.id.edit_text) as EditText
+                                val name = editText.text.toString()
+                                if (TextUtils.isEmpty(name)) {
+                                    Toast.makeText(applicationContext, "請輸入專案名稱", Toast.LENGTH_SHORT).show()
+                                    spinner.setSelection(0)
+                                } else {
+                                    Toast.makeText(applicationContext,  "已新增"+name, Toast.LENGTH_SHORT).show()
+                                    AllItemData.setProject(name)
+                                    project.add((project.size-1),name)
+                                    addHabitDate.project = project[(project.size-2)]
+                                    projectAdapter.notifyDataSetChanged()
+                                    spinner.setSelection(project.size-2)
+                                }
+                            }
+                            .show()
+
+                }else{
+                    addHabitDate.project = project[0]
+                }
+
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
         }
+
+
+
 
 
         //進度

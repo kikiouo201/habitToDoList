@@ -56,7 +56,7 @@ class AddHabitToDoDialogFragment() : DialogFragment() {
                     .setPositiveButton("signin",
                             DialogInterface.OnClickListener { dialog, id ->
 
-                                val e = getDialog()?.findViewById<EditText>(R.id.toDo)
+                                val e = getDialog()?.findViewById<EditText>(R.id.edit_text)
                                 //AllItemData.habitToDo.add(e?.text.toString())
 //                                Log.i("kiki", "habitToDo=" + AllItemData.habitToDo)
                                 callback?.onArticleSelected(AllItemData)

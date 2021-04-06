@@ -21,7 +21,7 @@ object AllItemData {
     private lateinit var allItemReference: DatabaseReference
     private lateinit var todayToDoItemReference: DatabaseReference
     private lateinit var habitToDoItemReference: DatabaseReference
-    private lateinit var singleItemReference: DatabaseReference
+    private lateinit var projectItemReference: DatabaseReference
 
 
     lateinit var auth: FirebaseAuth
@@ -29,16 +29,16 @@ object AllItemData {
     var allToDoMap = sortedMapOf<Int, ItemDate?>()
     var allActivityMap = sortedMapOf<Int, ItemDate?>()
     var allHabitToDoMap = sortedMapOf<Int, HabitDate?>()
+    var allProjectMap = sortedMapOf<Int, String>()
 
     // 今天事項
     val todayToDoItem = mutableSetOf<String>()
-    var nowTodayToDoIndex = ""
     var lastallItemIndex =""
     var lastallHabitIndex = ""
     var todayToDo = ArrayList<ItemDate>()
 
 
-    //單項
+    // 單項
     var endSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
     var notEndSingleItemMap = sortedMapOf<String, ArrayList<Int>>()
 
@@ -210,6 +210,29 @@ object AllItemData {
         habitToDoItemReference.addValueEventListener(habitToDoItemPostListener)
 
 
+        // projectItem 所有專案
+        projectItemReference = database.getReference("user/allProject/")
+        val projectItemPostListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (ItemSnapshot in dataSnapshot.children) {
+                    var itemDate= ItemSnapshot.getValue<String>()
+                    val itemIndex = ItemSnapshot.key?.toInt()
+                    if (itemDate != null) {
+                        allProjectMap.put(itemIndex,itemDate)
+                    }
+                }
+//                Log.i("AllItemData","allToDoMap="+allToDoMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        projectItemReference.addValueEventListener(projectItemPostListener)
+
     }
     //刪除重複項目
     fun deleteDuplicateArrayList(duplicateItems:ArrayList<Int>):ArrayList<Int>{
@@ -269,7 +292,20 @@ object AllItemData {
         return lastallHabitIndex.toInt()
     }
 
+    // 上傳 AllHabit 到firebase
+    private fun  setAllProject(AddProject:String){
+        val allHabit = database.getReference("user/allProject/")
 
+        //上傳firebase
+        if(allProjectMap.size != 0){
+            allHabit.child((allProjectMap.size+1).toString()).setValue(AddProject)
+        }else{
+            allHabit.child("1").setValue(AddProject)
+        }
+
+        //存本地
+        allProjectMap.put((allProjectMap.size+1),AddProject)
+    }
 
 
 
@@ -791,6 +827,22 @@ object AllItemData {
         addItem.isActivity = true
 
         allActivityMap.put(eventID.toInt(),addItem)
+    }
+
+
+    //專案
+
+
+    fun  getProjectName():ArrayList<String>{
+        var allProject = ArrayList<String>()
+        for ((key,item)in   allProjectMap){
+            allProject.add(item)
+         }
+        return allProject
+    }
+
+    fun  setProject(AddProject:String){
+        setAllProject(AddProject)
     }
 
     fun dateFormatter(year:Int,monthOfYear:Int,dayOfMonth:Int):String{
