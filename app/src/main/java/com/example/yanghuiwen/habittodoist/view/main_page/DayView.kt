@@ -39,6 +39,7 @@ class DayView(context: Context) : RelativeLayout(context){
     var scheduleList: SingleItem<String>? =null
     private lateinit var pageList: MutableList<WeekPageView>
     var habit_RecyclerView:RecyclerView? = null
+//    private var chooseDate: String ="0000-00-00"
     init {
 
 
@@ -92,6 +93,7 @@ class DayView(context: Context) : RelativeLayout(context){
         habit_RecyclerView = view.findViewById<View>(R.id.habitList) as RecyclerView
         habit_RecyclerView?.layoutManager = habitLayoutManager
         habit_RecyclerView?.adapter = habitList
+
     }
 
 
@@ -138,6 +140,10 @@ class DayView(context: Context) : RelativeLayout(context){
 
 
 
+//    fun getChooseDate():String{
+//        return chooseDate
+//    }
+//
 
 
 //     fun onArticleSelected(position: AllItemData) {
@@ -146,8 +152,6 @@ class DayView(context: Context) : RelativeLayout(context){
 //
 //        habit_RecyclerView?.adapter = habitList
 //    }
-
-
 
 
 

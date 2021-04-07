@@ -36,16 +36,17 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
 
     var todayList: SingleItem<String>?  = null
     var habitList: HabitItem<String>?  = null
-    var scheduleList: SingleItem<String>? =null
+
     private lateinit var pageList: MutableList<WeekPageView>
-//    var habit_RecyclerView:RecyclerView? = null
+    private var category ="月"
+    var currentDate="2020-03-12"
     init {
 
 
 
         var nowDate = LocalDateTime.now()
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val currentDate = nowDate.format(formatter)
+        currentDate = nowDate.format(formatter)
         //Log.i("MainPagerView","currentDate="+currentDate)
         initAllToDoList(currentDate)
 
@@ -53,6 +54,11 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
 
 
         addView(view)
+    }
+
+    fun setCategory(category:String){
+        this.category=category
+        initAllToDoList(currentDate)
     }
 
     fun chooseThisPage(){
@@ -64,14 +70,9 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
 
     fun initAllToDoList(currentDate :String) {
         AllItemData.currentDate = currentDate
-        scheduleList = SingleItem(context,AllItemData.getDateActivity(),"activity")
-        val scheduleLayoutManager = LinearLayoutManager(context);
-        scheduleLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        val schedule_RecyclerView = view.findViewById<View>(R.id.activityList) as RecyclerView
-        schedule_RecyclerView.layoutManager = scheduleLayoutManager
-        schedule_RecyclerView.adapter = scheduleList
 
-        todayList = SingleItem(context,AllItemData.getDateToDayToDo(),"todayToDo")
+
+        todayList = SingleItem(context,AllItemData.getIntervalDateToDo(category),"todayToDo")
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         val mRecyclerView = view.findViewById<View>(R.id.todayList) as RecyclerView
@@ -82,23 +83,9 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
         val habitLayoutManager = LinearLayoutManager(context)
         habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
         val habit_RecyclerView = view.findViewById<View>(R.id.habitList) as RecyclerView
-        habit_RecyclerView?.layoutManager = habitLayoutManager
-        habit_RecyclerView?.adapter = habitList
+        habit_RecyclerView.layoutManager = habitLayoutManager
+        habit_RecyclerView.adapter = habitList
     }
-
-
-
-
-
-
-
-
-//     fun onArticleSelected(position: AllItemData) {
-//        Log.i("kiki","habitToDo="+position.habitToDo)
-//        habitList = SingleItem(position.habitToDo,"habitToDo")
-//
-//        habit_RecyclerView?.adapter = habitList
-//    }
 
 
 

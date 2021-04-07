@@ -17,15 +17,22 @@ class MainPageView(context: Context) : RelativeLayout(context){
     val view = LayoutInflater.from(context).inflate(R.layout.main_page, null)
     private lateinit var mainPageList: MutableList<RelativeLayout>
     init {
-
+        val dateItem =arrayOf("年","月","週")
         mainPageList = ArrayList()
-        mainPageList.add(IntervalDayView(context))// 年
-        mainPageList.add(IntervalDayView(context))// 月
-        mainPageList.add(IntervalDayView(context))// 週
+        for (i in 0..2){
+            val dayView = IntervalDayView(context)
+            dayView.setCategory(dateItem[i])
+            mainPageList.add(dayView)
+        }
+
+
+//        mainPageList.add(IntervalDayView(context))// 年
+//        mainPageList.add(IntervalDayView(context))// 月
+//        mainPageList.add(IntervalDayView(context))// 週x
         mainPageList.add(DayView(context))// 日
 
         var chooseSortItem = 0
-//        val sortSingleItem =arrayOf("重要性","單項","專案")
+
 //        val sort= view.findViewById<Button>(R.id.sort)
 
         val tabs= view.findViewById<TabLayout>(R.id.tabLayout)
@@ -33,7 +40,6 @@ class MainPageView(context: Context) : RelativeLayout(context){
         val mainPagerAdapter = PagerAdapter(mainPageList)
        // val isDisplays =view.findViewById<ImageButton>(R.id.isDisplay)
 
-        val notDate = mainPageList[0] as IntervalDayView
 //        sort.setOnClickListener {
 //            chooseSortItem++
 //            if(chooseSortItem == 3){
@@ -51,89 +57,24 @@ class MainPageView(context: Context) : RelativeLayout(context){
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 Log.i("OtherToDoListPagerView","p0=${tab?.text}")
                 if(tab != null){
+                    val itemView = mainPageList[3]as DayView
                     when(tab.text){
                         "年" ->{
-                            val singleItemView = mainPageList[0] as IntervalDayView
-//                            singleItemView.chooseSortPage(tab.text.toString())
-//                            var isDisplay =true
-//                            isDisplays.setOnClickListener{
-//                                if(isDisplay){
-//                                    singleItemView.isDisplayOff()
-//                                }else{
-//                                    singleItemView.isDisplayOn()
-//                                }
-//                                isDisplay = !isDisplay
-//                            }
+                            val itemView = mainPageList[0] as IntervalDayView
+                            itemView.setCategory(tab.text as String)
                         }
                         "月" -> {
-                            val singleItemView = mainPageList[1] as IntervalDayView
-//                            singleItemView.chooseSortPage(tab.text.toString())
-//                            var isDisplay =true
-//                            isDisplays.setOnClickListener{
-//                                if(isDisplay){
-//                                    singleItemView.isDisplayOff()
-//                                }else{
-//                                    singleItemView.isDisplayOn()
-//                                }
-//                                isDisplay = !isDisplay
-//                            }
-//                            sort.setOnClickListener {
-//                                chooseSortItem++
-//                                if(chooseSortItem == 3){
-//                                    chooseSortItem = 0
-//                                }
-//
-//                               // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-//                           //     sort.text = sortSingleItem[chooseSortItem]
-//                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
-//                            }
+                            val itemView = mainPageList[1] as IntervalDayView
+                            itemView.setCategory(tab.text as String)
                         }
                         "週" -> {
-                            val singleItemView = mainPageList[2] as IntervalDayView
-//                            singleItemView.chooseSortPage(tab.text.toString())
-//                            var isDisplay =true
-//                            isDisplays.setOnClickListener{
-//                                if(isDisplay){
-//                                    singleItemView.isDisplayOff()
-//                                }else{
-//                                    singleItemView.isDisplayOn()
-//                                }
-//                                isDisplay = !isDisplay
-//                            }
-//                            sort.setOnClickListener {
-//                                chooseSortItem++
-//                                if(chooseSortItem == 3){
-//                                    chooseSortItem = 0
-//                                }
-//
-//                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-//                                sort.text = sortSingleItem[chooseSortItem]
-//                                singleitemView.chooseSortPage(sortSingleItem[chooseSortItem])
-//                            }
+                            val itemView = mainPageList[2] as IntervalDayView
+                            itemView.setCategory("週")
 
                         }
                         "日" -> {
                             val habitItemView = mainPageList[3] as DayView
-//                            habitItemView.chooseSortPage(tab.text.toString())
-//                            var isDisplay =true
-//                            isDisplays.setOnClickListener{
-//                                if(isDisplay){
-//                                    habitItemView.isDisplayOff()
-//                                }else{
-//                                    habitItemView.isDisplayOn()
-//                                }
-//                                isDisplay = !isDisplay
-//                            }
-//                            sort.setOnClickListener {
-//                                chooseSortItem++
-//                                if(chooseSortItem == 3){
-//                                    chooseSortItem = 0
-//                                }
-//
-//                                // Log.i("OtherToDoListPagerView","chooseSortItem${chooseSortItem}")
-//                                sort.text = sortSingleItem[chooseSortItem]
-//                                habitItemView.chooseSortPage(sortSingleItem[chooseSortItem])
-//                            }
+
                         }
                     }
                 }
@@ -175,13 +116,13 @@ class MainPageView(context: Context) : RelativeLayout(context){
 //            notDate.chooseThisPage()
 //        }
         val notDate0 = mainPageList[0] as IntervalDayView
-        notDate0.chooseThisPage()
+       // notDate0.chooseThisPage()
         val notDate1 = mainPageList[1] as IntervalDayView
-        notDate1.chooseThisPage()
+       // notDate1.chooseThisPage()
         val notDate2 = mainPageList[2] as IntervalDayView
-        notDate2.chooseThisPage()
+       // notDate2.chooseThisPage()
         val notDate3 = mainPageList[3] as DayView
-        notDate3.chooseThisPage()
+        //notDate3.chooseThisPage()
 
     }
     fun refreshView() {

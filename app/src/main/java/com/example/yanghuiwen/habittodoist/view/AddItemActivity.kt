@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddItemActivity : AppCompatActivity() {
-
+    private val TAG = "AddItemActivity"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -240,14 +240,41 @@ class AddItemActivity : AppCompatActivity() {
             val groupIndex =  timeGroup.indexOfChild(radio)
             addItemDate.timeType = groupIndex
 
-            if(addToDoName !="日"){
+            when(addToDoName){
+                "無" -> {
+                    addItemDate.startDate = "無"
+                    addItemDate.endDate = "無"
+                    addItemDate.startTime = "無"
+                    addItemDate.endTime = "無"
 
-                addItemDate.startDate = "無"
-                addItemDate.endDate = "無"
-                addItemDate.startTime = "無"
-                addItemDate.endTime = "無"
+                }
+                "日" -> {
+
+                }
+                "週" -> {
+
+                    addItemDate.startTime = "無"
+                    addItemDate.endTime = "無"
+                }
+                "月" -> {
+
+                    addItemDate.startTime = "無"
+                    addItemDate.endTime = "無"
+                }
+                "年" -> {
+
+                    addItemDate.startTime = "無"
+                    addItemDate.endTime = "無"
+                }
             }
-            Log.i("AddItemActivity","addToDoName  i${ i.toInt()}")
+//            if(addToDoName !="日"){
+//
+//                addItemDate.startDate = "無"
+//                addItemDate.endDate = "無"
+//                addItemDate.startTime = "無"
+//                addItemDate.endTime = "無"
+//            }
+            Log.i("AddItemActivity","addToDoName  i${ addToDoName}")
         })
 
         //儲存
@@ -270,13 +297,20 @@ class AddItemActivity : AppCompatActivity() {
                             AllItemData.setDateToDayToDo(addItemDate)
                         }
                         "週" -> {
+                            val mStartDate = LocalDate.parse(addItemDate.startDate)
+                            val week = mStartDate.dayOfWeek.value
+                            val startDateFormatted = mStartDate.minusDays((week-1).toLong()).format(dateFormatter)
+                            addItemDate.startDate = startDateFormatted
+                            val endDateFormatted = mStartDate.plusDays(7-(week).toLong()).format(dateFormatter)
+                            addItemDate.endDate = endDateFormatted
 
+                            AllItemData.setSingleItem(addItemDate)
                         }
                        "月" -> {
-
+                           AllItemData.setSingleItem(addItemDate)
                        }
                        "年" -> {
-
+                           AllItemData.setSingleItem(addItemDate)
                        }
                    }
 

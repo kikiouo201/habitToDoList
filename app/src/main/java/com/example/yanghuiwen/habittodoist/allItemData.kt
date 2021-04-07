@@ -8,6 +8,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -20,6 +21,10 @@ object AllItemData {
     val database = Firebase.database
     private lateinit var allItemReference: DatabaseReference
     private lateinit var todayToDoItemReference: DatabaseReference
+    private lateinit var noDateToDoItemReference: DatabaseReference
+    private lateinit var weekToDoItemReference: DatabaseReference
+    private lateinit var monthToDoItemReference: DatabaseReference
+    private lateinit var yearToDoItemReference: DatabaseReference
     private lateinit var habitToDoItemReference: DatabaseReference
     private lateinit var projectItemReference: DatabaseReference
 
@@ -44,7 +49,11 @@ object AllItemData {
 
 
 
-
+    // 無 週 月 年 事項
+    val noDateToDoItem = mutableSetOf<String>()
+    val weekToDoItem = mutableSetOf<String>()
+    val monthToDoItem = mutableSetOf<String>()
+    val yearToDoItem = mutableSetOf<String>()
 
 
     var currentDate ="2020-02-07"
@@ -163,6 +172,96 @@ object AllItemData {
         todayToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
 
+//        // noDateToDoItem 所有無時間 單項
+//        noDateToDoItemReference = database.getReference("user/noDateToDoItem/")
+//        val noDateToDoItemPostListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                for (ItemSnapshot in dataSnapshot.children) {
+//                    var itemDate= ItemSnapshot.getValue<String>()
+//                    if (itemDate != null) {
+//                        noDateToDoItem.add(itemDate)
+//                    }
+//                }
+////                Log.i("AllItemData","allToDoMap="+allToDoMap)
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        }
+//        noDateToDoItemReference.addValueEventListener(noDateToDoItemPostListener)
+//
+//        // weekToDoItem 所有週 單項
+//        weekToDoItemReference = database.getReference("user/weekToDoItem/")
+//        val weekToDoItemPostListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                for (ItemSnapshot in dataSnapshot.children) {
+//                    var itemDate= ItemSnapshot.getValue<String>()
+//                    if (itemDate != null) {
+//                        weekToDoItem.add(itemDate)
+//                    }
+//                }
+////                Log.i("AllItemData","allToDoMap="+allToDoMap)
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        }
+//        weekToDoItemReference.addValueEventListener(weekToDoItemPostListener)
+//
+//
+//        // weekToDoItem 所有週 單項
+//        monthToDoItemReference = database.getReference("user/monthToDoItem/")
+//        val monthToDoItemPostListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                for (ItemSnapshot in dataSnapshot.children) {
+//                    var itemDate= ItemSnapshot.getValue<String>()
+//                    if (itemDate != null) {
+//                        monthToDoItem.add(itemDate)
+//                    }
+//                }
+////                Log.i("AllItemData","allToDoMap="+allToDoMap)
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        }
+//        monthToDoItemReference.addValueEventListener(monthToDoItemPostListener)
+//
+//        // weekToDoItem 所有週 單項
+//        yearToDoItemReference = database.getReference("user/yearToDoItem/")
+//        val yearToDoItemPostListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                for (ItemSnapshot in dataSnapshot.children) {
+//                    var itemDate= ItemSnapshot.getValue<String>()
+//                    if (itemDate != null) {
+//                        yearToDoItem.add(itemDate)
+//                    }
+//                }
+////                Log.i("AllItemData","allToDoMap="+allToDoMap)
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        }
+//        yearToDoItemReference.addValueEventListener(yearToDoItemPostListener)
+
+
         // habitToDoItem 所有單項
         habitToDoItemReference = database.getReference("user/allHabit/")
         val habitToDoItemPostListener = object : ValueEventListener {
@@ -179,14 +278,14 @@ object AllItemData {
 
                         //檢查項目有沒有過期
                         if (!habitDate.endDate.equals("無")){
-                            Log.i(TAG,"itemDate.startDate${habitDate.endDate}")
+                         //   Log.i(TAG,"itemDate.startDate${habitDate.endDate}")
                             val itemStartDateFormatter = LocalDateTime.parse(habitDate.endDate+" 00:00:00",timeFormatter)
                             val currentDateFormatter = LocalDateTime.now()
                             val dateDifference = ChronoUnit.DAYS.between(itemStartDateFormatter, currentDateFormatter).toInt()
                             if(dateDifference>0){
                                 habitDate.IsProhibitItem = true
                                 habitToDoItemReference.child(itemIndex).setValue(habitDate)
-                                 Log.i(TAG,"habitDate.endDate${habitDate.endDate}")
+                            //     Log.i(TAG,"habitDate.endDate${habitDate.endDate}")
                             }
                         }
 
@@ -328,6 +427,10 @@ object AllItemData {
     }
     fun setSingleItem(AddItem:ItemDate) {
       //  Log.i("AllItemData","setSingleItem=${todayToDoItem}")
+
+
+
+
         var addItemIndex= setAllItem(AddItem)
     }
     fun getProjectSingleItem():Map<String, ArrayList<ItemDate>> {
@@ -486,6 +589,68 @@ object AllItemData {
       //  Log.i("AllItemData","todayToDo="+todayToDo)
         return todayToDo
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getIntervalDateToDo(dateCategory:String):ArrayList<ItemDate>{
+       var  intervalDateToDo = ArrayList<ItemDate>()
+
+        Log.i(TAG,"dateCategory${dateCategory}")
+        when(dateCategory){
+            "年" ->{
+                for ((key,itemDate) in allToDoMap){
+
+                    // Log.i("AllItemData","nowItemDate="+nowItemDate)
+                    if(itemDate?.timeType==4){
+                        val mCurrentDate = LocalDate.parse(currentDate)
+                        val mNowItemDate = LocalDate.parse(itemDate?.startDate)
+                        if(mCurrentDate.year.equals(mNowItemDate.year)){
+                            if (itemDate != null && !itemDate.isHabit) {
+                                intervalDateToDo.add(itemDate)
+                            }
+                        }
+                    }
+
+                }
+            }
+            "月" ->{
+                for ((key,itemDate) in allToDoMap){
+                    // Log.i("AllItemData","nowItemDate="+nowItemDate)
+                    if(itemDate?.timeType==3){
+                        val mCurrentDate = LocalDate.parse(currentDate)
+                        val mNowItemDate = LocalDate.parse(itemDate?.startDate)
+                        if(mCurrentDate.month.equals(mNowItemDate.month)){
+                            if (itemDate != null && !itemDate.isHabit) {
+                                intervalDateToDo.add(itemDate)
+                            }
+                        }
+                    }
+
+                }
+            }
+            "週" ->{
+                for ((key,itemDate) in allToDoMap){
+                    // Log.i("AllItemData","nowItemDate="+nowItemDate)
+                    if(itemDate?.timeType==2){
+                        var mCurrentDate = LocalDate.parse(currentDate)
+                        val week = mCurrentDate.dayOfWeek.value
+                        Log.i(TAG,"mStartDate.dayOfWeek.value${mCurrentDate.dayOfWeek.value}")
+                        mCurrentDate = mCurrentDate.minusDays((week-1).toLong())
+                        val mNowItemDate = LocalDate.parse(itemDate?.startDate)
+                        if(mCurrentDate.equals(mNowItemDate)){
+                            if (itemDate != null && !itemDate.isHabit) {
+                                intervalDateToDo.add(itemDate)
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+        //  Log.i("AllItemData","todayToDo="+todayToDo)
+        return intervalDateToDo
+    }
+
     fun getIntervalDateToDayToDo(intervalDates: ArrayList<String>):ArrayList<ItemDate>{
 
         todayToDo = ArrayList<ItemDate>()
@@ -521,6 +686,32 @@ object AllItemData {
         return addItemIndex
     }
 
+    fun setIntervalDateToDayToDo(AddItem:ItemDate,dateCategory:String):Int{
+
+//        when(dateCategory){
+//            "年" ->{
+//
+//            }
+//            "月" ->{
+//
+//            }
+//            "週" ->{
+//
+//            }
+//        }
+
+        var addItemIndex= setAllItem(AddItem)
+        todayToDoItem.add(addItemIndex.toString())
+
+        val todayToDo = database.getReference("user/todayToDoItem/")
+//        if(!nowTodayToDoIndex.equals("")){
+//            val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
+        //上傳firebase
+        todayToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
+        //    Log.i("AllItemData","setDateToDayToDo")
+//        }
+        return addItemIndex
+    }
 
     fun getAllHabitToDo(): Map<Int,HabitDate>{
 
