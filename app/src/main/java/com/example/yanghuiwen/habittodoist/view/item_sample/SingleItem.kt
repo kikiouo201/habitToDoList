@@ -50,6 +50,7 @@ class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :Str
 
         holder.item.setBackgroundResource(important[mDateValue[position].important])
         holder.mTextView.text = mDateValue[position].name
+        holder.checkBox.isChecked = mDateValue[position].IsEndItem
         holder.mTextView.setOnClickListener {
             holder.checkBox.isChecked = !holder.checkBox.isChecked
             mDateValue[position].IsEndItem = holder.checkBox.isChecked

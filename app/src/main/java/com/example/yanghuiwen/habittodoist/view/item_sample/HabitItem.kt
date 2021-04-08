@@ -45,6 +45,7 @@ class HabitItem<T>(context: Context, data: Map<String, HabitDate>, toDoName :Str
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.item.setBackgroundResource(important[mDateValue[position].important])
         holder.mTextView.text = mDateValue[position].name
+        holder.checkBox.isChecked = mDateValue[position].IsEndItem
         holder.mTextView.setOnClickListener {
             holder.checkBox.isChecked = !holder.checkBox.isChecked
             mDateValue[position].IsEndItem = holder.checkBox.isChecked
