@@ -50,26 +50,20 @@ class SortHabitItem<T>(context: Context, data: Map<String, ArrayList<HabitDate>>
         val  projectName=  projectNames[position]
         holder.projectName.text = projectName
 
-        var todayList: HabitItem<String>?  = null
-        todayList = mData.get(projectName)?.let { HabitItem(context, it,toDoName ) }
-        holder.mRecyclerView.adapter = todayList
-        holder.isDisplay.setOnClickListener{
-
-            if(holder.mRecyclerView.visibility == View.GONE){
-                holder.isDisplay.setImageResource(R.drawable.down_arrow)
-                holder.mRecyclerView.visibility =View.VISIBLE
-
-            }else{
-                holder.isDisplay.setImageResource(R.drawable.up_arrow)
-                holder.mRecyclerView.visibility = View.GONE
-            }
-
-        }
-//        holder.projectName.setOnClickListener {
-//            startAddItemActivity(context,mData[position] , toDoName)
-//        }
-//        holder.isDisplay.setOnCheckedChangeListener{ buttonView, isChecked->
-//            mData[position].IsEndItem = isChecked
+//        var todayList: HabitItem<String>?  = null
+//        todayList = mData.get(projectName)?.let { HabitItem(context, it,toDoName ) }
+//        holder.mRecyclerView.adapter = todayList
+//        holder.isDisplay.setOnClickListener{
+//
+//            if(holder.mRecyclerView.visibility == View.GONE){
+//                holder.isDisplay.setImageResource(R.drawable.down_arrow)
+//                holder.mRecyclerView.visibility =View.VISIBLE
+//
+//            }else{
+//                holder.isDisplay.setImageResource(R.drawable.up_arrow)
+//                holder.mRecyclerView.visibility = View.GONE
+//            }
+//
 //        }
 
         holder.projectName.setOnLongClickListener { false }

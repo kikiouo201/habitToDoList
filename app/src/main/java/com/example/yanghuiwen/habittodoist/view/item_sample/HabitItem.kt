@@ -2,6 +2,7 @@ package com.example.yanghuiwen.habittodoist.view.item_sample
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +10,18 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.yanghuiwen.habittodoist.HabitDate
-import com.example.yanghuiwen.habittodoist.ItemDate
-import com.example.yanghuiwen.habittodoist.MainActivity
-import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.*
 import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
-class HabitItem<T>(context: Context, data: ArrayList<HabitDate>, toDoName :String) : RecyclerView.Adapter<HabitItem<T>.ViewHolder>() {
-    var mData: ArrayList<HabitDate> = ArrayList()
+class HabitItem<T>(context: Context, data: Map<String, HabitDate>, toDoName :String) : RecyclerView.Adapter<HabitItem<T>.ViewHolder>() {
+    var mData: Map<String, HabitDate> = sortedMapOf()
+    val mDateKey = ArrayList<String>()
+    val mDateValue = ArrayList<HabitDate>()
     var toDoName = toDoName
     val context = context
     val important = arrayOf(R.color.important0,R.color.important1,R.color.important2,R.color.important3,R.color.important4)
@@ -40,17 +41,25 @@ class HabitItem<T>(context: Context, data: ArrayList<HabitDate>, toDoName :Strin
         return ViewHolder(v)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.item.setBackgroundResource(important[mData[position].important])
-        holder.mTextView.text = mData[position].name
+        holder.item.setBackgroundResource(important[mDateValue[position].important])
+        holder.mTextView.text = mDateValue[position].name
         holder.mTextView.setOnClickListener {
-            startAddItemActivity(context,mData[position] , toDoName)
+            holder.checkBox.isChecked = !holder.checkBox.isChecked
+            mDateValue[position].IsEndItem = holder.checkBox.isChecked
+            AllItemData.modifyDateHabitToDo(mDateKey[position].toInt(),mDateValue[position])
+
         }
         holder.checkBox.setOnCheckedChangeListener{ buttonView, isChecked->
-            mData[position].IsEndItem = isChecked
+            mDateValue[position].IsEndItem = isChecked
+            AllItemData.modifyDateHabitToDo(mDateKey[position].toInt(),mDateValue[position])
+        }
+        holder.mTextView.setOnLongClickListener {
+            startAddItemActivity(context,mDateValue[position] , toDoName)
+            return@setOnLongClickListener true
         }
 
-        holder.mTextView.setOnLongClickListener { false }
     }
 
     override fun getItemCount(): Int {
@@ -59,6 +68,10 @@ class HabitItem<T>(context: Context, data: ArrayList<HabitDate>, toDoName :Strin
 
     init {
         mData = data
+        data.forEach{(key,value)->
+            mDateKey.add(key)
+            mDateValue.add(value)
+        }
     }
     fun startAddItemActivity(context: Context,currentItemDate: HabitDate, toDoName :String){
 

@@ -11,10 +11,15 @@ import java.util.ArrayList
 class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) :  BaseAdapter() {
         private var datas =data
         private var context =context
-
+        private var dataKeys = ArrayList<String>()
+        private var dataValue = ArrayList<ArrayList<ItemDate>>()
         init {
             datas =data
             this.context =context
+            for ((key,value) in datas){
+                dataKeys.add(key)
+                dataValue.add(value)
+            }
         }
 
         inner class MyHolder(){
@@ -49,8 +54,8 @@ class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>,
             }
 
 
-            myHolder.infoText.text =  "read"
-            myHolder.completionRate.text = "87%"
+                myHolder.infoText.text = dataKeys[position]
+                myHolder.completionRate.text = "未完成：${dataValue[position].size}個事項"
 //            myHolder.mRelative.setBackgroundColor(datas.get(position).colorId)
 
             return view!!
@@ -65,7 +70,7 @@ class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>,
 
         override fun getCount(): Int {
             //返回一个整数,就是要在listview中现实的数据的条数
-            return 10
+            return datas.size
         }
 
     }

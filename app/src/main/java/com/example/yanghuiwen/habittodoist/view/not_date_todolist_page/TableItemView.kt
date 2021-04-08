@@ -37,23 +37,10 @@ class TableItemView(context: Context,category :String) : RelativeLayout(context)
     }
 
     fun chooseSortPage(chooseSort:String){
-        var singleItemData= AllItemData.getProjectSingleItem()
 
-        Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
-        when(chooseSort){
-            "專案" ->{
-                singleItemData= AllItemData.getProjectSingleItem()
-            }
-            "時間" ->{
-                singleItemData= AllItemData.getTimeSingleItem()
-            }
-            "重要性" ->{
-                singleItemData= AllItemData.getImportantSingleItem()
-            }
-        }
         when(mCategory){
             "專案" ->{
-                tableProjectList = TableProjectItem(context,singleItemData,"singleItemToDo")
+                tableProjectList = TableProjectItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
                 mGridView.adapter = tableProjectList
             }
             "習慣" ->{

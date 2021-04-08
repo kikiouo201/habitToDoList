@@ -12,6 +12,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.*
 import kotlin.collections.ArrayList
 
 object AllItemData {
@@ -87,7 +88,7 @@ object AllItemData {
 
                         //檢查項目有沒有過期
                         if (!itemDate.endDate.equals("無")){
-                            Log.i(TAG,"itemDate.startDate${itemDate.endDate}")
+                           // Log.i(TAG,"itemDate.startDate${itemDate.endDate}")
                             val itemStartDateFormatter = LocalDateTime.parse(itemDate.endDate+" 00:00:00",timeFormatter)
                             val currentDateFormatter = LocalDateTime.now()
                             val dateDifference = ChronoUnit.DAYS.between(itemStartDateFormatter, currentDateFormatter).toInt()
@@ -372,7 +373,7 @@ object AllItemData {
         val allItem = database.getReference("user/allItem/")
         //修改firebase上的項目
         allItem.child(modifyIndex.toString()).setValue(modifyItem)
-        allToDoMap.remove(modifyIndex)
+        //allToDoMap.remove(modifyIndex)
     }
 
     // 上傳 AllHabit 到firebase
@@ -459,21 +460,21 @@ object AllItemData {
        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
     }
-    fun getImportantSingleItem():Map<String, ArrayList<ItemDate>> {
+    fun getImportantSingleItem():Map<String, Map<String, ItemDate>> {
 
-        var singleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
-
+        var singleItemMap = sortedMapOf<String,Map<String, ItemDate>>()
+        var endSingleItem = sortedMapOf<String, ItemDate>()
         for ((key,itemIndexs)in notEndSingleItemMap){
             val itemDates = ArrayList<ItemDate>()
             for (itemIndex in itemIndexs) {
                 var nowItemDate = allToDoMap.get(itemIndex.toInt())
                 if (nowItemDate != null && !nowItemDate.isHabit) {
                     if(singleItemMap.get(nowItemDate.important.toString()) != null){
-                        val endSingleItem =singleItemMap.get(nowItemDate.important.toString())
-                        endSingleItem?.add(nowItemDate)
+                        endSingleItem = singleItemMap.get(nowItemDate.important.toString()) as SortedMap<String, ItemDate>
+                        endSingleItem.put(itemIndex.toString(),nowItemDate)
                     }else{
-                        val endSingleItem =ArrayList<ItemDate>()
-                        endSingleItem?.add(nowItemDate)
+                        endSingleItem = sortedMapOf<String, ItemDate>()
+                        endSingleItem.put(itemIndex.toString(),nowItemDate)
                         singleItemMap.put(nowItemDate.important.toString(),endSingleItem)
                     }
                     itemDates.add(nowItemDate)
@@ -485,21 +486,22 @@ object AllItemData {
         //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
     }
-    fun getTimeSingleItem():Map<String, ArrayList<ItemDate>> {
+    fun getTimeSingleItem():Map<String, Map<String, ItemDate>> {
 
-        var singleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
+        var singleItemMap = sortedMapOf<String,Map<String, ItemDate>>()
+        var endSingleItem = sortedMapOf<String, ItemDate>()
 
         for ((key,itemIndexs)in notEndSingleItemMap){
             val itemDates = ArrayList<ItemDate>()
             for (itemIndex in itemIndexs) {
                 var nowItemDate = allToDoMap.get(itemIndex.toInt())
-                if (nowItemDate != null) {
+                if (nowItemDate != null && !nowItemDate.isHabit) {
                     if(singleItemMap.get(nowItemDate.startDate) != null){
-                        val endSingleItem =singleItemMap.get(nowItemDate.startDate)
-                        endSingleItem?.add(nowItemDate)
+                        endSingleItem =singleItemMap.get(nowItemDate.startDate) as SortedMap<String, ItemDate>
+                        endSingleItem.put(itemIndex.toString(),nowItemDate)
                     }else{
-                        val endSingleItem =ArrayList<ItemDate>()
-                        endSingleItem?.add(nowItemDate)
+                        endSingleItem =sortedMapOf<String, ItemDate>()
+                        endSingleItem.put(itemIndex.toString(),nowItemDate)
                         singleItemMap.put(nowItemDate.startDate,endSingleItem)
                     }
                     itemDates.add(nowItemDate)
@@ -508,21 +510,6 @@ object AllItemData {
 
         }
 
-//        if(singleItemMap.get("無") != null){
-//            var sortSingleItemMap = sortedMapOf<String, ArrayList<ItemDate>>()
-//            var notTime = singleItemMap.get("無")
-//            var sortTime =singleItemMap.toSortedMap(compareByDescending { convertDate(it) })
-//
-//            sortSingleItemMap.put("無",notTime)
-//            for ((key,itemIndexs)in singleItemMap){
-//                sortSingleItemMap.put(key,itemIndexs)
-//            }
-//            singleItemMap = sortSingleItemMap
-//
-//        }else{
-//            singleItemMap.toSortedMap(compareByDescending { convertDate(it) })
-//        }
-        //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return singleItemMap
     }
 
@@ -573,16 +560,16 @@ object AllItemData {
         todayToDoItem.remove(deleteIndex.toString())
      //   Log.i("AllItemData","delete todayToDoItem=${todayToDoItem}")
     }
-    fun getDateToDayToDo():ArrayList<ItemDate>{
+    fun getDateToDayToDo():Map<String, ItemDate>{
 
-        todayToDo = ArrayList<ItemDate>()
+        val todayToDo = sortedMapOf<String, ItemDate>()
 
         for (itemIndex in todayToDoItem){
             var nowItemDate = allToDoMap.get(itemIndex.toInt())
           // Log.i("AllItemData","nowItemDate="+nowItemDate)
             if(currentDate.equals(nowItemDate?.startDate)){
                 if (nowItemDate != null && !nowItemDate.isHabit) {
-                    todayToDo.add(nowItemDate)
+                    todayToDo.put(itemIndex,nowItemDate)
                 }
             }
         }
@@ -590,8 +577,8 @@ object AllItemData {
         return todayToDo
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getIntervalDateToDo(dateCategory:String):ArrayList<ItemDate>{
-       var  intervalDateToDo = ArrayList<ItemDate>()
+    fun getIntervalDateToDo(dateCategory:String):Map<String, ItemDate>{
+       var  intervalDateToDo = sortedMapOf<String, ItemDate>()
 
         Log.i(TAG,"dateCategory${dateCategory}")
         when(dateCategory){
@@ -604,7 +591,7 @@ object AllItemData {
                         val mNowItemDate = LocalDate.parse(itemDate?.startDate)
                         if(mCurrentDate.year.equals(mNowItemDate.year)){
                             if (itemDate != null && !itemDate.isHabit) {
-                                intervalDateToDo.add(itemDate)
+                                intervalDateToDo.put(key.toString(),itemDate)
                             }
                         }
                     }
@@ -619,7 +606,7 @@ object AllItemData {
                         val mNowItemDate = LocalDate.parse(itemDate?.startDate)
                         if(mCurrentDate.month.equals(mNowItemDate.month)){
                             if (itemDate != null && !itemDate.isHabit) {
-                                intervalDateToDo.add(itemDate)
+                                intervalDateToDo.put(key.toString(),itemDate)
                             }
                         }
                     }
@@ -637,7 +624,7 @@ object AllItemData {
                         val mNowItemDate = LocalDate.parse(itemDate?.startDate)
                         if(mCurrentDate.equals(mNowItemDate)){
                             if (itemDate != null && !itemDate.isHabit) {
-                                intervalDateToDo.add(itemDate)
+                                intervalDateToDo.put(key.toString(),itemDate)
                             }
                         }
                     }
@@ -724,15 +711,15 @@ object AllItemData {
         //Log.i("AllItemData"," getSingleItem notEndSingleItemMap${notEndSingleItemMap}")
         return habitToDoMap
     }
-    fun getDateHabitToDo():ArrayList<HabitDate>{
+    fun getDateHabitToDo():Map<String, HabitDate>{
 
-         var habitToDo = ArrayList<HabitDate>()
+         var habitToDo = sortedMapOf<String, HabitDate>()
 
         for ((key,itemIndexs)in allHabitToDoMap){
             for (date in itemIndexs?.allDate!!){
 
                  if(currentDate.equals(date)){
-                        habitToDo.add(itemIndexs)
+                        habitToDo.put(key.toString(),itemIndexs)
                 }
 
             }
@@ -974,15 +961,15 @@ object AllItemData {
     }
 
 
-    fun getDateActivity():ArrayList<ItemDate>{
-        var activity = ArrayList<ItemDate>()
+    fun getDateActivity():Map<String, ItemDate>{
+        var activity = sortedMapOf<String, ItemDate>()
 
         for ((key,nowItemDate)in  allActivityMap){
 
                 if(currentDate.equals(nowItemDate?.startDate)){
                         //  Log.i("AllItemData","nowItemDate="+nowItemDate?.startDate)
                     if (nowItemDate != null ){
-                        activity.add(nowItemDate)
+                        activity.put(key.toString(),nowItemDate)
                     }
                 }
 

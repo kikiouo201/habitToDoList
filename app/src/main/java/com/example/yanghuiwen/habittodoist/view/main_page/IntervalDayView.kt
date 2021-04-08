@@ -35,7 +35,7 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
 //    var currentOnDateChange = onDateChange
 
     var todayList: SingleItem<String>?  = null
-    var habitList: HabitItem<String>?  = null
+//    var habitList: HabitItem<String>?  = null
 
     private lateinit var pageList: MutableList<WeekPageView>
     private var category ="月"
@@ -78,13 +78,13 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
         val mRecyclerView = view.findViewById<View>(R.id.todayList) as RecyclerView
         mRecyclerView.layoutManager = layoutManager
         mRecyclerView.adapter = todayList
-
-        habitList = HabitItem(context,AllItemData.getDateHabitToDo(),"habitToDo")
-        val habitLayoutManager = LinearLayoutManager(context)
-        habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        val habit_RecyclerView = view.findViewById<View>(R.id.habitList) as RecyclerView
-        habit_RecyclerView.layoutManager = habitLayoutManager
-        habit_RecyclerView.adapter = habitList
+//
+//        habitList = HabitItem(context,AllItemData.getDateHabitToDo(),"habitToDo")
+//        val habitLayoutManager = LinearLayoutManager(context)
+//        habitLayoutManager.orientation = LinearLayoutManager.VERTICAL
+//        val habit_RecyclerView = view.findViewById<View>(R.id.habitList) as RecyclerView
+//        habit_RecyclerView.layoutManager = habitLayoutManager
+//        habit_RecyclerView.adapter = habitList
     }
 
 

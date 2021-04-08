@@ -72,7 +72,8 @@ class Schedule: ConstraintLayout{
         val habitToDoList=AllItemData.getDateHabitToDo()
         val activityList =AllItemData.getDateActivity()
         val sortToDoList = sortedMapOf<String, ArrayList<ItemDate>>()
-        for (todayToDo in todayToDoList){
+
+        for ((key,todayToDo) in todayToDoList){
             val hour =todayToDo.startTime.split(":")
 
             if(sortToDoList.get(hour[0]) != null){
@@ -84,7 +85,7 @@ class Schedule: ConstraintLayout{
             }
         }
 
-        for (habitToDo in habitToDoList){
+        for ((key,habitToDo) in habitToDoList){
             val hour =habitToDo.startTime.split(":")
 
             var addItemDate =ItemDate()
@@ -100,7 +101,7 @@ class Schedule: ConstraintLayout{
             }
         }
 
-        for (activity in activityList){
+        for ((key,activity) in activityList){
             val hour =activity.startTime.split(":")
 
             if(sortToDoList.get(hour[0]) != null){

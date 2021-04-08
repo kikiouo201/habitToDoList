@@ -23,8 +23,10 @@ import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
-class SingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName :String) : RecyclerView.Adapter<SingleItem<T>.ViewHolder>() {
-    var mData: ArrayList<ItemDate> = ArrayList()
+class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :String) : RecyclerView.Adapter<SingleItem<T>.ViewHolder>() {
+    var mData: Map<String, ItemDate> = sortedMapOf()
+    val mDateKey = ArrayList<String>()
+    val mDateValue = ArrayList<ItemDate>()
     var toDoName = toDoName
     val context = context
     val important = arrayOf(R.color.important0,R.color.important1,R.color.important2,R.color.important3,R.color.important4)
@@ -46,16 +48,22 @@ class SingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName :Strin
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.item.setBackgroundResource(important[mData[position].important])
-        holder.mTextView.text = mData[position].name
+        holder.item.setBackgroundResource(important[mDateValue[position].important])
+        holder.mTextView.text = mDateValue[position].name
         holder.mTextView.setOnClickListener {
-           startAddItemActivity(context,mData[position] , toDoName)
+            holder.checkBox.isChecked = !holder.checkBox.isChecked
+            mDateValue[position].IsEndItem = holder.checkBox.isChecked
+            AllItemData.modifyAllItem(mDateKey[position].toInt(),mDateValue[position])
         }
         holder.checkBox.setOnCheckedChangeListener{ buttonView, isChecked->
-            mData[position].IsEndItem = isChecked
+            mDateValue[position].IsEndItem = isChecked
+            AllItemData.modifyAllItem(mDateKey[position].toInt(),mDateValue[position])
+        }
+        holder.mTextView.setOnLongClickListener {
+            startAddItemActivity(context,mDateValue[position] , toDoName)
+            return@setOnLongClickListener true
         }
 
-        holder.mTextView.setOnLongClickListener { false }
     }
 
     override fun getItemCount(): Int {
@@ -64,6 +72,11 @@ class SingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName :Strin
 
     init {
         mData = data
+
+        data.forEach{(key,value)->
+            mDateKey.add(key)
+            mDateValue.add(value)
+        }
     }
     fun startAddItemActivity(context: Context,currentItemDate: ItemDate, toDoName :String){
 
@@ -103,4 +116,6 @@ class SingleItem<T>(context: Context, data: ArrayList<ItemDate>, toDoName :Strin
 
     }
 }
+
+
 

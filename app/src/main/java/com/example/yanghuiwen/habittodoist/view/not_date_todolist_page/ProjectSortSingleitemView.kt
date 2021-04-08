@@ -37,17 +37,17 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
         var singleItemData= AllItemData.getProjectSingleItem()
 
         Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
-        when(chooseSort){
-            "專案" ->{
-                singleItemData= AllItemData.getProjectSingleItem()
-            }
-            "時間" ->{
-                singleItemData= AllItemData.getTimeSingleItem()
-            }
-            "重要性" ->{
-                singleItemData= AllItemData.getImportantSingleItem()
-            }
-        }
+//        when(chooseSort){
+//            "專案" ->{
+//                singleItemData= AllItemData.getProjectSingleItem()
+//            }
+//            "時間" ->{
+//                singleItemData= AllItemData.getTimeSingleItem()
+//            }
+//            "重要性" ->{
+//                singleItemData= AllItemData.getImportantSingleItem()
+//            }
+//        }
 
         todayList = ProjectSortSingleItem(context,singleItemData,"singleItemToDo")
         mRecyclerView.adapter = todayList

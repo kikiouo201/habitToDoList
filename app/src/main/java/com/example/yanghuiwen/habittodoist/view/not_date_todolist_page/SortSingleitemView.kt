@@ -37,11 +37,8 @@ class SortSingleitemView(context: Context) : RelativeLayout(context){
 
         Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
         when(chooseSort){
-            "專案" ->{
-                singleItemData= AllItemData.getProjectSingleItem()
-            }
             "時間" ->{
-                singleItemData= AllItemData.getTimeSingleItem()
+               singleItemData= AllItemData.getTimeSingleItem()
             }
             "重要性" ->{
                 singleItemData= AllItemData.getImportantSingleItem()

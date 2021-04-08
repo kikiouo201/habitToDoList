@@ -17,8 +17,8 @@ import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
-class SortSingleItem<T>(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) : RecyclerView.Adapter<SortSingleItem<T>.ViewHolder>() {
-    var mData:Map<String, ArrayList<ItemDate>> = sortedMapOf<String, ArrayList<ItemDate>>()
+class SortSingleItem<T>(context: Context, data: Map<String, Map<String, ItemDate>>, toDoName :String) : RecyclerView.Adapter<SortSingleItem<T>.ViewHolder>() {
+    var mData:Map<String, Map<String, ItemDate>> = sortedMapOf<String, Map<String, ItemDate>>()
     var projectNames:MutableList<String> =mData.keys.toMutableList()
     var toDoName = toDoName
     val context = context
