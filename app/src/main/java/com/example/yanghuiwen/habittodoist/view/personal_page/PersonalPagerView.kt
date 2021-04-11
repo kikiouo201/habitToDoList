@@ -58,10 +58,10 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
     initWeekViewpage(yearGoalPager,"year")
     val  monthGoalPager = view.findViewById<ViewPager>(R.id.monthGoalPager)
     initWeekViewpage(monthGoalPager,"month")
-    val  weekGoalPager = view.findViewById<ViewPager>(R.id.weekGoalPager)
-    initWeekViewpage(weekGoalPager,"week")
-    val  diaryPager = view.findViewById<ViewPager>(R.id.diary)
-    initWeekViewpage(diaryPager,"diary")
+//    val  weekGoalPager = view.findViewById<ViewPager>(R.id.weekGoalPager)
+//    initWeekViewpage(weekGoalPager,"week")
+//    val  diaryPager = view.findViewById<ViewPager>(R.id.diary)
+//    initWeekViewpage(diaryPager,"diary")
 
         addView(view)
     }
