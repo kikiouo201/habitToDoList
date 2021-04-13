@@ -67,8 +67,9 @@ class TableHabitItem(context: Context, data: Map<Int, HabitDate>, toDoName :Stri
 
             myHolder.mTableItem.setOnClickListener {
                 var bundle= Bundle()
-                bundle.putString("name","")
-                bundle.putString("habitIndex","")
+                //bundle.putString("name","")
+                bundle.putInt("habitIndex",dataKeys[position])
+
 
 
                 var intent = Intent(context, HabitResultActivity::class.java)
