@@ -391,6 +391,17 @@ object AllItemData {
        // allToDoMap.put(lastallHabitIndex.toInt(),AddHabit)
         return lastallHabitIndex.toInt()
     }
+    fun  modifyAllHabit(modifyIndex:Int,modifyItem:HabitDate){
+        val allItem = database.getReference("user/allHabit/")
+        //修改firebase上的項目
+        allItem.child(modifyIndex.toString()).setValue(modifyItem)
+        //allToDoMap.remove(modifyIndex)
+    }
+    fun deleteAllHabit(deleteIndex:Int){
+        val habitToDo = database.getReference("user/allHabit/")
+        habitToDo.child(deleteIndex.toString()).removeValue()
+        allHabitToDoMap.remove(deleteIndex)
+    }
 
     // 上傳 AllHabit 到firebase
     private fun  setAllProject(AddProject:String){
@@ -762,20 +773,6 @@ object AllItemData {
                 val difference = ChronoUnit.DAYS.between(mStart, mEnd).toInt()
                 val repeatNum = AddHabit.repeatCycle[0].toInt()
                 for (i in 0..difference step repeatNum){
-//                    var addItemDate =ItemDate()
-//                    addItemDate.name = AddHabit.name
-//                    addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                    addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                    addItemDate.timeType = 1
-//                    addItemDate.urgent = AddHabit.urgent
-//                    addItemDate.important = AddHabit.important
-//                    addItemDate.repeat =AddHabit.repeat
-//                    addItemDate.project = AddHabit.project
-//                    addItemDate.startTime =AddHabit.startTime
-//                    addItemDate.endTime =AddHabit.endTime
-//
-//                    addItemDate.isHabit = true
-//                    var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                     AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                     AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                 }
@@ -792,16 +789,6 @@ object AllItemData {
                     for (j in 0..AddHabit.repeatCycle.size-1){
                         val mDate = mStart.plusDays(i.toLong())
                         if(mDate.dayOfWeek.value == AddHabit.repeatCycle[j].toInt()){
-//                            var addItemDate =ItemDate()
-//                            addItemDate.name = AddHabit.name
-//                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                            addItemDate.timeType = 2
-//                            addItemDate.repeat =AddHabit.repeat
-//                            addItemDate.isHabit = true
-//                            addItemDate.startTime =AddHabit.startTime
-//                            addItemDate.endTime =AddHabit.endTime
-//                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                         }
@@ -821,16 +808,6 @@ object AllItemData {
                     for (j in 0..AddHabit.repeatCycle.size-1){
                         val mDate = mStart.plusDays(i.toLong())
                         if(mDate.dayOfMonth == AddHabit.repeatCycle[j].toInt()){
-//                            var addItemDate =ItemDate()
-//                            addItemDate.name = AddHabit.name
-//                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                            addItemDate.timeType = 2
-//                            addItemDate.repeat =AddHabit.repeat
-//                            addItemDate.isHabit = true
-//                            addItemDate.startTime =AddHabit.startTime
-//                            addItemDate.endTime =AddHabit.endTime
-//                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                         }
@@ -860,18 +837,7 @@ object AllItemData {
                         }else{
                             chooseTime +="-${mDate.dayOfMonth}"
                         }
-                     //   Log.i("AllItemData","chooseTime=${chooseTime}")
                         if(chooseTime == AddHabit.repeatCycle[j]){
-//                            var addItemDate =ItemDate()
-//                            addItemDate.name = AddHabit.name
-//                            addItemDate.startDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                            addItemDate.endDate = mStart.plusDays(i.toLong()).format(dateFormatter)
-//                            addItemDate.timeType = 2
-//                            addItemDate.repeat =AddHabit.repeat
-//                            addItemDate.isHabit = true
-//                            addItemDate.startTime =AddHabit.startTime
-//                            addItemDate.endTime =AddHabit.endTime
-//                            var addItemIndex = AllItemData.setDateToDayToDo(addItemDate)
                             AddHabit.allDate.add( mStart.plusDays(i.toLong()).format(dateFormatter))
                             AddHabit.notEndItemList.add(mStart.plusDays(i.toLong()).format(dateFormatter))
                         }
@@ -890,8 +856,15 @@ object AllItemData {
 
 
     }
+    fun checkDateHabitToDo(modifyIndex:Int, modifyItem:HabitDate){
+        modifyAllHabit(modifyIndex,modifyItem)
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     fun modifyDateHabitToDo(modifyIndex:Int, modifyItem:HabitDate){
+        setDateHabitToDo(modifyItem)
+        deleteAllHabit(modifyIndex)
+        //modifyAllHabit(modifyIndex,modifyItem)
+
         //把過去紀錄以外的紀錄刪除
         val currentDate = LocalDateTime.now()
         val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -901,44 +874,28 @@ object AllItemData {
 
         val nowToEndDateDifference = ChronoUnit.DAYS.between(nowDate, endDate).toInt()
 //        Log.i("AllItemData","nowToEndDateDifference=${nowToEndDateDifference}")
-        if(nowToEndDateDifference>0){
-            //項目中有未來 可動
-            //刪掉未來的
-            for (notEndItemDate in modifyItem.notEndItemList){
-                val notEndItem = allToDoMap[notEndItemDate.toInt()]
-                val notEndStartDate = LocalDateTime.parse(notEndItem?.startDate+" 00:00:00",timeFormatter)
-                val nowToNotEndDateDifference = ChronoUnit.DAYS.between(nowDate, notEndStartDate).toInt()
-                if(nowToNotEndDateDifference>0){
-                    //未來的項目
-                    modifyItem.notEndItemList.remove(notEndItemDate)
-                }
-            }
-            //重新建未來的
-            addSingleItemOfHabit()
+//        if(nowToEndDateDifference>0){
+//            //項目中有未來 可動
+//            //刪掉未來的
+//            for (notEndItemDate in modifyItem.notEndItemList){
+//                val notEndItem = allToDoMap[notEndItemDate.toInt()]
+//                val notEndStartDate = LocalDateTime.parse(notEndItem?.startDate+" 00:00:00",timeFormatter)
+//                val nowToNotEndDateDifference = ChronoUnit.DAYS.between(nowDate, notEndStartDate).toInt()
+//                if(nowToNotEndDateDifference>0){
+//                    //未來的項目
+//                    modifyItem.notEndItemList.remove(notEndItemDate)
+//                }
+//            }
+//            //重新建未來的
+//            addSingleItemOfHabit()
+//
+//        }
 
-        }
-
-       // modifyAllItem(modifyIndex,modifyItem)
+       //modifyAllItem(modifyIndex,modifyItem)
         // Log.i("AllItemData","modify todayToDoItem=${todayToDoItem}")
     }
     fun deleteDateHabitToDo(deleteIndex:Int){
-        val notEndItems = allHabitToDoMap[deleteIndex]?.notEndItemList
-        val endItems = allHabitToDoMap[deleteIndex]?.endItemList
-        if (notEndItems != null) {
-            for( Items in notEndItems){
-             //   Log.i("AllItemData","notEndItems  Items=${Items}")
-                deleteAllItem(Items.toInt())
-            }
-        }
-        if (endItems != null) {
-            for( Items in endItems){
-                deleteAllItem(Items.toInt())
-            }
-        }
-        val habitToDo = database.getReference("user/allHabit/")
-        habitToDo.child(deleteIndex.toString()).removeValue()
-        allHabitToDoMap.remove(deleteIndex)
-        //   Log.i("AllItemData","delete todayToDoItem=${todayToDoItem}")
+        deleteAllHabit(deleteIndex)
     }
     fun addSingleItemOfHabit(){
 

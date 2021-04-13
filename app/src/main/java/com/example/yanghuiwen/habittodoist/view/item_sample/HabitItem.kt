@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yanghuiwen.habittodoist.*
 import com.example.yanghuiwen.habittodoist.view.AddHabitActivity
 import com.example.yanghuiwen.habittodoist.view.AddItemActivity
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 class HabitItem<T>(context: Context, data: Map<String, HabitDate>, toDoName :String) : RecyclerView.Adapter<HabitItem<T>.ViewHolder>() {
@@ -45,16 +47,32 @@ class HabitItem<T>(context: Context, data: Map<String, HabitDate>, toDoName :Str
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.item.setBackgroundResource(important[mDateValue[position].important])
         holder.mTextView.text = mDateValue[position].name
-        holder.checkBox.isChecked = mDateValue[position].IsEndItem
+        if(mDateValue[position].endItemList.contains(AllItemData.currentDate)){
+            holder.checkBox.isChecked = true
+        }
         holder.mTextView.setOnClickListener {
             holder.checkBox.isChecked = !holder.checkBox.isChecked
-            mDateValue[position].IsEndItem = holder.checkBox.isChecked
-            AllItemData.modifyDateHabitToDo(mDateKey[position].toInt(),mDateValue[position])
+//            val currentDate = LocalDateTime.now()
+//            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//            val dateFormatted = currentDate.format(dateFormatter)
+            if(holder.checkBox.isChecked){
+                mDateValue[position].endItemList.add(AllItemData.currentDate)
+            }else{
+                mDateValue[position].endItemList.remove(AllItemData.currentDate)
+            }
 
+            AllItemData.checkDateHabitToDo(mDateKey[position].toInt(),mDateValue[position])
         }
         holder.checkBox.setOnCheckedChangeListener{ buttonView, isChecked->
-            mDateValue[position].IsEndItem = isChecked
-            AllItemData.modifyDateHabitToDo(mDateKey[position].toInt(),mDateValue[position])
+//            val currentDate = LocalDateTime.now()
+//            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//            val dateFormatted = currentDate.format(dateFormatter)
+            if(holder.checkBox.isChecked){
+                mDateValue[position].endItemList.add(AllItemData.currentDate)
+            }else{
+                mDateValue[position].endItemList.remove(AllItemData.currentDate)
+            }
+            AllItemData.checkDateHabitToDo(mDateKey[position].toInt(),mDateValue[position])
         }
         holder.mTextView.setOnLongClickListener {
             startAddItemActivity(context,mDateValue[position] , toDoName)
