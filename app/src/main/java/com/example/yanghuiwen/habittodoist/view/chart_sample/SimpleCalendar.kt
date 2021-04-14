@@ -3,16 +3,17 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ScrollView
-import android.widget.Spinner
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.yanghuiwen.habittodoist.HabitDate
 import com.example.yanghuiwen.habittodoist.R
-import com.example.yanghuiwen.habittodoist.view.calendar_page.GeneralCalendar
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,7 +24,7 @@ class SimpleCalendar: ConstraintLayout{
 
     val view =View.inflate(context, R.layout.customview_bar_chart, this)
     //    private var mHoliday =false
-//    private var mThisMonth  =false
+    private var habitItem  = HabitDate()
     private var mComplete =false
     private val TAG ="SimpleCalendar"
 
@@ -80,17 +81,29 @@ class SimpleCalendar: ConstraintLayout{
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
 
         var intervalDate = ArrayList<Int>()
 
-        intervalDate.add(0)
-        intervalDate.add(1)
-        intervalDate.add(2)
-        intervalDate.add(3)
-        intervalDate.add(4)
+        val nowDate = LocalDateTime.now()
+        var nowMonth=nowDate.month.value-1
+
+        for ( i in 0..3){
+            if (nowMonth>=0){
+                intervalDate.add(nowMonth)
+                nowMonth-=1
+            }else{
+                nowMonth=11
+                intervalDate.add(nowMonth)
+                nowMonth-=1
+            }
+
+        }
+        intervalDate.reverse()
+
         drawEvent(canvas,intervalDate,"")
     }
 
@@ -104,52 +117,63 @@ class SimpleCalendar: ConstraintLayout{
 
 
 
+        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR))
         cal.set(Calendar.MONTH, intervalDate[0])
-        cal.set(Calendar.DAY_OF_MONTH, 1) //這個月第一天
+        cal.set(Calendar.DATE, 1) //這個月第一天
         val firstDateWeek =cal.get(Calendar.DAY_OF_WEEK)-1
 
         if(firstDateWeek != 7){
             cal.add(Calendar.DATE, - firstDateWeek) // 這個月 第一週的禮拜日
-            Log.i("CalendarView","第一週的禮拜日cal.time${cal.time}")
+            Log.i(TAG,"第一週的禮拜日cal.time${cal.time}")
         }
         var currentWeekOfMonth = cal.time
-        Log.i(TAG,"nowCal${nowCal.time}")
-        Log.i(TAG,"cal.time${cal.time.date}")
         while ((nowCal.time.month != cal.time.month)||(nowCal.time.date > cal.time.date && nowCal.time.month == cal.time.month)){
 
+            val date = nowCal.time.date
             for (j in 0..6){
-                val eventTop = 500f-60f*j
-                val eventBottom = eventTop+50f
 
+                val eventTop = 430f-60f*j
+                val eventBottom = eventTop+50f
                 val eventRight = eventLeft+50f
 
-                val line = Paint()
-                line.color = getResources().getColor(R.color.superLightGray)
-                canvas.drawRect(eventLeft,eventTop,eventRight,eventBottom,line)
+                val mCurrentDate  = SimpleDateFormat("yyyy-MM-dd").format(cal.time)
+                val frame = Paint()
+                frame.color = getResources().getColor(R.color.superLightGray)
+                for( endItemDate in habitItem.endItemList){
+                    Log.i(TAG,"mCurrentDate${mCurrentDate}")
+                    if(endItemDate.equals(mCurrentDate)){
+                        frame.color = getResources().getColor(R.color.lightBlue)
+                        Log.i(TAG,"come on lol lol")
+                    }
+                }
 
-                val paint1 = Paint()
-                paint1.color = Color.BLACK
+                canvas.drawRect(eventLeft,eventTop,eventRight,eventBottom,frame)
 
-                paint1.textSize = 30F
-                canvas.drawText(currentWeekOfMonth.date.toString(),eventLeft+5f, eventTop+30f,paint1)
+
+                val dateText = Paint()
+                dateText.color = Color.BLACK
+
+
+                dateText.textSize = 30F
+                if(currentWeekOfMonth.date>9){
+                    canvas.drawText(currentWeekOfMonth.date.toString(),eventLeft+5f, eventTop+35f,dateText)
+                }else{
+                    canvas.drawText(currentWeekOfMonth.date.toString(),eventLeft+15f, eventTop+35f,dateText)
+                }
+
                 if(currentWeekOfMonth.date ==1){
-                    canvas.drawText((currentWeekOfMonth.month+1).toString()+"月",eventLeft+5f, 120f,paint1)
+                    canvas.drawText((currentWeekOfMonth.month+1).toString()+"月",eventLeft+5f, 40f,dateText)
                 }
                 cal.add(Calendar.DATE, +1)
                 currentWeekOfMonth = cal.time
             }
             eventLeft += 60f
         }
-//        Log.i(TAG,"nowCal${nowCal.time}")
-//        Log.i(TAG,"cal.time${cal.time}")
-
-
-
-
-
 
     }
-
+    fun setHabitItem(habitItem: HabitDate){
+        this.habitItem = habitItem
+    }
 
 
 }

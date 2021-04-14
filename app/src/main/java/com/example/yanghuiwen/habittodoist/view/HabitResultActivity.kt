@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.TextView
 import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.R
+import com.example.yanghuiwen.habittodoist.view.chart_sample.BarChart
+import com.example.yanghuiwen.habittodoist.view.chart_sample.SimpleCalendar
 
 class HabitResultActivity : AppCompatActivity() {
 
@@ -49,7 +51,17 @@ class HabitResultActivity : AppCompatActivity() {
                 }
             }
 
+            //日曆
+            val calendar = findViewById<SimpleCalendar>(R.id.calendar)
+            calendar.setHabitItem(habitItem)
+
+
+            //歷史紀錄
+            val historicalRecord =findViewById<BarChart>(R.id.historicalRecord)
+            historicalRecord.setHabitItem(habitItem)
         }
+
+
 
 
     }

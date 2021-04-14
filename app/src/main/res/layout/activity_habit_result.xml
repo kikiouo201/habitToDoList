@@ -416,6 +416,7 @@
             android:text="歷史紀錄" />
 
         <com.example.yanghuiwen.habittodoist.view.chart_sample.BarChart
+            android:id="@+id/historicalRecord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -435,6 +436,7 @@
             android:text="日曆" />
 
        <com.example.yanghuiwen.habittodoist.view.chart_sample.SimpleCalendar
+           android:id="@+id/calendar"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:gravity="center">
