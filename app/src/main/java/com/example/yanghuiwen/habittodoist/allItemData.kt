@@ -1,6 +1,7 @@
 package com.example.yanghuiwen.habittodoist
 
 import android.os.Build
+import android.text.Editable
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.firebase.auth.FirebaseAuth
@@ -22,10 +23,7 @@ object AllItemData {
     val database = Firebase.database
     private lateinit var allItemReference: DatabaseReference
     private lateinit var todayToDoItemReference: DatabaseReference
-    private lateinit var noDateToDoItemReference: DatabaseReference
-    private lateinit var weekToDoItemReference: DatabaseReference
-    private lateinit var monthToDoItemReference: DatabaseReference
-    private lateinit var yearToDoItemReference: DatabaseReference
+    private lateinit var diaryItemReference: DatabaseReference
     private lateinit var habitToDoItemReference: DatabaseReference
     private lateinit var projectItemReference: DatabaseReference
 
@@ -36,6 +34,7 @@ object AllItemData {
     var allActivityMap = sortedMapOf<Int, ItemDate?>()
     var allHabitToDoMap = sortedMapOf<Int, HabitDate?>()
     var allProjectMap = sortedMapOf<Int, String>()
+    var allDiaryMap = sortedMapOf<String, String>()
 
     // 今天事項
     val todayToDoItem = mutableSetOf<String>()
@@ -173,94 +172,7 @@ object AllItemData {
         todayToDoItemReference.addValueEventListener(todayToDoItemPostListener)
 
 
-//        // noDateToDoItem 所有無時間 單項
-//        noDateToDoItemReference = database.getReference("user/noDateToDoItem/")
-//        val noDateToDoItemPostListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
-//                for (ItemSnapshot in dataSnapshot.children) {
-//                    var itemDate= ItemSnapshot.getValue<String>()
-//                    if (itemDate != null) {
-//                        noDateToDoItem.add(itemDate)
-//                    }
-//                }
-////                Log.i("AllItemData","allToDoMap="+allToDoMap)
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        }
-//        noDateToDoItemReference.addValueEventListener(noDateToDoItemPostListener)
-//
-//        // weekToDoItem 所有週 單項
-//        weekToDoItemReference = database.getReference("user/weekToDoItem/")
-//        val weekToDoItemPostListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
-//                for (ItemSnapshot in dataSnapshot.children) {
-//                    var itemDate= ItemSnapshot.getValue<String>()
-//                    if (itemDate != null) {
-//                        weekToDoItem.add(itemDate)
-//                    }
-//                }
-////                Log.i("AllItemData","allToDoMap="+allToDoMap)
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        }
-//        weekToDoItemReference.addValueEventListener(weekToDoItemPostListener)
-//
-//
-//        // weekToDoItem 所有週 單項
-//        monthToDoItemReference = database.getReference("user/monthToDoItem/")
-//        val monthToDoItemPostListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
-//                for (ItemSnapshot in dataSnapshot.children) {
-//                    var itemDate= ItemSnapshot.getValue<String>()
-//                    if (itemDate != null) {
-//                        monthToDoItem.add(itemDate)
-//                    }
-//                }
-////                Log.i("AllItemData","allToDoMap="+allToDoMap)
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        }
-//        monthToDoItemReference.addValueEventListener(monthToDoItemPostListener)
-//
-//        // weekToDoItem 所有週 單項
-//        yearToDoItemReference = database.getReference("user/yearToDoItem/")
-//        val yearToDoItemPostListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
-//                for (ItemSnapshot in dataSnapshot.children) {
-//                    var itemDate= ItemSnapshot.getValue<String>()
-//                    if (itemDate != null) {
-//                        yearToDoItem.add(itemDate)
-//                    }
-//                }
-////                Log.i("AllItemData","allToDoMap="+allToDoMap)
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-//                // ...
-//            }
-//        }
-//        yearToDoItemReference.addValueEventListener(yearToDoItemPostListener)
+
 
 
         // habitToDoItem 所有單項
@@ -333,6 +245,29 @@ object AllItemData {
         }
         projectItemReference.addValueEventListener(projectItemPostListener)
 
+        // DiaryItem 所有專案
+        diaryItemReference = database.getReference("user/allDiary/")
+        val diaryItemPostListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for (ItemSnapshot in dataSnapshot.children) {
+                    var itemDate= ItemSnapshot.getValue<String>()
+                    val itemIndex = ItemSnapshot.key
+                    if (itemDate != null) {
+                        allDiaryMap.put(itemIndex,itemDate)
+                    }
+                }
+//                Log.i("AllItemData","allToDoMap="+allToDoMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                // Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        diaryItemReference.addValueEventListener(diaryItemPostListener)
+
     }
     //刪除重複項目
     fun deleteDuplicateArrayList(duplicateItems:ArrayList<Int>):ArrayList<Int>{
@@ -347,6 +282,8 @@ object AllItemData {
         }
         return f
     }
+
+
 
     // 上傳 AllItem 到firebase
     fun  setAllItem(AddItem:ItemDate):Int{
@@ -418,7 +355,27 @@ object AllItemData {
         allProjectMap.put((allProjectMap.size+1),AddProject)
     }
 
+    // 上傳 AllDiary 到firebase
+    private fun setAllDiary(diaryDate :String,AddDiary:String){
+        val allHabit = database.getReference("user/allDiary/")
 
+        //上傳firebase
+        allHabit.child(diaryDate).setValue(AddDiary)
+
+        //存本地
+//        allProjectMap.put((allProjectMap.size+1),AddDiary)
+    }
+
+    fun setDiary(diaryDate:String, AddDiary: String){
+       setAllDiary(diaryDate,AddDiary)
+    }
+    fun getDiary(diaryDate:String):String{
+        var diary = ""
+        if(allDiaryMap[diaryDate] !=null){
+            diary = allDiaryMap[diaryDate].toString()
+        }
+        return diary
+    }
 
     fun modifySingleItem(modifyIndex:Int, modifyItem:ItemDate){
       //  Log.i("AllItemData","modifySingleItem")
