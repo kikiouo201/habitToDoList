@@ -24,7 +24,8 @@ import com.example.yanghuiwen.habittodoist.view.AddItemActivity
 import java.util.ArrayList
 
 class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :String) : RecyclerView.Adapter<SingleItem<T>.ViewHolder>() {
-    var mData: Map<String, ItemDate> = sortedMapOf()
+    var mData = mutableMapOf<String, ItemDate>()
+    var endData = mutableMapOf<String, ItemDate>()
     val mDateKey = ArrayList<String>()
     val mDateValue = ArrayList<ItemDate>()
     var toDoName = toDoName
@@ -49,16 +50,29 @@ class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :Str
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.item.setBackgroundResource(important[mDateValue[position].important])
+
         holder.mTextView.text = mDateValue[position].name
         holder.checkBox.isChecked = mDateValue[position].IsEndItem
+        if(mDateValue[position].IsEndItem){
+            //項目完成
+            holder.item.setBackgroundResource(R.color.endItem)
+        }
         holder.mTextView.setOnClickListener {
             holder.checkBox.isChecked = !holder.checkBox.isChecked
             mDateValue[position].IsEndItem = holder.checkBox.isChecked
             AllItemData.modifyAllItem(mDateKey[position].toInt(),mDateValue[position])
+            if(mDateValue[position].IsEndItem){
+                //項目完成
+                holder.item.setBackgroundResource(R.color.endItem)
+            }
         }
         holder.checkBox.setOnCheckedChangeListener{ buttonView, isChecked->
             mDateValue[position].IsEndItem = isChecked
             AllItemData.modifyAllItem(mDateKey[position].toInt(),mDateValue[position])
+            if(mDateValue[position].IsEndItem){
+                //項目完成
+                holder.item.setBackgroundResource(R.color.endItem)
+            }
         }
         holder.mTextView.setOnLongClickListener {
             startAddItemActivity(context,mDateValue[position] , toDoName)
@@ -72,12 +86,26 @@ class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :Str
     }
 
     init {
-        mData = data
 
         data.forEach{(key,value)->
+           if(value.IsEndItem){
+               //完成
+               endData.put(key,value)
+           }else{
+               mData.put(key,value)
+           }
+
+        }
+        endData.forEach{(key,value)->
+            mData.put(key,value)
+        }
+
+        mData.forEach{(key,value)->
+
             mDateKey.add(key)
             mDateValue.add(value)
         }
+       // mData = data
     }
     fun startAddItemActivity(context: Context,currentItemDate: ItemDate, toDoName :String){
 

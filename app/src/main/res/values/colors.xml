@@ -14,5 +14,5 @@
     <color name="important2">#FFF4C1</color>
     <color name="important3">#FFDAC8</color>
     <color name="important4">#FFB5B5</color>
-
+    <color name="endItem">#F0F0F0</color>
 </resources>

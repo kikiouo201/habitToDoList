@@ -63,8 +63,8 @@ class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>,
 
             myHolder.mTableItem.setOnClickListener {
                 var bundle= Bundle()
-                bundle.putString("name","")
-                bundle.putString("projectIndex","")
+                bundle.putString("name",dataKeys[position])
+               // bundle.putString("projectIndex", )
 
 
                 var intent = Intent(context, ProjectResultActivity::class.java)

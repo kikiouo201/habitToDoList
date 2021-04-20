@@ -1,7 +1,6 @@
 package com.example.yanghuiwen.habittodoist
 
 import android.os.Build
-import android.text.Editable
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.firebase.auth.FirebaseAuth
@@ -548,7 +547,7 @@ object AllItemData {
     fun getIntervalDateToDo(dateCategory:String):Map<String, ItemDate>{
        var  intervalDateToDo = sortedMapOf<String, ItemDate>()
 
-        Log.i(TAG,"dateCategory${dateCategory}")
+       // Log.i(TAG,"dateCategory${dateCategory}")
         when(dateCategory){
             "年" ->{
                 for ((key,itemDate) in allToDoMap){
@@ -924,8 +923,35 @@ object AllItemData {
 
     //專案
 
+    fun getProjectHabitDate(projectName:String):Map<String,HabitDate>{
+        val allProjectHabitDate = sortedMapOf<String,HabitDate>()
+        for ((key,item)in   allHabitToDoMap){
+            if (item != null) {
+                if(item.project.equals(projectName)){
+                    allProjectHabitDate.put(key.toString(),item)
+                }
+            }
+        }
+        Log.i(TAG,"allProjectHabitDate"+allProjectHabitDate)
+        return allProjectHabitDate
 
-    fun  getProjectName():ArrayList<String>{
+    }
+
+    fun getProjectItemDate(projectName : String):Map<String,ItemDate>{
+        val allProjectItemDate = sortedMapOf<String,ItemDate>()
+        for ((key,item)in   allToDoMap){
+            if (item != null) {
+                if(item.project.equals(projectName)){
+                    allProjectItemDate.put(key.toString(),item)
+                }
+            }
+        }
+        Log.i(TAG,"allProjectItemDate"+allProjectItemDate)
+        return allProjectItemDate
+
+    }
+
+    fun getProjectName():ArrayList<String>{
         var allProject = ArrayList<String>()
         for ((key,item)in   allProjectMap){
             allProject.add(item)
@@ -933,7 +959,7 @@ object AllItemData {
         return allProject
     }
 
-    fun  setProject(AddProject:String){
+    fun setProject(AddProject:String){
         setAllProject(AddProject)
     }
 
