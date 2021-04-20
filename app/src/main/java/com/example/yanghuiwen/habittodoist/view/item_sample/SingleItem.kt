@@ -64,16 +64,25 @@ class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :Str
             if(mDateValue[position].IsEndItem){
                 //項目完成
                 holder.item.setBackgroundResource(R.color.endItem)
+            }else{
+                holder.item.setBackgroundResource(important[mDateValue[position].important])
             }
+            dateSort()
+            notifyDataSetChanged()
         }
-        holder.checkBox.setOnCheckedChangeListener{ buttonView, isChecked->
-            mDateValue[position].IsEndItem = isChecked
-            AllItemData.modifyAllItem(mDateKey[position].toInt(),mDateValue[position])
-            if(mDateValue[position].IsEndItem){
-                //項目完成
-                holder.item.setBackgroundResource(R.color.endItem)
-            }
-        }
+        holder.checkBox.setOnClickListener(View.OnClickListener {
+                mDateValue[position].IsEndItem = holder.checkBox.isChecked
+                AllItemData.modifyAllItem(mDateKey[position].toInt(),mDateValue[position])
+                if(mDateValue[position].IsEndItem){
+                    //項目完成
+                    holder.item.setBackgroundResource(R.color.endItem)
+                }else{
+                    holder.item.setBackgroundResource(important[mDateValue[position].important])
+                }
+            dateSort()
+            notifyDataSetChanged()
+        })
+
         holder.mTextView.setOnLongClickListener {
             startAddItemActivity(context,mDateValue[position] , toDoName)
             return@setOnLongClickListener true
@@ -107,6 +116,32 @@ class SingleItem<T>(context: Context, data: Map<String, ItemDate>, toDoName :Str
         }
        // mData = data
     }
+
+    fun dateSort(){
+
+        var data = mData
+        mData = mutableMapOf<String, ItemDate>()
+        endData= mutableMapOf<String, ItemDate>()
+        data.forEach{(key,value)->
+            if(value.IsEndItem){
+                //完成
+                endData.put(key,value)
+            }else{
+                mData.put(key,value)
+            }
+
+        }
+        endData.forEach{(key,value)->
+            mData.put(key,value)
+        }
+        mData.forEach{(key,value)->
+
+            mDateKey.add(key)
+            mDateValue.add(value)
+        }
+
+    }
+
     fun startAddItemActivity(context: Context,currentItemDate: ItemDate, toDoName :String){
 
         var bundle= Bundle()
