@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.yanghuiwen.habittodoist.AllItemData
 import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.HabitResultActivity
@@ -59,7 +60,19 @@ class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>,
 
 
                 myHolder.infoText.text = dataKeys[position]
-                myHolder.completionRate.text = "未完成：${dataValue[position].size}個事項"
+                val allProjectItemDate = AllItemData.getProjectItemDate(dataKeys[position])
+                var notEndItemAmount = 0 //未完成
+                var endItemAmount = 0 // 已完成
+                for ((key,item) in allProjectItemDate){
+                    if(item.IsEndItem){
+                        //完成
+                        endItemAmount++
+                    }else{
+                        notEndItemAmount++
+                    }
+
+                }
+                myHolder.completionRate.text = "未完成：${notEndItemAmount}個事項"
 
             myHolder.mTableItem.setOnClickListener {
                 var bundle= Bundle()
