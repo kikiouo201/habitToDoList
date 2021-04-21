@@ -40,7 +40,7 @@ class TableItemView(context: Context,category :String) : RelativeLayout(context)
 
         when(mCategory){
             "專案" ->{
-                tableProjectList = TableProjectItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
+                tableProjectList = TableProjectItem(context,AllItemData.allProjectMap,"singleItemToDo")
                 mGridView.adapter = tableProjectList
             }
             "習慣" ->{
@@ -56,7 +56,7 @@ class TableItemView(context: Context,category :String) : RelativeLayout(context)
 
         when(mCategory){
             "專案" ->{
-                tableProjectList = TableProjectItem(context,AllItemData.getProjectSingleItem(),"singleItemToDo")
+                tableProjectList = TableProjectItem(context,AllItemData.allProjectMap,"singleItemToDo")
                 mGridView.adapter = tableProjectList
             }
             "習慣" ->{

@@ -13,11 +13,11 @@ import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.HabitResultActivity
 import com.example.yanghuiwen.habittodoist.view.ProjectResultActivity
 import java.util.ArrayList
-class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>, toDoName :String) :  BaseAdapter() {
+class TableProjectItem(context: Context, data: Map<Int, String>, toDoName :String) :  BaseAdapter() {
         private var datas =data
         private var context =context
-        private var dataKeys = ArrayList<String>()
-        private var dataValue = ArrayList<ArrayList<ItemDate>>()
+        private var dataKeys = ArrayList<Int>()
+        private var dataValue = ArrayList<String>()
         init {
             datas =data
             this.context =context
@@ -59,8 +59,8 @@ class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>,
             }
 
 
-                myHolder.infoText.text = dataKeys[position]
-                val allProjectItemDate = AllItemData.getProjectItemDate(dataKeys[position])
+                myHolder.infoText.text = dataValue[position]
+                val allProjectItemDate = AllItemData.getProjectItemDate(dataValue[position])
                 var notEndItemAmount = 0 //未完成
                 var endItemAmount = 0 // 已完成
                 for ((key,item) in allProjectItemDate){
@@ -76,7 +76,7 @@ class TableProjectItem(context: Context, data: Map<String, ArrayList<ItemDate>>,
 
             myHolder.mTableItem.setOnClickListener {
                 var bundle= Bundle()
-                bundle.putString("name",dataKeys[position])
+                bundle.putString("name",dataValue[position])
                // bundle.putString("projectIndex", )
 
 
