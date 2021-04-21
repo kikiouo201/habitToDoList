@@ -16,11 +16,42 @@ import java.util.ArrayList
 class TableProjectItem(context: Context, data: Map<Int, String>, toDoName :String) :  BaseAdapter() {
         private var datas =data
         private var context =context
+        private var projectName = data
         private var dataKeys = ArrayList<Int>()
         private var dataValue = ArrayList<String>()
         init {
-            datas =data
+            projectName = data
+            val sortedData = mutableMapOf<Int, String>()
+            val noEndProjects = mutableMapOf<Int, String>()
+
             this.context =context
+
+            //資料排序
+            for ((key,value) in projectName){
+            val allProjectItemDate = AllItemData.getProjectItemDate(value)
+            var notEndItemAmount = 0 //未完成
+            var endItemAmount = 0 // 已完成
+            for ((key,item) in allProjectItemDate){
+                if(item.IsEndItem){
+                    //完成
+                    endItemAmount++
+                }else{
+                    notEndItemAmount++
+                }
+            }
+                if (notEndItemAmount==0){
+                    noEndProjects.put(key,value)
+                }else{
+                    sortedData.put(key,value)
+                }
+            }
+
+            for ((key,value) in noEndProjects){
+                sortedData.put(key,value)
+            }
+
+            // 將排序完的資料 放入 負責儲存顯示資料的datas 中
+            datas = sortedData
             for ((key,value) in datas){
                 dataKeys.add(key)
                 dataValue.add(value)
