@@ -5,10 +5,13 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
 import com.example.yanghuiwen.habittodoist.R
 import com.google.android.material.tabs.TabLayout
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 
@@ -24,6 +27,11 @@ class MainPageView(context: Context) : RelativeLayout(context){
             dayView.setCategory(dateItem[i])
             mainPageList.add(dayView)
         }
+
+        var nowDate = LocalDateTime.now()
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd")
+        val currentDate = nowDate.format(formatter)
+        view.findViewById<TextView>(R.id.todayDate).text = currentDate
 
 
 //        mainPageList.add(IntervalDayView(context))// 年

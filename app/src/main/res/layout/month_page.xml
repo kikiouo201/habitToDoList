@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/goalGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -30,7 +31,7 @@
                 android:text="目標 :" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/goal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -43,36 +44,29 @@
 
         </LinearLayout>
 
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/notToDoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:textColor="@color/lightGray"
+            android:text="無待辦事項"
+            />
+
         <LinearLayout
+            android:id="@+id/todayListGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-<!--            <TextView-->
-<!--                android:id="@+id/activity_textView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:gravity="center"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/darkBlue"-->
-<!--                android:text="activity" />-->
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/activityList"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/today_textView" >-->
-<!--            </androidx.recyclerview.widget.RecyclerView>-->
-
             <TextView
-                android:id="@+id/today_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-
                 android:textStyle="bold"
-
                 android:textColor="@color/darkBlue"
                 android:text="todo" />
 
@@ -80,28 +74,9 @@
                 android:id="@+id/todayList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 app:layout_constraintTop_toBottomOf="@+id/today_textView" >
             </androidx.recyclerview.widget.RecyclerView>
 
-<!--            <TextView-->
-<!--                android:id="@+id/habit_textView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/darkBlue"-->
-<!--                android:gravity="center"-->
-<!--                android:text="habit"-->
-
-<!--                app:layout_constraintTop_toBottomOf="@+id/todayList"/>-->
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/habitList"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-
-<!--                app:layout_constraintTop_toBottomOf="@+id/habit_textView"-->
-<!--                />-->
         </LinearLayout>
 
     </LinearLayout>

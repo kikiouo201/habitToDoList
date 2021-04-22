@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -18,6 +19,7 @@ import com.example.yanghuiwen.habittodoist.ItemDate
 import com.example.yanghuiwen.habittodoist.R
 import com.example.yanghuiwen.habittodoist.view.item_sample.HabitItem
 import com.example.yanghuiwen.habittodoist.view.item_sample.SingleItem
+import com.example.yanghuiwen.habittodoist.view.tools.TimeFormat
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPageView
 import com.example.yanghuiwen.habittodoist.view.week_viewpager.WeekPagerAdapter
 import java.time.LocalDateTime
@@ -27,31 +29,19 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class IntervalDayView(context: Context) : RelativeLayout(context){
+    private val TAG = "IntervalDayView"
     val view = LayoutInflater.from(context).inflate(R.layout.month_page, null)
-//    val weeks =intArrayOf(R.id.week7, R.id.week1, R.id.week2, R.id.week3, R.id.week4, R.id.week5, R.id.week6)
-//    var startWeek = startDate.dayOfWeek.getValue()
-//    val weekSeven = startDate.minusDays(startWeek.toLong())
-//    var currentDateIndex = startWeek
-//    var currentOnDateChange = onDateChange
-
     var todayList: SingleItem<String>?  = null
-//    var habitList: HabitItem<String>?  = null
-
-    private lateinit var pageList: MutableList<WeekPageView>
     private var category ="月"
     var currentDate="2020-03-12"
+
     init {
-
-
 
         var nowDate = LocalDateTime.now()
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         currentDate = nowDate.format(formatter)
         //Log.i("MainPagerView","currentDate="+currentDate)
         initAllToDoList(currentDate)
-
-
-
 
         addView(view)
     }
@@ -71,13 +61,43 @@ class IntervalDayView(context: Context) : RelativeLayout(context){
     fun initAllToDoList(currentDate :String) {
         AllItemData.currentDate = currentDate
 
+        view.findViewById<LinearLayout>(R.id.goalGroup).visibility = View.GONE
+        when(category){
+            "年" ->{
+                val currentDateDiary=AllItemData.getDiary(TimeFormat().formatYear(currentDate))
+                if(!currentDateDiary.equals("")){
+                    view.findViewById<LinearLayout>(R.id.goalGroup).visibility = View.VISIBLE
+                    view.findViewById<TextView>(R.id.goal).text = currentDateDiary
+                }
+            }
+            "月" ->{
+                val currentDateDiary=AllItemData.getDiary(TimeFormat().formatYearMonth(currentDate))
+                if(!currentDateDiary.equals("")){
+                    view.findViewById<LinearLayout>(R.id.goalGroup).visibility = View.VISIBLE
+                    view.findViewById<TextView>(R.id.goal).text = currentDateDiary
+                }
+            }
+            "週" ->{
 
-        todayList = SingleItem(context,AllItemData.getIntervalDateToDo(category),"todayToDo")
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        val mRecyclerView = view.findViewById<View>(R.id.todayList) as RecyclerView
-        mRecyclerView.layoutManager = layoutManager
-        mRecyclerView.adapter = todayList
+            }
+        }
+
+        val intervalDateToDoList =AllItemData.getIntervalDateToDo(category)
+       // Log.i(TAG,"intervalDateToDoList.size"+intervalDateToDoList.size)
+        if(intervalDateToDoList.isNotEmpty()){
+            view.findViewById<LinearLayout>(R.id.todayListGroup).visibility =View.VISIBLE
+            view.findViewById<TextView>(R.id.notToDoText).visibility =View.GONE
+            todayList = SingleItem(context,intervalDateToDoList,"todayToDo")
+            val layoutManager = LinearLayoutManager(context)
+            val mRecyclerView = view.findViewById<View>(R.id.todayList) as RecyclerView
+            layoutManager.orientation = LinearLayoutManager.VERTICAL
+            mRecyclerView.layoutManager = layoutManager
+            mRecyclerView.adapter = todayList
+
+        }else{
+            view.findViewById<LinearLayout>(R.id.todayListGroup).visibility =View.GONE
+            view.findViewById<TextView>(R.id.notToDoText).visibility =View.VISIBLE
+        }
 //
 //        habitList = HabitItem(context,AllItemData.getDateHabitToDo(),"habitToDo")
 //        val habitLayoutManager = LinearLayoutManager(context)
