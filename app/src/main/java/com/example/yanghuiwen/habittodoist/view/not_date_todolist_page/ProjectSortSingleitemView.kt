@@ -36,7 +36,6 @@ class ProjectSortSingleitemView(context: Context) : RelativeLayout(context){
     fun chooseSortPage(chooseSort:String){
         var singleItemData= AllItemData.getProjectSingleItem()
 
-        Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
 //        when(chooseSort){
 //            "專案" ->{
 //                singleItemData= AllItemData.getProjectSingleItem()

@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
     private var isFabOpen = false
     private lateinit var mainPageList: MutableList<RelativeLayout>
-    private lateinit var pageList: MutableList<WeekPageView>
+   // private lateinit var pageList: MutableList<WeekPageView>
 
 
 
@@ -59,15 +59,15 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
 
 
         AllItemData.auth = Firebase.auth
-        Log.i("MainActivity",AllItemData.auth.currentUser.toString())
+       // Log.i("MainActivity",AllItemData.auth.currentUser.toString())
 
 
 
         AllItemData.getFirebaseDate()
-        AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
-                Log.i("MainActivity","Main="+todayToDo.name)
-                Log.i("MainActivity",todayToDo.startDate)
-            }
+//        AllItemData.todayToDo.forEachIndexed { index, todayToDo ->
+//                Log.i("MainActivity","Main="+todayToDo.name)
+//                Log.i("MainActivity",todayToDo.startDate)
+//            }
 
         initMainViewpage()
 
@@ -150,8 +150,12 @@ class MainActivity : AppCompatActivity(), AddHabitToDoDialogFragment.OnHeadlineS
                 Log.i("MainActivity","p0=${p0}")
                 when(p0){
                     1 ->{
-                        val notDateListPagerView= mainPageList[p0] as OtherToDoListPagerView
+                        val notDateListPagerView= mainPageList[1] as OtherToDoListPagerView
                         notDateListPagerView.chooseThisPage()
+                    }
+                    3 ->{
+                        val personalPageView= mainPageList[3] as PersonalPageView
+                        personalPageView.chooseThisPage()
                     }
                 }
             }

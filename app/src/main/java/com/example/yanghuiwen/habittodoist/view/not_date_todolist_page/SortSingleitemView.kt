@@ -23,7 +23,7 @@ class SortSingleitemView(context: Context) : RelativeLayout(context){
 
     init {
 
-        //Log.i("projectSortSingleitem","im create yoooo")
+
         //設定 RecyclerView
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         mRecyclerView.layoutManager = layoutManager
@@ -35,7 +35,6 @@ class SortSingleitemView(context: Context) : RelativeLayout(context){
     fun chooseSortPage(chooseSort:String){
         var singleItemData= AllItemData.getImportantSingleItem()
 
-        Log.i("ProjectSortSingleitem","chooseSort${chooseSort}")
         when(chooseSort){
             "時間" ->{
                singleItemData= AllItemData.getTimeSingleItem()

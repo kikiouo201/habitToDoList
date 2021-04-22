@@ -70,12 +70,12 @@ class SortHabitItem<T>(context: Context, data: Map<String, ArrayList<HabitDate>>
     }
 
     override fun getItemCount(): Int {
-        Log.i("ProjectSortSingleItem","mData.size"+mData.size)
+        //Log.i("ProjectSortSingleItem","mData.size"+mData.size)
         return mData.size
     }
 
     init {
-        Log.i("ProjectSortSingleItem","data"+data)
+        //Log.i("ProjectSortSingleItem","data"+data)
         mData = data
         projectNames =mData.keys.toMutableList()
     }

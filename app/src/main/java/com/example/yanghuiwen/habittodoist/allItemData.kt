@@ -64,7 +64,6 @@ object AllItemData {
 
 
 
-
         // allItem 所有單項
         allItemReference = database.getReference("user/allItem/")
         val allItemPostListener = object : ValueEventListener {
@@ -86,14 +85,12 @@ object AllItemData {
 
                         //檢查項目有沒有過期
                         if (!itemDate.endDate.equals("無")){
-                           // Log.i(TAG,"itemDate.startDate${itemDate.endDate}")
                             val itemStartDateFormatter = LocalDateTime.parse(itemDate.endDate+" 00:00:00",timeFormatter)
                             val currentDateFormatter = LocalDateTime.now()
                             val dateDifference = ChronoUnit.DAYS.between(itemStartDateFormatter, currentDateFormatter).toInt()
                             if(dateDifference>0){
                                 itemDate.IsProhibitItem = true
                                allItemReference.child(itemIndex).setValue(itemDate)
-                                // Log.i(TAG,"itemDate.startDate${itemDate.startDate}")
                             }
 
                         }
@@ -190,14 +187,12 @@ object AllItemData {
 
                         //檢查項目有沒有過期
                         if (!habitDate.endDate.equals("無")){
-                         //   Log.i(TAG,"itemDate.startDate${habitDate.endDate}")
                             val itemStartDateFormatter = LocalDateTime.parse(habitDate.endDate+" 00:00:00",timeFormatter)
                             val currentDateFormatter = LocalDateTime.now()
                             val dateDifference = ChronoUnit.DAYS.between(itemStartDateFormatter, currentDateFormatter).toInt()
                             if(dateDifference>0){
                                 habitDate.IsProhibitItem = true
                                 habitToDoItemReference.child(itemIndex).setValue(habitDate)
-                            //     Log.i(TAG,"habitDate.endDate${habitDate.endDate}")
                             }
                         }
 
@@ -246,6 +241,7 @@ object AllItemData {
 
         // DiaryItem 所有專案
         diaryItemReference = database.getReference("user/allDiary/")
+
         val diaryItemPostListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -540,7 +536,7 @@ object AllItemData {
                 }
             }
         }
-      //  Log.i("AllItemData","todayToDo="+todayToDo)
+
         return todayToDo
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -567,7 +563,6 @@ object AllItemData {
             }
             "月" ->{
                 for ((key,itemDate) in allToDoMap){
-                    // Log.i("AllItemData","nowItemDate="+nowItemDate)
                     if(itemDate?.timeType==3){
                         val mCurrentDate = LocalDate.parse(currentDate)
                         val mNowItemDate = LocalDate.parse(itemDate?.startDate)
@@ -582,11 +577,9 @@ object AllItemData {
             }
             "週" ->{
                 for ((key,itemDate) in allToDoMap){
-                    // Log.i("AllItemData","nowItemDate="+nowItemDate)
                     if(itemDate?.timeType==2){
                         var mCurrentDate = LocalDate.parse(currentDate)
                         val week = mCurrentDate.dayOfWeek.value
-                        Log.i(TAG,"mStartDate.dayOfWeek.value${mCurrentDate.dayOfWeek.value}")
                         mCurrentDate = mCurrentDate.minusDays((week-1).toLong())
                         val mNowItemDate = LocalDate.parse(itemDate?.startDate)
                         if(mCurrentDate.equals(mNowItemDate)){
@@ -601,7 +594,7 @@ object AllItemData {
         }
 
 
-        //  Log.i("AllItemData","todayToDo="+todayToDo)
+
         return intervalDateToDo
     }
 
@@ -613,8 +606,6 @@ object AllItemData {
             var nowItemDate = allToDoMap.get(itemIndex.toInt())
              //Log.i(TAG,"nowItemDate="+nowItemDate)
             for (intervalDate in intervalDates) {
-              //  Log.i(TAG,"intervalDate="+intervalDate)
-              //  Log.i(TAG,"nowItemDate?.startDate="+nowItemDate?.startDate)
                 if (intervalDate.equals(nowItemDate?.startDate)) {
                     if (nowItemDate != null && !nowItemDate.isHabit) {
 
@@ -623,7 +614,7 @@ object AllItemData {
                 }
             }
         }
-          Log.i(TAG,"todayToDo="+todayToDo)
+
         return todayToDo
     }
     fun setDateToDayToDo(AddItem:ItemDate):Int{
@@ -635,7 +626,6 @@ object AllItemData {
 //            val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
             //上傳firebase
             todayToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
-        //    Log.i("AllItemData","setDateToDayToDo")
 //        }
         return addItemIndex
     }
@@ -662,7 +652,6 @@ object AllItemData {
 //            val nextTodayToDoIndex = (nowTodayToDoIndex.toInt()+1).toString()
         //上傳firebase
         todayToDo.child(addItemIndex.toString()).setValue(addItemIndex.toString())
-        //    Log.i("AllItemData","setDateToDayToDo")
 //        }
         return addItemIndex
     }
@@ -867,7 +856,7 @@ object AllItemData {
             // Log.i("AllItemData","nowItemDate="+nowItemDate)
 
         }
-        //  Log.i(TAG,"todayToDo="+todayToDo)
+
 
         return habitToDoList
 
@@ -932,7 +921,6 @@ object AllItemData {
                 }
             }
         }
-        Log.i(TAG,"allProjectHabitDate"+allProjectHabitDate)
         return allProjectHabitDate
 
     }
@@ -946,7 +934,6 @@ object AllItemData {
                 }
             }
         }
-        Log.i(TAG,"allProjectItemDate"+allProjectItemDate)
         return allProjectItemDate
 
     }
@@ -977,7 +964,6 @@ object AllItemData {
         }else{
             chooseTime +="-${dayOfMonth}"
         }
-       // Log.i(TAG,"chooseTime$chooseTime")
         return chooseTime
 
     }

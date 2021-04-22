@@ -38,6 +38,7 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class PersonalPageView(context: Context) : RelativeLayout(context){
+    private val TAG = "PersonalPageView"
     val view = LayoutInflater.from(context).inflate(R.layout.personal_page, null)
 
     private lateinit var pageList: MutableList<RelativeLayout>
@@ -45,9 +46,9 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
     init {
         if (AllItemData.auth.currentUser != null){
             view.account.text = AllItemData.auth.currentUser!!.email.toString()
-            Log.i("PersonalPageView",AllItemData.auth.currentUser!!.email.toString())
+          //  Log.i(TAG,AllItemData.auth.currentUser!!.email.toString())
         }
-        Log.i("PersonalPageView",AllItemData.auth.currentUser.toString())
+       // Log.i(TAG,AllItemData.auth.currentUser.toString())
     view.signInButton.setOnClickListener {
         var intent = Intent(context,GoogleSignInActivity::class.java)
 
@@ -68,7 +69,10 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
 
 
     fun chooseThisPage(){
-
+        val  yearGoalPager = view.findViewById<ViewPager>(R.id.yearGoalPager)
+        initWeekViewpage(yearGoalPager,"year")
+        val  monthGoalPager = view.findViewById<ViewPager>(R.id.monthGoalPager)
+        initWeekViewpage(monthGoalPager,"month")
     }
     fun refreshView() {
 
@@ -86,8 +90,6 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
         pageList = ArrayList()
 
         pageList.add(DatePageView(context, current,dateTypes))
-
-
         val weekPagerAdapter = PagerAdapter(pageList)
 
 
@@ -99,15 +101,16 @@ class PersonalPageView(context: Context) : RelativeLayout(context){
                 //textView.setText("$pageNow / ${list.size}")
             }
             override fun onPageSelected(p0: Int) {
-                Log.i("kiki","p0=${p0}")
-                //pageList[p0].chooseThisPage()
+//                Log.i(TAG,"p0=${p0}")
+                val datePage= pageList[p0] as DatePageView
+                datePage.chooseThisPage()
             }
         }
 
         page.adapter = weekPagerAdapter
         page.addOnPageChangeListener(listener)
 
-        page.setCurrentItem(3 , false);
+        page.setCurrentItem(0 , false);
     }
 
 

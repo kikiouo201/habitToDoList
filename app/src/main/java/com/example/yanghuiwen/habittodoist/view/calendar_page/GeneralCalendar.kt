@@ -119,7 +119,7 @@ class GeneralCalendar: ConstraintLayout{
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        Log.i(TAG,"daysOfWeek$daysOfWeek")
+
         val todayToDoList =AllItemData.getIntervalDateToDayToDo(daysOfWeek)
         val habitToDoList=AllItemData.getIntervalDateHabitToDo(daysOfWeek)
         val activityList =AllItemData.getIntervalDateActivity(daysOfWeek)
